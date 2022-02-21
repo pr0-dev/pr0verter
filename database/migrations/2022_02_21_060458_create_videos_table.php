@@ -13,13 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
+        Schema::create('videos', function (Blueprint $table) {
+            $table->longText('id');
+            $table->ipAddress('uploader_ip');
+            $table->text('origEnding');
+            $table->integer('type');
+            $table->integer('loadProgress')->default(0);
+            $table->integer('convertProgress')->default(0);
+            $table->integer('failed')->default(0);
             $table->timestamps();
         });
     }
@@ -31,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('videos');
     }
 };
