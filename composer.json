@@ -7,10 +7,13 @@
     "require": {
         "php": "^8.0.2",
         "fruitcake/laravel-cors": "^2.0.5",
-        "guzzlehttp/guzzle": "^7.2",
+        "graham-campbell/github": "^10.5",
+        "guzzlehttp/guzzle": "^7.4",
+        "http-interop/http-factory-guzzle": "^1.0",
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.14",
-        "laravel/tinker": "^2.7"
+        "laravel/tinker": "^2.7",
+        "pbmedia/laravel-ffmpeg": "^8.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",
