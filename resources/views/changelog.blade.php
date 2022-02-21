@@ -29,7 +29,7 @@
 
     <!-- Page Content -->
     <main>
-        Main navigation
+        Changelog page
     </main>
 </div>
 </body>

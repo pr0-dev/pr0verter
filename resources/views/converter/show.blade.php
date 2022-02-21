@@ -29,7 +29,7 @@
 
     <!-- Page Content -->
     <main>
-        Main navigation
+        Show result page
     </main>
 </div>
 </body>

@@ -29,7 +29,7 @@
 
     <!-- Page Content -->
     <main>
-        Main navigation
+        Converter Progress
     </main>
 </div>
 </body>

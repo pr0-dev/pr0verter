@@ -29,7 +29,7 @@
 
     <!-- Page Content -->
     <main>
-        Main navigation
+        Contact page
     </main>
 </div>
 </body>
