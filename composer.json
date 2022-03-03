@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "alaouy/youtube": "^2.2",
         "fruitcake/laravel-cors": "^2.0.5",
         "graham-campbell/github": "^10.5",
         "guzzlehttp/guzzle": "^7.4",
