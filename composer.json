@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
-        "alaouy/youtube": "^2.2",
         "fruitcake/laravel-cors": "^2.0.5",
         "graham-campbell/github": "^10.5",
         "guzzlehttp/guzzle": "^7.4",
@@ -15,7 +14,9 @@
         "laravel/sanctum": "^2.14",
         "laravel/tinker": "^2.7",
         "norkunas/youtube-dl-php": "dev-master",
-        "pbmedia/laravel-ffmpeg": "^8.0"
+        "pbmedia/laravel-ffmpeg": "^8.0",
+        "ext-curl": "*",
+        "ext-intl": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

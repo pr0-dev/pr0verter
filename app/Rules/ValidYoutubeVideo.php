@@ -2,12 +2,10 @@
 
 namespace App\Rules;
 
-use Alaouy\Youtube\Facades\Youtube;
-use Exception;
 use Illuminate\Contracts\Validation\Rule;
+use Youtube;
 
-
-class YoutubeVideoExists implements Rule
+class ValidYoutubeVideo implements Rule
 {
     /**
      * Create a new rule instance.
@@ -22,21 +20,20 @@ class YoutubeVideoExists implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param string $attribute
-     * @param mixed $value
+     * @param  string  $attribute
+     * @param  mixed  $value
      * @return bool
      */
     public function passes($attribute, $value): bool
     {
         try {
-            if(Youtube::getVideoInfo(Youtube::parseVidFromURL($value))) {
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception $exception) {
+            $videoId = Youtube::parseVidFromURL($value);
+            $video = Youtube::getVideoInfo($videoId, ['id']);
+        } catch (\Exception $exception) {
             return false;
         }
+
+        return $video != false;
     }
 
     /**
@@ -46,6 +43,6 @@ class YoutubeVideoExists implements Rule
      */
     public function message(): string
     {
-        return 'This video does not exist or is private.';
+        return 'The supplied URL does not look like a Youtube URL.';
     }
 }

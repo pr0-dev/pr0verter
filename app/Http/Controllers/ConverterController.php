@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetYoutubeDataRequest;
+use Exception;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Locale;
+use Youtube;
 
 class ConverterController extends Controller
 {
@@ -54,4 +61,34 @@ class ConverterController extends Controller
         return redirect()->route('progress');
     }
 
+    /**
+     * @param GetYoutubeDataRequest $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function ytInfo(GetYoutubeDataRequest $request): JsonResponse
+    {
+        if(!$request->ajax()) {
+            abort('404');
+        }
+        try {
+            $videoId = Youtube::parseVidFromURL($request->input('url'));
+            $videoData = Youtube::getVideoInfo($videoId);
+            $languages = array();
+            if($videoData->contentDetails->caption) {
+                $captionData = Youtube::getCaptionInfo($videoId);
+                foreach ($captionData as $captionLang) {
+                    $languages[$captionLang->snippet->language] = Locale::getDisplayName($captionLang->snippet->language);
+                }
+            }
+
+            return response()->json([
+                'title' => $videoData->snippet->title,
+                'availableSubtitles' => $languages,
+                'duration' => new \DateInterval($videoData->contentDetails->duration)
+            ]);
+        } catch (Exception $exception) {
+            return response()->json(null, 500);
+        }
+    }
 }
