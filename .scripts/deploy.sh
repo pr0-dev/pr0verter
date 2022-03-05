@@ -7,6 +7,10 @@ echo "Deployment started ..."
 # if already is in maintenance mode
 (php artisan down) || true
 
+supervisorctl stop laravel-convert:*
+supervisorctl stop laravel-download:*
+supervisorctl stop laravel-youtube:*
+
 # Pull the latest version of the app
 git pull origin master
 
@@ -24,6 +28,10 @@ npm run dev
 
 # Run database migrations
 php artisan migrate --force
+
+supervisorctl start laravel-convert:*
+supervisorctl start laravel-download:*
+supervisorctl start laravel-youtube:*
 
 # Exit maintenance mode
 php artisan up
