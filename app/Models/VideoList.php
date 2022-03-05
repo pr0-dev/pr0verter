@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @method static \Illuminate\Database\Eloquent\Builder|VideoList whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|VideoList whereUploaderIP($value)
  * @mixin \Eloquent
+ * @property-read \App\Models\Upload|null $uploads
  */
 class VideoList extends Model
 {

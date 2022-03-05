@@ -172,7 +172,7 @@ class Converter {
         $ratio = $this->probe->streams($this->fileLocation)->videos()->first()->getDimensions()->getRatio();
         $width = $this->probe->streams($this->fileLocation)->videos()->first()->getDimensions()->getWidth();
         $height = $this->probe->streams($this->fileLocation)->videos()->first()->getDimensions()->getHeight();
-        if(($width * $height / 1048576 > config('pr0verter.maxResultPixels') && $this->keepResolution) || !$this->keepResolution)
+        if((($width * $height / 1048576 > config('pr0verter.maxResultPixels')) && $this->keepResolution) || !$this->keepResolution)
         {
             /** First we try to find the closest resolution to the original */
             $closest = null;
@@ -185,7 +185,7 @@ class Converter {
             }
 
             /** Now we check if the minBitrate fits into the Video, so that we don't go over the maximum size Limit */
-            for(; $idx >= 0; $idx--) {
+            for(; $idx = 0; $idx--) {
                 $minBitrate = self::availableVideoRatios[$idx]['bitrateMin'];
                 if(($minBitrate + $this->audio) * $this->duration > $this->resultSize) {
                     continue;

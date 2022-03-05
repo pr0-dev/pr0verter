@@ -45,6 +45,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultWidth($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Upload whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property string|null $convert_remaining
+ * @property string|null $convert_rate
+ * @property string|null $probe_error
+ * @property-read \App\Models\VideoList $list
+ * @method static \Illuminate\Database\Eloquent\Builder|Upload whereConvertRate($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Upload whereConvertRemaining($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Upload whereProbeError($value)
  */
 class Upload extends Model
 {
