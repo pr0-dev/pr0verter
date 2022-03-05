@@ -89,7 +89,7 @@ class ConverterController extends Controller
 
         $request->file('video')->move(storage_path('raw/Upload'), $guid.$request->file('video')->getClientOriginalExtension());
         $converter = new Converter($request, storage_path('raw/Upload/'.$guid.$request->file('video')->getClientOriginalExtension()), $guid);
-        $this->dispatch(new ConvertVideoJob($converter->getFFMpegConfig()));
+        $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
         return redirect()->route('progress');
     }
 
