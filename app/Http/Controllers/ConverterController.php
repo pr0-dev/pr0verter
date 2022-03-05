@@ -133,4 +133,8 @@ class ConverterController extends Controller
             return response()->json(null, 500);
         }
     }
+
+    public function view(Request $request, string $id) {
+        //
+    }
 }
