@@ -6,10 +6,10 @@ use App\Models\Upload;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
-use JetBrains\PhpStorm\ArrayShape;
-use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
+use JetBrains\PhpStorm\ArrayShape;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 
 class Converter {
     private int $resultSize;

@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
 use App\Utilities\Youtube;
+use Illuminate\Support\ServiceProvider;
 
 class YoutubeServiceProvider extends ServiceProvider
 {

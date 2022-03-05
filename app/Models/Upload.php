@@ -2,9 +2,12 @@
 
 namespace App\Models;
 
+use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\Upload
@@ -23,35 +26,35 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $result_start
  * @property int $result_end
  * @property int $result_audio
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @method static \Illuminate\Database\Eloquent\Builder|Upload newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Upload newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Upload query()
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereConvertError($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereConvertProgress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereGuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereMimeType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereOriginalCodec($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereOriginalDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereOriginalFormat($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereProbeScore($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultAudio($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultBitrate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultEnd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultHeight($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereResultWidth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @method static Builder|Upload newModelQuery()
+ * @method static Builder|Upload newQuery()
+ * @method static Builder|Upload query()
+ * @method static Builder|Upload whereConvertError($value)
+ * @method static Builder|Upload whereConvertProgress($value)
+ * @method static Builder|Upload whereCreatedAt($value)
+ * @method static Builder|Upload whereGuid($value)
+ * @method static Builder|Upload whereMimeType($value)
+ * @method static Builder|Upload whereOriginalCodec($value)
+ * @method static Builder|Upload whereOriginalDuration($value)
+ * @method static Builder|Upload whereOriginalFormat($value)
+ * @method static Builder|Upload whereProbeScore($value)
+ * @method static Builder|Upload whereResultAudio($value)
+ * @method static Builder|Upload whereResultBitrate($value)
+ * @method static Builder|Upload whereResultEnd($value)
+ * @method static Builder|Upload whereResultHeight($value)
+ * @method static Builder|Upload whereResultStart($value)
+ * @method static Builder|Upload whereResultWidth($value)
+ * @method static Builder|Upload whereUpdatedAt($value)
+ * @mixin Eloquent
  * @property string|null $convert_remaining
  * @property string|null $convert_rate
  * @property string|null $probe_error
- * @property-read \App\Models\VideoList $list
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereConvertRate($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereConvertRemaining($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Upload whereProbeError($value)
+ * @property-read VideoList $list
+ * @method static Builder|Upload whereConvertRate($value)
+ * @method static Builder|Upload whereConvertRemaining($value)
+ * @method static Builder|Upload whereProbeError($value)
  */
 class Upload extends Model
 {
