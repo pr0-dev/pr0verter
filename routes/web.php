@@ -31,12 +31,16 @@ Route::get('contact', [StaticsController::class, 'contact'])->name('contact');
 Route::prefix('convert')->group(function () {
     /** Main converter Page - all the settings are done here */
     Route::get('/', [ConverterController::class, 'home'])->name('home');
-    /** Send the request there */
-    Route::post('/', [ConverterController::class, 'convertRequest'])->name('convertRequest');
+    /** Send the upload request there */
+    Route::post('upload', [ConverterController::class, 'convertUpload'])->name('convertUpload');
+    /** Send the download request there */
+    Route::post('downloadFromSite', [ConverterController::class, 'convertDownload'])->name('convertDownload');
+    /** Send the youtube-download request there */
+    Route::post('downloadFromYoutube', [ConverterController::class, 'convertYoutube'])->name('convertYoutube');
     /** Youtube data about available subtitles etc */
     Route::get('yt-info', [ConverterController::class, 'ytInfo'])->name('ytInfo');
     /** Show progress, give updates etc. */
-    Route::get('{id}/progress', [ConverterController::class, 'progress'])->name('progress');
+    Route::get('progress', [ConverterController::class, 'progress'])->name('progress');
     /** Show the final result with embedded video */
     Route::get('{id}/show', [ConverterController::class, 'show'])->name('show');
     /** Download route for direct download or browser download */

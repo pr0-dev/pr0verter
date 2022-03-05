@@ -211,10 +211,10 @@ class Youtube
     /**
      * Parse the input url string and return an array of query params
      *
-     * @param  string $url the URL
+     * @param string $url the URL
      * @return array      array of query params
      */
-    public static function _parse_url_query($url): array
+    public static function _parse_url_query(string $url): array
     {
         $array = parse_url($url);
         $query = $array['query'];

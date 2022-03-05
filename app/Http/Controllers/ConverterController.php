@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConvertFileRequest;
 use App\Http\Requests\GetYoutubeDataRequest;
+use App\Jobs\ConvertVideoJob;
+use App\Models\Upload;
+use App\Models\VideoList;
+use App\Utilities\Converter\Converter;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Routing\ResponseFactory;
@@ -13,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Locale;
+use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 use Youtube;
 
 class ConverterController extends Controller
@@ -30,9 +36,23 @@ class ConverterController extends Controller
      * @param string $id
      * @return Factory|View|Application
      */
-    public function progress(string $id): Factory|View|Application
+    public function progress()
     {
-        return view('converter.progress');
+        $probe = FFProbe::create(config('laravel-ffmpeg'));
+
+        var_dump($probe->format(storage_path('raw/upload/1.mp4'))->all());
+        var_dump($probe->streams(storage_path('raw/upload/1.mp4'))->all());
+        var_dump($probe->streams(storage_path('raw/upload/1.mp4'))->audios()->count());
+        var_dump($probe->streams(storage_path('raw/upload/1.mp4'))->videos()->first()->getDimensions()->getRatio());
+        var_dump($probe->streams(storage_path('raw/upload/1.mp4'))->videos()->first()->getDimensions()->getHeight());
+        var_dump($probe->streams(storage_path('raw/upload/1.mp4'))->videos()->first()->getDimensions()->getWidth());
+        var_dump($probe->format(storage_path('raw/upload/2.gif'))->all());
+        var_dump($probe->streams(storage_path('raw/upload/2.gif'))->all());
+        var_dump($probe->streams(storage_path('raw/upload/2.gif'))->audios()->count());
+        var_dump($probe->format(storage_path('raw/upload/3.mp4'))->all());
+        var_dump($probe->streams(storage_path('raw/upload/3.mp4'))->all());
+        var_dump($probe->streams(storage_path('raw/upload/3.mp4'))->audios()->count());
+        return;
     }
 
     /**
@@ -53,10 +73,34 @@ class ConverterController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ConvertFileRequest $request
      * @return RedirectResponse
      */
-    public function load(Request $request): RedirectResponse
+    public function convertUpload(ConvertFileRequest $request): RedirectResponse
+    {
+        $guid = uniqid('Upload');
+        while(true) {
+            if(VideoList::whereGuid($guid)->count() > 0)
+                $guid = uniqid('Upload');
+            else
+                break;
+        }
+
+        VideoList::create(['guid' => $guid, 'type' => 'Upload', 'uploaderIP' => $request->ip()]);
+        Upload::create(['guid' => $guid, 'mime_type' => $request->file('video')->getClientMimeType()]);
+
+        $request->file('video')->move(storage_path('raw/Upload'), $guid.$request->file('video')->getClientOriginalExtension());
+        $converter = new Converter($request, storage_path('raw/Upload/'.$guid.$request->file('video')->getClientOriginalExtension()), $guid);
+        $this->dispatch(new ConvertVideoJob($converter->getFFMpegConfig()));
+        return redirect()->route('progress');
+    }
+
+    public function convertDownload(Request $request): RedirectResponse
+    {
+        return redirect()->route('progress');
+    }
+
+    public function convertYoutube(Request $request): RedirectResponse
     {
         return redirect()->route('progress');
     }
