@@ -50,14 +50,13 @@ class ConvertVideoJob implements ShouldQueue
         $video = FFMpeg::open($this->fileLocation);
         $video->filters()->resize(new Dimension($this->width, $this->height));
         $video->filters()->clip(TimeCode::fromSeconds($this->start), TimeCode::fromSeconds($this->end));
-        $type = VideoList::whereGuid($this->guid)->first()->value('type');
-        $this->format->on('progress', function ($percentage, $remaining, $rate) use ($type) {
-            switch ($type) {
-                case 'Upload':
-                    Upload::whereGuid($this->guid)->update(['convert_progress' => $percentage, 'convert_remaining' => $remaining, 'convert_rate' => $rate]);
-                    break;
-            }
+        $this->format->on('progress', function ($percentage, $remaining, $rate) {
+            VideoList::find($this->guid)->type->update([
+                'convert_progress' => $percentage,
+                'convert_remaining' => $remaining,
+                'convert_rate' => $rate
+            ])->save();
         });
-        $video->export()->inFormat($this->format)->save(storage_path('converted/' . $type . '/' . $this->guid . '.mp4'));
+        $video->export()->inFormat($this->format)->save(VideoList::find($this->guid)->resultFolder.'/'.$this->guid.'.mp4');
     }
 }

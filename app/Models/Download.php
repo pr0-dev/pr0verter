@@ -25,4 +25,6 @@ use Illuminate\Support\Carbon;
 class Download extends Model
 {
     use HasFactory;
+
+    protected $primaryKey = 'guid';
 }

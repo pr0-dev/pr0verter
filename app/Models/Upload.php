@@ -69,6 +69,9 @@ use Illuminate\Support\Carbon;
  */
 class Upload extends Model
 {
+    use HasFactory;
+
+    protected $primaryKey = 'guid';
 
     /**
      * @return MorphOne
@@ -93,7 +96,4 @@ class Upload extends Model
     {
         return $this->attributes['result_folder'] = config('storageLocations.uploadResult');
     }
-
-
-    use HasFactory;
 }

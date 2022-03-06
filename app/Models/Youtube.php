@@ -24,5 +24,6 @@ use Illuminate\Support\Carbon;
  */
 class Youtube extends Model
 {
+    protected $primaryKey = 'guid';
     use HasFactory;
 }

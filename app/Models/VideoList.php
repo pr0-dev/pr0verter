@@ -37,6 +37,9 @@ use Illuminate\Support\Carbon;
  */
 class VideoList extends Model
 {
+    use HasFactory;
+
+    protected $primaryKey = 'guid';
 
     /**
      * @return MorphTo
@@ -45,6 +48,4 @@ class VideoList extends Model
     {
         return $this->morphTo(__FUNCTION__, 'video_type', 'guid');
     }
-
-    use HasFactory;
 }
