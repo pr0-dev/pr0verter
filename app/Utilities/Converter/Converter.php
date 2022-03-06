@@ -64,8 +64,8 @@ class Converter
     public function __construct(private readonly Request $request, private readonly string $fileLocation, private readonly string $guid)
     {
         $this->probe = FFProbe::create(config('laravel-ffmpeg'));
-        $this->resultSize = $this->request->get('resultSize') * 1024;
-        $this->keepResolution = $this->request->get('keepResolution');
+        $this->resultSize = $this->request->get('size') * 1024;
+        $this->keepResolution = (bool)$this->request->get('resolution');
         $this->sanitizeData();
         $this->prepareFFMpeg();
     }
@@ -74,7 +74,9 @@ class Converter
     {
         $duration = $this->calculateDuration();
         $originalDuration = $this->getOriginalDuration();
-        $requestStart = $this->request->get('start');
+        $this->start = $this->request->get('start');
+        $this->end = $this->request->get('end');
+        $this->audio = $this->request->get('audio');
 
 
         /**
@@ -82,7 +84,7 @@ class Converter
          * Solution: Move end duration (which is either equal or higher to start) to end of video,
          * then move start according to duration OR to 0
          */
-        if ($requestStart >= $originalDuration) {
+        if ($this->start >= $originalDuration) {
             $this->end = $originalDuration;
             if ($duration > $originalDuration) {
                 $this->start = 0;
@@ -95,7 +97,7 @@ class Converter
          * Error Case: Duration + start offset is larger than the original video duration
          * Solution: Move end duration to maximum time
          */
-        if ($requestStart + $duration > $originalDuration) {
+        if ($this->start + $duration > $originalDuration) {
             $this->end = $originalDuration;
         }
 
@@ -152,7 +154,7 @@ class Converter
                 'probe_score' => $this->probe->format($this->fileLocation)->get('probe_score'),
                 'original_duration' => $this->probe->format($this->fileLocation)->get('duration'),
                 'original_format' => $this->probe->format($this->fileLocation)->get('format_name'),
-                'original_codec' => $this->probe->streams()->videos()->first()->get('codec_name'),
+                'original_codec' => $this->probe->streams($this->fileLocation)->videos()->first()->get('codec_name'),
                 'result_bitrate' => $this->bitrate,
                 'result_height' => $this->height,
                 'result_width' => $this->width,
@@ -176,7 +178,7 @@ class Converter
             $closest = null;
             $idx = null;
             foreach (self::availableVideoRatios as $ratio => $data) {
-                if ($closest === null || abs($height - $closest) > abs($data['height'] - $data)) {
+                if ($closest === null || abs($height - $closest) > abs($data['height'] - $height)) {
                     $closest = $data['height'];
                     $idx = $ratio;
                 }

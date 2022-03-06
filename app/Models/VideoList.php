@@ -40,6 +40,10 @@ class VideoList extends Model
     use HasFactory;
 
     protected $primaryKey = 'guid';
+    protected $keyType = 'string';
+    public $incrementing = 'false';
+
+    protected $guarded = [];
 
     /**
      * @return MorphTo

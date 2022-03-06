@@ -65,7 +65,7 @@ class ConverterController extends Controller
     {
         $guid = uniqid();
         while (true) {
-            if (VideoList::whereGuid($guid)->count() > 0)
+            if (VideoList::find($guid))
                 $guid = uniqid();
             else
                 break;
@@ -75,9 +75,10 @@ class ConverterController extends Controller
         $upload = Upload::create([
             'guid' => $guid, 'mime_type' => $request->file('video')->getClientMimeType(),
             'extension' => $request->file('video')->getClientOriginalExtension(),
-            'filename' => $guid.$request->file('video')->getClientOriginalExtension(),
+            'filename' => $guid.'.'.$request->file('video')->getClientOriginalExtension(),
             'input_folder' => null, 'result_folder' => null
         ]);
+
 
         $request->file('video')->move($upload->input_folder, $upload->filename);
         $converter = new Converter($request, $upload->input_folder.'/'.$upload->filename, $guid);

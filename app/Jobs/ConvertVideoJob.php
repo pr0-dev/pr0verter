@@ -31,7 +31,7 @@ class ConvertVideoJob implements ShouldQueue
      */
     public function __construct(array $convertData)
     {
-        $this->fileLocation = $convertData['fileLocation'];
+        $this->fileLocation = $convertData['location'];
         $this->format = $convertData['format'];
         $this->start = $convertData['start'];
         $this->end = $convertData['end'];
@@ -47,7 +47,7 @@ class ConvertVideoJob implements ShouldQueue
      */
     public function handle()
     {
-        $video = FFMpeg::open($this->fileLocation);
+        $video = FFMpeg::open(str_replace(storage_path('app'), "", $this->fileLocation));
         $video->filters()->resize(new Dimension($this->width, $this->height));
         $video->filters()->clip(TimeCode::fromSeconds($this->start), TimeCode::fromSeconds($this->end));
         $this->format->on('progress', function ($percentage, $remaining, $rate) {
@@ -57,6 +57,6 @@ class ConvertVideoJob implements ShouldQueue
                 'convert_rate' => $rate
             ])->save();
         });
-        $video->export()->inFormat($this->format)->save(VideoList::find($this->guid)->resultFolder.'/'.$this->guid.'.mp4');
+        $video->export()->inFormat($this->format)->save(str_replace(storage_path('app'), "", VideoList::find($this->guid)->resultFolder.'/'.$this->guid.'.mp4'));
     }
 }

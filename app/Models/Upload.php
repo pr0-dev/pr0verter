@@ -73,6 +73,8 @@ class Upload extends Model
 
     protected $primaryKey = 'guid';
 
+    protected $guarded = [];
+
     /**
      * @return MorphOne
      */

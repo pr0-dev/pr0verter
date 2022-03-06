@@ -29,7 +29,20 @@
 
     <!-- Page Content -->
     <main>
-        Converter controller home
+        <form action="{{route('convertUpload')}}" method="POST" enctype="multipart/form-data">
+            {{csrf_field()}}
+            <input type="file" name="video">
+            <input type="number" name="size">
+            <input type="number" name="audio">
+            <input type="checkbox" name="resolution">
+            <input type="number" name="start">
+            <input type="number" name="end">
+            <input type="submit" value="submit">
+
+            @if($errors->any())
+                {{ implode('', $errors->all('<div>:message</div>')) }}
+            @endif
+        </form>
     </main>
 </div>
 </body>

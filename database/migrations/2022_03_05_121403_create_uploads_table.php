@@ -27,8 +27,8 @@ return new class extends Migration
             $table->integer('probe_score')->default(0);
             $table->string('probe_error')->default(null)->nullable();
             $table->integer('original_duration')->default(0);
-            $table->integer('original_format')->default(null)->nullable();
-            $table->integer('original_codec')->default(null)->nullable();
+            $table->string('original_format')->default(null)->nullable();
+            $table->string('original_codec')->default(null)->nullable();
             $table->integer('result_bitrate')->default(0);
             $table->integer('result_height')->default(0);
             $table->integer('result_width')->default(0);
