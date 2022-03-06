@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Support\Carbon;
 
 /**
@@ -31,15 +32,18 @@ use Illuminate\Support\Carbon;
  * @method static Builder|VideoList whereUploaderIP($value)
  * @mixin Eloquent
  * @property-read Upload|null $uploads
+ * @property string $load_type
+ * @method static Builder|VideoList whereLoadType($value)
  */
 class VideoList extends Model
 {
+
     /**
-     * @return HasOne
+     * @return MorphTo
      */
-    public function uploads(): HasOne
+    public function type(): MorphTo
     {
-        return $this->hasOne(Upload::class, 'guid');
+        return $this->morphTo(__FUNCTION__, 'video_type', 'guid');
     }
 
     use HasFactory;

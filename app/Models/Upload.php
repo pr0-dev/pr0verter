@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Eloquent;
+use Illuminate\Config\Repository;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 
 /**
@@ -55,16 +58,42 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Upload whereConvertRate($value)
  * @method static Builder|Upload whereConvertRemaining($value)
  * @method static Builder|Upload whereProbeError($value)
+ * @property string $input_folder
+ * @property string $result_folder
+ * @property string $extension
+ * @property string $filename
+ * @method static Builder|Upload whereExtension($value)
+ * @method static Builder|Upload whereFilename($value)
+ * @method static Builder|Upload whereInputFolder($value)
+ * @method static Builder|Upload whereResultFolder($value)
  */
 class Upload extends Model
 {
+
     /**
-     * @return BelongsTo
+     * @return MorphOne
      */
-    public function list(): BelongsTo
+    public function list(): MorphOne
     {
-        return $this->belongsTo(VideoList::class, 'guid', 'guid');
+        return $this->morphOne(VideoList::class, 'type');
     }
+
+    /**
+     * @return Repository|Application|mixed
+     */
+    public function setInputFolderAttribute(): mixed
+    {
+        return $this->attributes['input_folder'] = config('storageLocations.uploadInput');
+    }
+
+    /**
+     * @return Repository|Application|mixed
+     */
+    public function setResultFolderAttribute(): mixed
+    {
+        return $this->attributes['result_folder'] = config('storageLocations.uploadResult');
+    }
+
 
     use HasFactory;
 }

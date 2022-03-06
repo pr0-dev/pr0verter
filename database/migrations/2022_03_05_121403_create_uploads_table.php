@@ -15,7 +15,11 @@ return new class extends Migration
     {
         Schema::create('uploads', function (Blueprint $table) {
             $table->string('guid');
-            $table->string('mime_type')->default(null)->nullable();
+            $table->string('input_folder');
+            $table->string('result_folder');
+            $table->string('mime_type');
+            $table->string('extension');
+            $table->string('filename');
             $table->integer('convert_progress')->default(0);
             $table->string('convert_remaining')->default(null)->nullable();
             $table->string('convert_rate')->default(null)->nullable();

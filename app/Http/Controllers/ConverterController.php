@@ -63,19 +63,24 @@ class ConverterController extends Controller
      */
     public function convertUpload(ConvertFileRequest $request): RedirectResponse
     {
-        $guid = uniqid('Upload');
+        $guid = uniqid();
         while (true) {
             if (VideoList::whereGuid($guid)->count() > 0)
-                $guid = uniqid('Upload');
+                $guid = uniqid();
             else
                 break;
         }
 
-        VideoList::create(['guid' => $guid, 'type' => 'Upload', 'uploaderIP' => $request->ip()]);
-        Upload::create(['guid' => $guid, 'mime_type' => $request->file('video')->getClientMimeType()]);
+        VideoList::create(['guid' => $guid, 'load_type' => Upload::class, 'uploaderIP' => $request->ip()]);
+        $upload = Upload::create([
+            'guid' => $guid, 'mime_type' => $request->file('video')->getClientMimeType(),
+            'extension' => $request->file('video')->getClientOriginalExtension(),
+            'filename' => $guid.$request->file('video')->getClientOriginalExtension(),
+            'input_folder' => null, 'result_folder' => null
+        ]);
 
-        $request->file('video')->move(storage_path('raw/Upload'), $guid . $request->file('video')->getClientOriginalExtension());
-        $converter = new Converter($request, storage_path('raw/Upload/' . $guid . $request->file('video')->getClientOriginalExtension()), $guid);
+        $request->file('video')->move($upload->input_folder, $upload->filename);
+        $converter = new Converter($request, $upload->input_folder.'/'.$upload->filename, $guid);
         $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
         return redirect()->route('progress');
     }
@@ -121,8 +126,13 @@ class ConverterController extends Controller
         }
     }
 
-    public function view(Request $request, string $id)
+    public function view(Request $request, string $guid)
     {
         //
+    }
+
+    public function progressInfo(Request $request, string $guid)
+    {
+        VideoList::whereGuid($guid);
     }
 }

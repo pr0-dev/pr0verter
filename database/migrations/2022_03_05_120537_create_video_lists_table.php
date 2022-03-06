@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('video_lists', function (Blueprint $table) {
             $table->string('guid')->primary();
-            $table->enum('type', ['Upload', 'Youtube', 'Download']);
+            $table->string('load_type');
             $table->boolean('failed')->default(0);
             $table->ipAddress('uploaderIP');
             $table->boolean('downloaded')->default(0);
