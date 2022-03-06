@@ -169,14 +169,15 @@ return [
          */
 
         /*
-         * Application Service Providers...
+         * ApplicatiYoutubeDownloadon Service Providers...
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\YoutubeServiceProvider::class
+        App\Providers\YoutubeServiceProvider::class,
+        App\Providers\YoutubeDowloadServiceProvider::class
 
     ],
 
@@ -192,7 +193,8 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Youtube' => \App\Facades\Youtube::class
+        'Youtube' => \App\Facades\Youtube::class,
+        'YoutubeDownload' => \App\Facades\YoutubeDownload::class
         // ...
     ])->toArray(),
 

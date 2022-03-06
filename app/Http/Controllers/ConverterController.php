@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 use Locale;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 use Youtube;
+use YoutubeDl\YoutubeDl;
 
 class ConverterController extends Controller
 {
