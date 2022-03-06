@@ -8,7 +8,6 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -59,6 +58,6 @@ class ConvertVideoJob implements ShouldQueue
                     break;
             }
         });
-        $video->export()->inFormat($this->format)->save(storage_path('converted/'.$type.'/'.$this->guid.'.mp4'));
+        $video->export()->inFormat($this->format)->save(storage_path('converted/' . $type . '/' . $this->guid . '.mp4'));
     }
 }

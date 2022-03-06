@@ -28,8 +28,8 @@ class ConvertFileRequest extends FormRequest
     #[ArrayShape(['size' => "string", 'video' => "string", 'audio' => "string", 'resolution' => "string", 'start' => "string", 'end' => "string"])] public function rules(): array
     {
         return [
-            'size' => 'required|integer|min:'.config('pr0verter.minResultSize').'|max:'.config('pr0verter.maxResultSize'),
-            'video' => 'required|file|min:'.config('pr0verter.minUploadSize').'|max:'.config('pr0verter.maxUploadSize'),
+            'size' => 'required|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
+            'video' => 'required|file|min:' . config('pr0verter.minUploadSize') . '|max:' . config('pr0verter.maxUploadSize'),
             'audio' => 'required|integer|max:255',
             'resolution' => 'required|boolean',
             'start' => 'filled|integer|lte:end',

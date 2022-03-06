@@ -65,5 +65,6 @@ class Upload extends Model
     {
         return $this->belongsTo(VideoList::class, 'guid', 'guid');
     }
+
     use HasFactory;
 }

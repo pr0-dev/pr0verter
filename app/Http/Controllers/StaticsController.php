@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Request;
 
 class StaticsController extends Controller
 {
@@ -27,5 +26,13 @@ class StaticsController extends Controller
     public function changelog(): Factory|View|Application
     {
         return view('changelog');
+    }
+
+
+    public function limits()
+    {
+        return response()->json(
+            config('pr0verter')
+        );
     }
 }

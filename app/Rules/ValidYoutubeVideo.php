@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use Exception;
 use Illuminate\Contracts\Validation\Rule;
 use Youtube;
 
@@ -20,8 +21,8 @@ class ValidYoutubeVideo implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value): bool
@@ -29,7 +30,7 @@ class ValidYoutubeVideo implements Rule
         try {
             $videoId = Youtube::parseVidFromURL($value);
             $video = Youtube::getVideoInfo($videoId, ['id']);
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return false;
         }
 

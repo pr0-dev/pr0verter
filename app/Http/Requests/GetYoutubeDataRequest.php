@@ -5,9 +5,9 @@ namespace App\Http\Requests;
 use App\Rules\ValidYoutubeVideo;
 use Illuminate\Foundation\Http\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
-use JetBrains\PhpStorm\Pure;
 
-class GetYoutubeDataRequest extends FormRequest {
+class GetYoutubeDataRequest extends FormRequest
+{
 
     /**
      * Determine if the user is authorized to make this request.

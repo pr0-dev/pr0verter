@@ -6,25 +6,12 @@ use App\Models\Upload;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Config\Repository;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Http\Request;
 use JetBrains\PhpStorm\ArrayShape;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 
-class Converter {
-    private int $resultSize;
-    private int $audio;
-    private int $start;
-    private int $end;
-    private bool $keepResolution;
-    private float $duration;
-    private \FFMpeg\FFProbe $probe;
-
-    private int $bitrate;
-    private int $width;
-    private int $height;
-    private string $profile;
-
+class Converter
+{
     const availableVideoRatios = [
         0 => [
             'height' => 270,
@@ -62,6 +49,17 @@ class Converter {
             'profile' => 'high'
         ]
     ];
+    private int $resultSize;
+    private int $audio;
+    private int $start;
+    private int $end;
+    private bool $keepResolution;
+    private float $duration;
+    private \FFMpeg\FFProbe $probe;
+    private int $bitrate;
+    private int $width;
+    private int $height;
+    private string $profile;
 
     public function __construct(private readonly Request $request, private readonly string $fileLocation, private readonly string $guid)
     {
@@ -72,7 +70,8 @@ class Converter {
         $this->prepareFFMpeg();
     }
 
-    private function sanitizeData() {
+    private function sanitizeData()
+    {
         $duration = $this->calculateDuration();
         $originalDuration = $this->getOriginalDuration();
         $requestStart = $this->request->get('start');
@@ -83,9 +82,9 @@ class Converter {
          * Solution: Move end duration (which is either equal or higher to start) to end of video,
          * then move start according to duration OR to 0
          */
-        if($requestStart >= $originalDuration) {
+        if ($requestStart >= $originalDuration) {
             $this->end = $originalDuration;
-            if($duration > $originalDuration) {
+            if ($duration > $originalDuration) {
                 $this->start = 0;
             } else {
                 $this->start = $this->end - $duration;
@@ -96,7 +95,7 @@ class Converter {
          * Error Case: Duration + start offset is larger than the original video duration
          * Solution: Move end duration to maximum time
          */
-        if($requestStart + $duration > $originalDuration) {
+        if ($requestStart + $duration > $originalDuration) {
             $this->end = $originalDuration;
         }
 
@@ -106,15 +105,28 @@ class Converter {
          * Error Case: Video does not have an Audio Stream
          * Solution: Disable audio
          */
-        if(!$this->hasAudio())
+        if (!$this->hasAudio())
             $this->audio = 0;
 
         /**
          * Error Case: Audio is somehow larger than the actual max size
          * Solution: Disable audio
          */
-        if($this->audio * $this->duration > $this->resultSize)
+        if ($this->audio * $this->duration > $this->resultSize)
             $this->audio = 0;
+    }
+
+    /**
+     * @return Repository|Application|mixed
+     */
+    private function calculateDuration(): mixed
+    {
+        $maximumDuration = config('pr0verter.maxResultLength');
+        $requestedDuration = $this->request->get('end') - $this->request->get('start');
+        if (!$requestedDuration)
+            return $maximumDuration;
+
+        return min($maximumDuration, $requestedDuration);
     }
 
     /**
@@ -123,6 +135,14 @@ class Converter {
     private function getOriginalDuration(): mixed
     {
         return $this->probe->format($this->fileLocation)->get('duration');
+    }
+
+    /**
+     * @return bool
+     */
+    private function hasAudio(): bool
+    {
+        return 0 < $this->probe->streams($this->fileLocation)->audios()->count();
     }
 
     private function prepareFFMpeg()
@@ -144,27 +164,6 @@ class Converter {
     }
 
     /**
-     * @return Repository|Application|mixed
-     */
-    private function calculateDuration(): mixed
-    {
-        $maximumDuration = config('pr0verter.maxResultLength');
-        $requestedDuration = $this->request->get('end') - $this->request->get('start');
-        if(!$requestedDuration)
-            return $maximumDuration;
-
-        return min($maximumDuration, $requestedDuration);
-    }
-
-    /**
-     * @return bool
-     */
-    private function hasAudio(): bool
-    {
-        return 0 < $this->probe->streams($this->fileLocation)->audios()->count();
-    }
-
-    /**
      * @return void
      */
     private function findIdealResolutionAndBitrate()
@@ -172,22 +171,21 @@ class Converter {
         $ratio = $this->probe->streams($this->fileLocation)->videos()->first()->getDimensions()->getRatio();
         $width = $this->probe->streams($this->fileLocation)->videos()->first()->getDimensions()->getWidth();
         $height = $this->probe->streams($this->fileLocation)->videos()->first()->getDimensions()->getHeight();
-        if((($width * $height / 1048576 > config('pr0verter.maxResultPixels')) && $this->keepResolution) || !$this->keepResolution)
-        {
+        if ((($width * $height / 1048576 > config('pr0verter.maxResultPixels')) && $this->keepResolution) || !$this->keepResolution) {
             /** First we try to find the closest resolution to the original */
             $closest = null;
             $idx = null;
             foreach (self::availableVideoRatios as $ratio => $data) {
-                if($closest === null || abs($height - $closest) > abs($data['height'] - $data)) {
+                if ($closest === null || abs($height - $closest) > abs($data['height'] - $data)) {
                     $closest = $data['height'];
                     $idx = $ratio;
                 }
             }
 
             /** Now we check if the minBitrate fits into the Video, so that we don't go over the maximum size Limit */
-            for(; $idx = 0; $idx--) {
+            for (; $idx = 0; $idx--) {
                 $minBitrate = self::availableVideoRatios[$idx]['bitrateMin'];
-                if(($minBitrate + $this->audio) * $this->duration > $this->resultSize) {
+                if (($minBitrate + $this->audio) * $this->duration > $this->resultSize) {
                     continue;
                 } else {
                     break;
@@ -213,12 +211,12 @@ class Converter {
             '-profile:v', $this->profile,
             '-level', '4.0',
             '-preset', 'medium',
-            '-fs', $this->resultSize.'k',
+            '-fs', $this->resultSize . 'k',
             '-movflags', '+faststart'
         ];
 
         $format = new X264();
-        if(!$this->audio) {
+        if (!$this->audio) {
             $filters[] = '-an';
         } else {
             $format->setAudioCodec('aac');

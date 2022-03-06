@@ -9,23 +9,20 @@ class Youtube
 {
 
     /**
-     * @var string
-     */
-    protected string $youtube_key; // from the config file
-
-    /**
      * @var array
      */
     public array $APIs = [
         'videos.list' => 'https://www.googleapis.com/youtube/v3/videos',
         'captions.list' => 'https://www.googleapis.com/youtube/v3/captions'
-    ];
-
+    ]; // from the config file
     /**
      * @var array
      */
     public array $page_info = [];
-
+    /**
+     * @var string
+     */
+    protected string $youtube_key;
     /**
      * @var array
      */
@@ -47,6 +44,69 @@ class Youtube
             throw new Exception('Google API key is Required, please visit https://console.developers.google.com/');
         }
         $this->config['use-http-host'] = $config['use-http-host'] ?? false;
+    }
+
+    /**
+     * Parse a YouTube URL to get the YouTube Vid.
+     * Support both full URL (www.youtube.com) and short URL (YouTu.be)
+     *
+     * @param string $youtube_url
+     * @return string Video Id
+     * @throws Exception
+     */
+    public static function parseVidFromURL(string $youtube_url): string
+    {
+        if (strpos($youtube_url, 'youtube.com')) {
+            if (strpos($youtube_url, 'embed')) {
+                $path = static::_parse_url_path($youtube_url);
+                $vid = substr($path, 7);
+                return $vid;
+            } else {
+                $params = static::_parse_url_query($youtube_url);
+                return $params['v'];
+            }
+        } else if (strpos($youtube_url, 'youtu.be')) {
+            $path = static::_parse_url_path($youtube_url);
+            $vid = substr($path, 1);
+            return $vid;
+        } else {
+            throw new Exception('The supplied URL does not look like a Youtube URL');
+        }
+    }
+
+    /**
+     * Parse the input url string and return just the path part
+     *
+     * @param string $url the URL
+     * @return string      the path string
+     */
+    public static function _parse_url_path(string $url): string
+    {
+        $array = parse_url($url);
+
+        return $array['path'];
+    }
+
+    /**
+     * Parse the input url string and return an array of query params
+     *
+     * @param string $url the URL
+     * @return array      array of query params
+     */
+    public static function _parse_url_query(string $url): array
+    {
+        $array = parse_url($url);
+        $query = $array['query'];
+
+        $queryParts = explode('&', $query);
+
+        $params = [];
+        foreach ($queryParts as $param) {
+            $item = explode('=', $param);
+            $params[$item[0]] = empty($item[1]) ? '' : $item[1];
+        }
+
+        return $params;
     }
 
     /**
@@ -95,58 +155,10 @@ class Youtube
         ];
 
         $apiData = json_decode($this->api_get($API_URL, $params));
-        if($apiData->items) {
+        if ($apiData->items) {
             return $apiData->items[0];
         } else {
             return null;
-        }
-    }
-
-    /**
-     * @param $vId
-     * @param array $part
-     * @return bool|array|StdClass
-     * @throws Exception
-     */
-    public function getCaptionInfo($vId, array $part = ['id', 'snippet']): bool|array|StdClass
-    {
-        $API_URL = $this->getApi('captions.list');
-        $params = [
-            'videoId' => is_array($vId) ? implode(',', $vId) : $vId,
-            'key' => $this->youtube_key,
-            'part' => implode(',', $part),
-        ];
-
-        $apiData = json_decode($this->api_get($API_URL, $params));
-        return $apiData->items;
-
-    }
-
-    /**
-     * Parse a YouTube URL to get the YouTube Vid.
-     * Support both full URL (www.youtube.com) and short URL (YouTu.be)
-     *
-     * @param string $youtube_url
-     * @return string Video Id
-     *@throws Exception
-     */
-    public static function parseVidFromURL(string $youtube_url): string
-    {
-        if (strpos($youtube_url, 'youtube.com')) {
-            if (strpos($youtube_url, 'embed')) {
-                $path = static::_parse_url_path($youtube_url);
-                $vid = substr($path, 7);
-                return $vid;
-            } else {
-                $params = static::_parse_url_query($youtube_url);
-                return $params['v'];
-            }
-        } else if (strpos($youtube_url, 'youtu.be')) {
-            $path = static::_parse_url_path($youtube_url);
-            $vid = substr($path, 1);
-            return $vid;
-        } else {
-            throw new Exception('The supplied URL does not look like a Youtube URL');
         }
     }
 
@@ -196,37 +208,22 @@ class Youtube
     }
 
     /**
-     * Parse the input url string and return just the path part
-     *
-     * @param string $url the URL
-     * @return string      the path string
+     * @param $vId
+     * @param array $part
+     * @return bool|array|StdClass
+     * @throws Exception
      */
-    public static function _parse_url_path(string $url): string
+    public function getCaptionInfo($vId, array $part = ['id', 'snippet']): bool|array|StdClass
     {
-        $array = parse_url($url);
+        $API_URL = $this->getApi('captions.list');
+        $params = [
+            'videoId' => is_array($vId) ? implode(',', $vId) : $vId,
+            'key' => $this->youtube_key,
+            'part' => implode(',', $part),
+        ];
 
-        return $array['path'];
-    }
+        $apiData = json_decode($this->api_get($API_URL, $params));
+        return $apiData->items;
 
-    /**
-     * Parse the input url string and return an array of query params
-     *
-     * @param string $url the URL
-     * @return array      array of query params
-     */
-    public static function _parse_url_query(string $url): array
-    {
-        $array = parse_url($url);
-        $query = $array['query'];
-
-        $queryParts = explode('&', $query);
-
-        $params = [];
-        foreach ($queryParts as $param) {
-            $item = explode('=', $param);
-            $params[$item[0]] = empty($item[1]) ? '' : $item[1];
-        }
-
-        return $params;
     }
 }

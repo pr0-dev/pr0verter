@@ -24,11 +24,13 @@ Route::get('changelog', [StaticsController::class, 'changelog'])->name('changelo
 /** Contact Page */
 Route::get('contact', [StaticsController::class, 'contact'])->name('contact');
 
+Route::get('limits', [StaticsController::class, 'limits'])->name('limits');
+
 
 /**
  * Convert Group -> Used for either requesting a download or upload a file and get the status of the conversion.
  */
-Route::prefix('convert')->group(function () {
+Route::prefix('converter')->group(function () {
     /** Main converter Page - all the settings are done here */
     Route::get('/', [ConverterController::class, 'home'])->name('home');
     /** Send the upload request there */
@@ -39,11 +41,13 @@ Route::prefix('convert')->group(function () {
     Route::post('downloadFromYoutube', [ConverterController::class, 'convertYoutube'])->name('convertYoutube');
     /** Youtube data about available subtitles etc */
     Route::get('yt-info', [ConverterController::class, 'ytInfo'])->name('ytInfo');
-    /** Show progress, give updates etc. */
-    Route::get('progress', [ConverterController::class, 'progress'])->name('progress');
+    /** Show progress */
+    Route::get('progress/{guid}', [ConverterController::class, 'progress'])->name('progress');
+    /** Send updates on the progress */
+    Route::get('progress/info/{guid}', [ConverterController::class, 'progressInfo'])->name('progressInfo');
     /** Show the final result with embedded video */
-    Route::get('{id}/show', [ConverterController::class, 'show'])->name('show');
+    Route::get('show/{guid}', [ConverterController::class, 'show'])->name('show');
     /** Download route for direct download or browser download */
-    Route::get('{id}/download', [ConverterController::class, 'download'])->name('download');
+    Route::get('download/{guid}', [ConverterController::class, 'download'])->name('download');
 
 });
