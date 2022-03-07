@@ -18,6 +18,12 @@ class ConvertVideoJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    /** @var int  */
+    public int $tries = 3;
+
+    /** @var int  */
+    public int $timeout = 3600;
+
     /**
      * @param Conversion $conversion
      */
@@ -38,7 +44,7 @@ class ConvertVideoJob implements ShouldQueue
             '-level', '4.0',
             '-preset', 'medium',
             '-fs', $this->conversion->result_size . 'k',
-            '-vf', 'minterpolate=fps=60',
+            //'-vf', 'minterpolate=fps=60',
             '-movflags', '+faststart'
         ];
         if ($this->conversion->result_audio)
