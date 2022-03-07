@@ -35,10 +35,41 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'uploadSource' => [
+            'driver' => 'local',
+            'root' => env('INPUT_UPLOAD_STORAGE_LOCATION', storage_path('app/raw/Upload'))
+        ],
+
+        'uploadResult' => [
+            'driver' => 'local',
+            'root' => env('RESULT_UPLOAD_STORAGE_LOCATION', storage_path('app/converted/Upload'))
+        ],
+
+        'downloadSource' => [
+            'driver' => 'local',
+            'root' => env('INPUT_DOWNLOAD_STORAGE_LOCATION', storage_path('app/raw/Download'))
+        ],
+
+        'downloadResult' => [
+            'driver' => 'local',
+            'root' => env('RESULT_DOWNLOAD_STORAGE_LOCATION', storage_path('app/converted/Download'))
+        ],
+
+        'youtubeSource' => [
+            'driver' => 'local',
+            'root' => env('INPUT_YOUTUBE_STORAGE_LOCATION', storage_path('app/raw/Youtube'))
+        ],
+
+        'youtubeResult' => [
+            'driver' => 'local',
+            'root' => env('RESULT_YOUTUBE_STORAGE_LOCATION', storage_path('app/converted/Youtube'))
+        ],
+
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 

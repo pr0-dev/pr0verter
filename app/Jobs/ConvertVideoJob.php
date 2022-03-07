@@ -2,42 +2,27 @@
 
 namespace App\Jobs;
 
-use App\Models\Upload;
-use App\Models\VideoList;
-use FFMpeg\Coordinate\Dimension;
+use App\Models\Conversion;
 use FFMpeg\Coordinate\TimeCode;
+use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use ProtoneMedia\LaravelFFMpeg\Exporters\EncodingException;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class ConvertVideoJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    private X264 $format;
-    private int $start;
-    private int $end;
-    private int $height;
-    private int $width;
-    private string $guid;
-    private string $fileLocation;
-
     /**
-     * @param array $convertData
+     * @param Conversion $conversion
      */
-    public function __construct(array $convertData)
+    public function __construct(private readonly Conversion $conversion)
     {
-        $this->fileLocation = $convertData['location'];
-        $this->format = $convertData['format'];
-        $this->start = $convertData['start'];
-        $this->end = $convertData['end'];
-        $this->guid = $convertData['guid'];
-        $this->height = $convertData['height'];
-        $this->width = $convertData['width'];
     }
 
     /**
@@ -47,16 +32,45 @@ class ConvertVideoJob implements ShouldQueue
      */
     public function handle()
     {
-        $video = FFMpeg::open(str_replace(storage_path('app'), "", $this->fileLocation));
-        $video->filters()->resize(new Dimension($this->width, $this->height));
-        $video->filters()->clip(TimeCode::fromSeconds($this->start), TimeCode::fromSeconds($this->end));
-        $this->format->on('progress', function ($percentage, $remaining, $rate) {
-            VideoList::find($this->guid)->type->update([
-                'convert_progress' => $percentage,
-                'convert_remaining' => $remaining,
-                'convert_rate' => $rate
-            ])->save();
-        });
-        $video->export()->inFormat($this->format)->save(str_replace(storage_path('app'), "", VideoList::find($this->guid)->resultFolder.'/'.$this->guid.'.mp4'));
+        $format = new X264();
+        $filters = [
+            '-profile:v', $this->conversion->result_profile,
+            '-level', '4.0',
+            '-preset', 'medium',
+            '-fs', $this->conversion->result_size . 'k',
+            '-movflags', '+faststart'
+        ];
+        if ($this->conversion->result_audio)
+            $format->setAudioKiloBitrate($this->conversion->result_audio);
+        else
+            $filters[] = '-an';
+
+        $format->setAdditionalParameters($filters)
+            ->setPasses(2)
+            ->setKiloBitrate($this->conversion->result_bitrate);
+
+        try {
+            FFMpeg::fromDisk($this->conversion->source_disk)
+                ->open($this->conversion->filename)
+                ->resize($this->conversion->result_width, $this->conversion->result_height)
+                ->addFilter(function (VideoFilters $filters) {
+                    $filters->clip(TimeCode::fromSeconds($this->conversion->result_start), TimeCode::fromSeconds($this->conversion->result_duration));
+                })
+                ->export()
+                ->onProgress(function ($percentage, $remaining, $rate) {
+                    $this->conversion->update([
+                        'converter_progress' => $percentage,
+                        'converter_remaining' => $remaining,
+                        'converter_rate' => $rate
+                    ]);
+                })
+                ->inFormat($format)
+                ->toDisk($this->conversion->result_disk)
+                ->save($this->conversion->guid . '.mp4');
+        } catch (EncodingException $exception) {
+            $this->conversion->converter_error = $exception->getErrorOutput();
+            $this->conversion->failed = true;
+            $this->conversion->save();
+        }
     }
 }

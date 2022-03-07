@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ConvertFileRequest;
 use App\Http\Requests\GetYoutubeDataRequest;
 use App\Jobs\ConvertVideoJob;
+use App\Models\Conversion;
 use App\Models\Upload;
-use App\Models\VideoList;
-use App\Utilities\Converter\Converter;
+use App\Utilities\Converter;
 use DateInterval;
 use Exception;
 use Illuminate\Contracts\Foundation\Application;
@@ -17,6 +17,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Locale;
+use Storage;
 use Youtube;
 
 class ConverterController extends Controller
@@ -63,25 +64,20 @@ class ConverterController extends Controller
      */
     public function convertUpload(ConvertFileRequest $request): RedirectResponse
     {
-        $guid = uniqid();
-        while (true) {
-            if (VideoList::find($guid))
-                $guid = uniqid();
-            else
-                break;
+        $upload = Upload::initialize($request);
+
+        $conversion = Conversion::initialize($upload->id, Upload::class, 'uploadSource', 'uploadResult', $request->getClientIp());
+
+        $request->file('video')->storeAs('/', $conversion->filename, $conversion->source_disk);
+
+        try {
+            $converter = new Converter(Storage::disk($conversion->source_disk)->path($conversion->filename), $conversion);
+        } catch (Exception $exception) {
+            $conversion->failed = true;
+            $conversion->probe_error = $exception->getMessage();
+            $conversion->save();
+            return redirect()->back();
         }
-
-        VideoList::create(['guid' => $guid, 'load_type' => Upload::class, 'uploaderIP' => $request->ip()]);
-        $upload = Upload::create([
-            'guid' => $guid, 'mime_type' => $request->file('video')->getClientMimeType(),
-            'extension' => $request->file('video')->getClientOriginalExtension(),
-            'filename' => $guid.'.'.$request->file('video')->getClientOriginalExtension(),
-            'input_folder' => null, 'result_folder' => null
-        ]);
-
-
-        $request->file('video')->move($upload->input_folder, $upload->filename);
-        $converter = new Converter($request, $upload->input_folder.'/'.$upload->filename, $guid);
         $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
         return redirect()->route('progress');
     }

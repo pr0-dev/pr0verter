@@ -31,7 +31,6 @@ class ConvertFileRequest extends FormRequest
             'size' => 'required|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
             'video' => 'required|file|min:' . config('pr0verter.minUploadSize') . '|max:' . config('pr0verter.maxUploadSize'),
             'audio' => 'required|integer|max:255',
-            //'resolution' => 'accepted',
             'start' => 'filled|integer|lte:end',
             'end' => 'filled|integer|gte:start'
         ];
