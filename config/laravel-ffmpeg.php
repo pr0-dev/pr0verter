@@ -2,7 +2,7 @@
 
 return [
     'ffmpeg.binaries' => env('FFMPEG_BINARIES', '/usr/bin/ffmpeg'),
-    'ffmpeg.threads' => 12,
+    'ffmpeg.threads' => 24,
 
     'ffprobe.binaries' => env('FFPROBE_BINARIES', '/usr/bin/ffprobe'),
 
