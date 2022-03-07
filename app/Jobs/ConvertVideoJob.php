@@ -38,6 +38,7 @@ class ConvertVideoJob implements ShouldQueue
             '-level', '4.0',
             '-preset', 'medium',
             '-fs', $this->conversion->result_size . 'k',
+            '-vf', 'minterpolate=fps=60',
             '-movflags', '+faststart'
         ];
         if ($this->conversion->result_audio)
