@@ -99,9 +99,9 @@ class ConverterController extends Controller
      */
     public function ytInfo(GetYoutubeDataRequest $request): JsonResponse
     {
-        if (!$request->ajax()) {
+/*        if (!$request->ajax()) {
             abort('404');
-        }
+    }*/
         try {
             $videoId = Youtube::parseVidFromURL($request->input('url'));
             $videoData = Youtube::getVideoInfo($videoId);
