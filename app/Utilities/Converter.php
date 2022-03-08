@@ -67,7 +67,7 @@ class Converter
         $duration = $this->calculateDuration();
         $originalDuration = $this->getOriginalDuration();
         $this->start = request('start');
-        $end = request('end');
+        $end = $this->start + $duration;
         $this->audio = request('audio');
 
 
@@ -119,7 +119,6 @@ class Converter
         $requestedDuration = request('end') - request('start');
         if (!$requestedDuration)
             return $maximumDuration;
-
         return min($maximumDuration, $requestedDuration);
     }
 
