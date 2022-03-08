@@ -20,7 +20,7 @@ use Locale;
 use Storage;
 use Youtube;
 
-class ConverterController extends Controller
+class ConversionController extends Controller
 {
     /**
      * @param string $id
