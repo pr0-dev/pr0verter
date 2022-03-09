@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\GetYoutubeDataRequest;
 use DateInterval;
+use Exception;
+use GrahamCampbell\GitHub\Facades\GitHub;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Locale;
 use Youtube;
-use Exception;
 
 class RepositoryController extends Controller
 {
-    public function youtubeInfo(Request $request): JsonResponse
+    public function youtubeInfo(GetYoutubeDataRequest $request): JsonResponse
     {
         try {
             $videoId = Youtube::parseVidFromURL($request->input('url'));
@@ -32,5 +33,13 @@ class RepositoryController extends Controller
         } catch (Exception) {
             return response()->json(null, 500);
         }
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function githubInfo(): JsonResponse
+    {
+        return response()->json(GitHub::repo()->commits()->all('pr0-dev', 'pr0verter', ['sha' => 'master']));
     }
 }

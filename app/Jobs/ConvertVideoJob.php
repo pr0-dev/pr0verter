@@ -18,10 +18,10 @@ class ConvertVideoJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /** @var int  */
+    /** @var int */
     public int $tries = 3;
 
-    /** @var int  */
+    /** @var int */
     public int $timeout = 3600;
 
     /**

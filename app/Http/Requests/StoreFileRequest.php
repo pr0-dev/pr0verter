@@ -3,10 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\IsVideo;
-use App\Rules\ResultBetweenMinAndMaxSize;
-use App\Rules\UploadBetweenMinAndMaxSize;
 use Illuminate\Foundation\Http\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
 class StoreFileRequest extends FormRequest
 {

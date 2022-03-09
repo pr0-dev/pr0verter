@@ -2,8 +2,8 @@
 
 namespace App\Rules;
 
-use Illuminate\Contracts\Validation\Rule;
 use Exception;
+use Illuminate\Contracts\Validation\Rule;
 use ProtoneMedia\LaravelFFMpeg\FFMpeg\FFProbe;
 
 class IsVideo implements Rule
@@ -23,8 +23,8 @@ class IsVideo implements Rule
     /**
      * Determine if the validation rule passes.
      *
-     * @param  string  $attribute
-     * @param  mixed  $value
+     * @param string $attribute
+     * @param mixed $value
      * @return bool
      */
     public function passes($attribute, $value): bool
