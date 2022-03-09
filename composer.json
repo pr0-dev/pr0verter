@@ -18,7 +18,8 @@
         "laravel/tinker": "^2.7",
         "norkunas/youtube-dl-php": "dev-master",
         "pbmedia/laravel-ffmpeg": "^8.0",
-        "tightenco/ziggy": "^1.0"
+        "tightenco/ziggy": "^1.0",
+        "vyuldashev/laravel-openapi": "^1.5"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.6",

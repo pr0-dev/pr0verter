@@ -7,7 +7,7 @@ use App\Rules\UploadBetweenMinAndMaxSize;
 use Illuminate\Foundation\Http\FormRequest;
 use JetBrains\PhpStorm\ArrayShape;
 
-class ConvertFileRequest extends FormRequest
+class StoreFileRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

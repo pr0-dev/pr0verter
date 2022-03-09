@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Http\Requests\ConvertFileRequest;
+use App\Http\Requests\StoreFileRequest;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -37,10 +37,10 @@ class Upload extends Model
     protected $guarded = ['id'];
 
     /**
-     * @param ConvertFileRequest $request
+     * @param StoreFileRequest $request
      * @return Model|Upload
      */
-    public static function initialize(ConvertFileRequest $request): Model|Upload
+    public static function initialize(StoreFileRequest $request): Model|Upload
     {
         return self::create([
             'mime_type' => $request->file('video')->getClientMimeType(),

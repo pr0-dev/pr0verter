@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ConvertFileRequest;
+use App\Http\Requests\StoreFileRequest;
 use App\Http\Requests\GetYoutubeDataRequest;
 use App\Jobs\ConvertVideoJob;
 use App\Models\Conversion;
@@ -23,46 +23,39 @@ use Youtube;
 class ConversionController extends Controller
 {
     /**
-     * @param string $id
-     * @return Factory|View|Application
+     * Returns a list of all conversions
+     *
+     * @return JsonResponse
      */
-    public function show(string $id): Factory|View|Application
+    public function listConversions(): JsonResponse
     {
-        return view('converter.show');
+        return response()->json(Conversion::all());
     }
 
     /**
-     * @param Request $request
-     * @param $guid
-     * @return View|Factory|Application
+     * @param Conversion $conversion
+     * @return JsonResponse
      */
-    public function progress(Request $request, string $guid): View|Factory|Application
+    public function showConversion(Conversion $conversion): JsonResponse
     {
-        return view('converter.progress', ['id' => $guid]);
+        return response()->json($conversion);
+    }
+
+    public function editConversion(Conversion $conversion): JsonResponse
+    {
+        return response()->json($conversion);
     }
 
     /**
-     * @return Factory|View|Application
+     * @param Conversion $conversion
+     * @return JsonResponse
      */
-    public function home(): Factory|View|Application
+    public function deleteConversion(Conversion $conversion): JsonResponse
     {
-        return view('converter.home');
+        return response()->json($conversion);
     }
 
-    /**
-     * @param string $id
-     * @return void
-     */
-    public function download(string $id)
-    {
-        return;
-    }
-
-    /**
-     * @param ConvertFileRequest $request
-     * @return RedirectResponse
-     */
-    public function convertUpload(ConvertFileRequest $request): RedirectResponse
+    public function storeUpload(StoreFileRequest $request): JsonResponse
     {
         $upload = Upload::initialize($request);
 
@@ -76,27 +69,13 @@ class ConversionController extends Controller
             $conversion->failed = true;
             $conversion->probe_error = $exception->getMessage();
             $conversion->save();
-            return redirect()->back();
+            return response()->json($conversion, 501);
         }
         $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
-        return redirect()->route('progress');
+
+        return response()->json($conversion);
     }
 
-    public function convertDownload(Request $request): RedirectResponse
-    {
-        return redirect()->route('progress');
-    }
-
-    public function convertYoutube(Request $request): RedirectResponse
-    {
-        return redirect()->route('progress');
-    }
-
-    /**
-     * @param GetYoutubeDataRequest $request
-     * @return JsonResponse
-     * @throws Exception
-     */
     public function ytInfo(GetYoutubeDataRequest $request): JsonResponse
     {
 /*        if (!$request->ajax()) {
@@ -123,13 +102,4 @@ class ConversionController extends Controller
         }
     }
 
-    public function view(Request $request, string $guid)
-    {
-        //
-    }
-
-    public function progressInfo(Request $request, string $guid)
-    {
-        VideoList::whereGuid($guid);
-    }
 }
