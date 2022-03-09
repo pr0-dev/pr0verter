@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\IsVideo;
 use App\Rules\ResultBetweenMinAndMaxSize;
 use App\Rules\UploadBetweenMinAndMaxSize;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,14 +26,16 @@ class StoreFileRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape(['size' => "string", 'video' => "string", 'audio' => "string", 'resolution' => "string", 'start' => "string", 'end' => "string"])] public function rules(): array
+    public function rules(): array
     {
         return [
-            'size' => 'required|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
-            'video' => 'required|file|min:' . config('pr0verter.minUploadSize') . '|max:' . config('pr0verter.maxUploadSize'),
-            'audio' => 'required|integer|max:255',
-            'start' => 'filled|integer|lte:end',
-            'end' => 'filled|integer|gte:start'
+            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
+            'video' => ['required', 'bail', 'file|min:' . config('pr0verter.minUploadSize'), 'max:' . config('pr0verter.maxUploadSize'), new IsVideo],
+            'audio' => 'required|bail|integer|max:255',
+            'start' => 'required|bail|integer|lte:end',
+            'end' => 'required|bail|integer|gte:start',
+            'resolution' => 'required|bail|boolean',
+            'interpolation' => 'required|bail|boolean'
         ];
     }
 }
