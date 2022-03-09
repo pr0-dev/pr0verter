@@ -28,7 +28,7 @@ function Converter(props) {
                     // Mode Selection
                 }
                 <div
-                    className={"mt-24 mx-auto w-1/3 flex gap-0.5 text-white text-center text-xl duration-100 transition-all"}>
+                    className={"px-4 mt-8 md:mt-24 mx-auto w-full md:w-1/3 flex gap-0.5 text-white text-center text-xl duration-100 transition-all"}>
                     <Link href={"/converter/youtube"} className={"w-1/3"}>
                         <div
                             className={(mode === 0 ? "bg-pr0-main" : "bg-pr0-dark") + " w-full p-3 rounded-l-2xl hover:bg-pr0-main cursor-pointer"}
@@ -52,7 +52,7 @@ function Converter(props) {
                 {
                     // Source Selection
                 }
-                <div className={"mt-8 w-1/3 mx-auto"}>
+                <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
                     {mode === 0 ? <div>
                         <Input placeholder={"YouTube URL..."} onChange={setSource}/>
                     </div> : mode === 1 ? <div>
@@ -66,7 +66,7 @@ function Converter(props) {
                 {
                     // YouTube specific params
                     mode === 0 &&
-                    <div className={"mt-8 w-1/3 mx-auto"}>
+                    <div className={"px-4 mt-8 w-full md:1/3 mx-auto"}>
                         <div className={"flex justify-between w-full items-center"}>
                             <p className={"text-xl text-pr0-text"}>Untertitel</p>
                             <Switch defaultValue={false} className={"w-32"} onChange={setSubtitle}/>
@@ -76,7 +76,7 @@ function Converter(props) {
                 {
                     // General Parameters
                 }
-                <div className={"mt-8 w-1/3 mx-auto"}>
+                <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
                     <div className={"flex justify-between w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Auflösung behalten</p>
                         <Switch defaultValue={true} className={"w-32"} onChange={setRatio}/>
@@ -102,8 +102,8 @@ function Converter(props) {
                         <Switch defaultValue={false} className={"w-32"} onChange={setInterpolation}/>
                     </div>
                 </div>
-                <div className={"w-1/3 mt-8 mx-auto"}>
-                    <Button className={"w-1/2"}>Konvertieren</Button>
+                <div className={"px-4 w-full md:w-1/3 mt-8 mx-auto"}>
+                    <Button className={"w-full md:w-1/2"}>Konvertieren</Button>
                 </div>
             </div>
         </>
