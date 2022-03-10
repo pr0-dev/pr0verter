@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Support\Carbon;
 
-
 /**
  * App\Models\Upload
  *
@@ -19,7 +18,7 @@ use Illuminate\Support\Carbon;
  * @property string $extension
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read Conversion|null $conversion
+ * @property-read \App\Models\Conversion|null $conversion
  * @method static Builder|Upload newModelQuery()
  * @method static Builder|Upload newQuery()
  * @method static Builder|Upload query()

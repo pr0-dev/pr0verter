@@ -66,9 +66,9 @@ class Converter
     {
         $duration = $this->calculateDuration();
         $originalDuration = $this->getOriginalDuration();
-        $this->start = request('start');
+        $this->start = $this->conversion->start;
         $end = $this->start + $duration;
-        $this->audio = request('audio');
+        $this->audio = $this->conversion->sound;
 
 
         /**
@@ -106,7 +106,7 @@ class Converter
          * Error Case: Audio is somehow larger than the actual max size
          * Solution: Disable audio
          */
-        if ($this->audio * $this->duration > $this->conversion->requested_size)
+        if ($this->audio * $this->duration > $this->conversion->size)
             $this->audio = 0;
     }
 
@@ -116,7 +116,7 @@ class Converter
     private function calculateDuration(): mixed
     {
         $maximumDuration = config('pr0verter.maxResultLength');
-        $requestedDuration = request('end') - request('start');
+        $requestedDuration = $this->conversion->end - $this->conversion->start;
         if (!$requestedDuration)
             return $maximumDuration;
         return min($maximumDuration, $requestedDuration);
@@ -135,6 +135,7 @@ class Converter
      */
     private function hasAudio(): bool
     {
+
         return 0 < $this->streams->audios()->count();
     }
 
@@ -153,7 +154,7 @@ class Converter
                 'result_duration' => $this->duration,
                 'result_audio' => $this->audio,
                 'result_profile' => $this->profile,
-                'result_size' => $this->conversion->requested_size
+                'result_size' => $this->conversion->size
             ]
         );
     }
@@ -181,7 +182,7 @@ class Converter
             /** Now we check if the minBitrate fits into the Video, so that we don't go over the maximum size Limit */
             for (; $idx > 0; $idx--) {
                 $minBitrate = self::AVAILABLE_VIDEO_RATIOS[$idx]['bitrateMin'];
-                if (($minBitrate + $this->audio) * $this->duration > $this->conversion->requested_size) {
+                if (($minBitrate + $this->audio) * $this->duration > $this->conversion->size) {
                     continue;
                 } else {
                     break;
@@ -195,7 +196,7 @@ class Converter
             $this->width = $width;
             $this->profile = 'baseline';
         }
-        $this->bitrate = ($this->conversion->requested_size - ($this->audio * $this->duration)) / $this->duration;
+        $this->bitrate = ($this->conversion->size - ($this->audio * $this->duration)) / $this->duration;
     }
 
     /**

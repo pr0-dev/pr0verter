@@ -13,25 +13,31 @@ return new class extends Migration {
     public function up()
     {
         Schema::create('conversions', function (Blueprint $table) {
-            $table->id();
+            /** Basic Information */
+            $table->string('guid')->primary();
             $table->morphs('typeInfo');
             $table->string('source_disk');
+            $table->string('result_disk');
+            $table->string('filename');
+            /** Request Information */
+            $table->integer('size');
+            $table->integer('sound');
+            $table->boolean('ratio');
+            $table->boolean('interpolation');
+            $table->integer('start');
+            $table->integer('end');
+            /** Source Information */
             $table->string('source_format')->default(null)->nullable();
             $table->string('source_codec')->default(null)->nullable();
             $table->integer('source_duration')->default(0);
-            $table->string('guid')->unique();
-            $table->string('filename');
-            $table->boolean('keep_resolution');
-            $table->string('requested_size');
-            $table->boolean('failed')->default(false);
-            $table->boolean('downloaded')->default(false);
-            $table->ipAddress('ip');
+            $table->integer('probe_score')->default(0);
+            $table->string('probe_error')->default(null)->nullable();
+            /**  Converter Information */
             $table->string('converter_remaining')->default(null)->nullable();
             $table->string('converter_rate')->default(null)->nullable();
             $table->string('converter_error')->default(null)->nullable();
             $table->integer('converter_progress')->default(0);
-            $table->integer('probe_score')->default(0);
-            $table->string('probe_error')->default(null)->nullable();
+            /** Calculated Result  Information */
             $table->integer('result_bitrate')->default(0);
             $table->integer('result_height')->default(0);
             $table->integer('result_width')->default(0);
@@ -40,7 +46,9 @@ return new class extends Migration {
             $table->integer('result_audio')->default(0);
             $table->integer('result_size')->default(0);
             $table->string('result_profile')->default(null)->nullable();
-            $table->string('result_disk');
+            /** State Information */
+            $table->boolean('failed')->default(false);
+            $table->boolean('downloaded')->default(false);
             $table->timestamps();
         });
     }

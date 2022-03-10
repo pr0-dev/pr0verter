@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreDownloadRequest;
+use App\Jobs\DownloadJob;
+use App\Models\Download;
 use App\Http\Requests\StoreFileRequest;
 use App\Jobs\ConvertVideoJob;
 use App\Models\Conversion;
@@ -50,7 +53,7 @@ class ConversionController extends Controller
     {
         $upload = Upload::initialize($request);
 
-        $conversion = Conversion::initialize($upload->id, Upload::class, 'uploadSource', 'uploadResult', $request->getClientIp());
+        $conversion = Conversion::initialize($upload->id, Upload::class, 'uploadSource', 'uploadResult', $request->except('video'));
 
         $request->file('video')->storeAs('/', $conversion->filename, $conversion->source_disk);
 
@@ -65,5 +68,14 @@ class ConversionController extends Controller
         $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
 
         return response()->json($conversion);
+    }
+
+    public function storeDownload(StoreDownloadRequest $request)
+    {
+        $download = Download::initialize($request->get('url'));
+
+        $conversion = Conversion::initialize($download->id, Download::class, 'downloadSource', 'downloadResult', $request->except('url'));
+
+        $this->dispatch((new DownloadJob($download, $conversion))->onQueue('download'));
     }
 }

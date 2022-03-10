@@ -3,6 +3,9 @@
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
+use YoutubeDl\Options;
+use YoutubeDownload;
+use Exception;
 
 class IsValidVideoUrl implements Rule
 {
@@ -25,7 +28,28 @@ class IsValidVideoUrl implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        //
+        try {
+            $collection = YoutubeDownload::download(
+                Options::create()->skipDownload(true)
+                    ->url($value)
+                    ->downloadPath(storage_path())
+                    ->maxDownloads(1)
+            );
+
+            if(!$collection->count())
+                return false;
+
+            foreach($collection->getVideos() as $video) {
+                if($video->getExtractor())
+                    return true;
+                else
+                    return false;
+            }
+            return false;
+        } catch (Exception) {
+            return false;
+        }
+
     }
 
     /**
@@ -35,6 +59,6 @@ class IsValidVideoUrl implements Rule
      */
     public function message(): string
     {
-        return 'The validation error message.';
+        return 'Unter dieser URL kann kein gültiges Video gefunden werden.';
     }
 }

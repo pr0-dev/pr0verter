@@ -15,7 +15,8 @@ class YoutubeDowloadServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(YoutubeDl::class, function () {
-            return new YoutubeDl();
+            $youtubeDl = new YoutubeDl();
+            return $youtubeDl->setBinPath(config('youtube.downloader'));
         });
 
         $this->app->alias(YoutubeDl::class, 'youtube-dl');

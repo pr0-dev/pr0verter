@@ -14,6 +14,10 @@ return new class extends Migration {
     {
         Schema::create('downloads', function (Blueprint $table) {
             $table->id();
+            $table->string('url');
+            $table->string('progress')->default(null)->nullable();
+            $table->string('rate')->default(null)->nullable();
+            $table->string('eta')->default(null)->nullable();
             $table->timestamps();
         });
     }

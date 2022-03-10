@@ -17,12 +17,12 @@ use App\Http\Controllers\RepositoryController;
 
 Route::prefix('conversions')->controller(ConversionController::class)->group(function() {
     Route::get('/', 'listConversions')->name('listConversions');
+    Route::post('upload', 'storeUpload')->name('storeUpload');
+    Route::get('youtube', 'storeYoutube')->name('storeYoutube');
+    Route::get('download', 'storeDownload')->name('storeDownload');
     Route::get('{conversion}', 'showConversion')->name('showConversion');
     Route::patch('{conversion}', 'editConversion')->name('editConversion');
     Route::delete('{conversion}', 'deleteConversion')->name('deleteConversion');
-    Route::post('upload', 'storeUpload')->name('storeUpload');
-    Route::post('youtube', 'storeYoutube')->name('storeYoutube');
-    Route::post('download', 'storeDownload')->name('storeDownload');
 });
 
 Route::prefix('configurations')->controller(ConfigurationController::class)->group(function() {

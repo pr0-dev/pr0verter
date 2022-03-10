@@ -10,5 +10,6 @@
 */
 
 return [
-    'key' => env('YOUTUBE_API_KEY', 'YOUR_API_KEY')
+    'key' => env('YOUTUBE_API_KEY', 'YOUR_API_KEY'),
+    'downloader' => env('YOUTUBE_DL_BINARY', '/usr/local/bin/youtube-dl')
 ];
