@@ -2,10 +2,14 @@
 
 namespace App\Rules;
 
+use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\Rule;
+use Youtube;
 
-class SubtitleLangExists implements Rule
+class SubtitleLangExists implements Rule, DataAwareRule
 {
+
+    private $data;
     /**
      * Create a new rule instance.
      *
@@ -25,7 +29,12 @@ class SubtitleLangExists implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        //
+        $captionData = Youtube::getCaptionInfo($this->data['url']);
+        foreach ($captionData as $captionLang) {
+            if($captionLang === $value)
+                return true;
+        }
+        return false;
     }
 
     /**
@@ -36,5 +45,16 @@ class SubtitleLangExists implements Rule
     public function message(): string
     {
         return 'This subtitle language is not available for this video!';
+    }
+
+    /**
+     * @param $data
+     * @return SubtitleLangExists|$this
+     */
+    public function setData($data): SubtitleLangExists|static
+    {
+        $this->data = $data;
+
+        return $this;
     }
 }

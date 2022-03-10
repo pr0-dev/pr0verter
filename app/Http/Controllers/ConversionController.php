@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreDownloadRequest;
+use App\Http\Requests\StoreYoutubeDownloadRequest;
 use App\Jobs\DownloadJob;
+use App\Jobs\YoutubeDownloadJob;
 use App\Models\Download;
 use App\Http\Requests\StoreFileRequest;
 use App\Jobs\ConvertVideoJob;
 use App\Models\Conversion;
 use App\Models\Upload;
+use App\Models\Youtube;
 use App\Utilities\Converter;
 use Exception;
 use Illuminate\Http\JsonResponse;
@@ -70,12 +73,33 @@ class ConversionController extends Controller
         return response()->json($conversion);
     }
 
-    public function storeDownload(StoreDownloadRequest $request)
+    /**
+     * @param StoreDownloadRequest $request
+     * @return JsonResponse
+     */
+    public function storeDownload(StoreDownloadRequest $request): JsonResponse
     {
         $download = Download::initialize($request->get('url'));
 
         $conversion = Conversion::initialize($download->id, Download::class, 'downloadSource', 'downloadResult', $request->except('url'));
 
         $this->dispatch((new DownloadJob($download, $conversion))->onQueue('download'));
+
+        return response()->json($conversion);
+    }
+
+    /**
+     * @param StoreYoutubeDownloadRequest $request
+     * @return JsonResponse
+     */
+    public function storeYoutube(StoreYoutubeDownloadRequest $request): JsonResponse
+    {
+        $youtube = Youtube::initialize($request->all(['url', 'subtitle']));
+
+        $conversion = Conversion::initialize($youtube->id, Youtube::class, 'youtubeSource', 'youtubeResult', $request->except(['url', 'subtitle']));
+
+        $this->dispatch((new YoutubeDownloadJob($youtube, $conversion))->onQueue('youtube'));
+
+        return response()->json($conversion);
     }
 }

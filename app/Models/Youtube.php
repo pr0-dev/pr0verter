@@ -24,6 +24,12 @@ use Illuminate\Support\Carbon;
  */
 class Youtube extends Model
 {
-    protected $primaryKey = 'guid';
     use HasFactory;
+
+    protected $guarded = ['id'];
+
+    public static function initialize(array $data): Model|Youtube
+    {
+        return self::create($data);
+    }
 }

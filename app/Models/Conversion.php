@@ -114,14 +114,14 @@ class Conversion extends Model
                 break;
         }
 
-        return self::create([
+        return self::create([array_merge([
             'guid' => $guid,
             'typeInfo_id' => $typeId,
             'typeInfo_type' => $typeType,
             'source_disk' => $sourceDisk,
             'result_disk' => $resultDisk,
-            'filename' => $guid,
-            $requestData
+            'filename' => $guid],
+            $requestData)
         ]);
     }
 

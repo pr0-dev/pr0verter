@@ -2,21 +2,19 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\IsValidVideoUrl;
-use App\Rules\SubtitleLangExists;
+use App\Rules\ValidYoutubeVideo;
 use Illuminate\Foundation\Http\FormRequest;
-use JetBrains\PhpStorm\ArrayShape;
 
-class StoreDownloadRequest extends FormRequest
+class StoreYoutubeDownloadRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
-    public function authorize(): bool
+    public function authorize()
     {
-        return true;
+        return false;
     }
 
     /**
@@ -24,18 +22,16 @@ class StoreDownloadRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape(['size' => "string", 'url' => "array", 'sound' => "string", 'start' => "string", 'end' => "string", 'resolution' => "string", 'interpolation' => "string", 'subtitle' => "array"])]
-    public function rules(): array
+    public function rules()
     {
         return [
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
-            'url' => ['required', 'bail', new IsValidVideoUrl],
+            'url' => ['required', 'bail', new ValidYoutubeVideo],
             'sound' => 'required|bail|integer|max:255',
             'start' => 'required|bail|integer|lte:end',
             'end' => 'required|bail|integer|gte:start',
             'resolution' => 'required|bail|boolean',
-            'interpolation' => 'required|bail|boolean',
-            'subtitle' => ['filled', 'bail', new SubtitleLangExists]
+            'interpolation' => 'required|bail|boolean'
         ];
     }
 }
