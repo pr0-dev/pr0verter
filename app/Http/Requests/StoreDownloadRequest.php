@@ -30,11 +30,11 @@ class StoreDownloadRequest extends FormRequest
         return [
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
             'url' => ['required', 'bail', new IsValidVideoUrl],
-            'sound' => 'required|bail|integer|max:255',
+            'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer|lte:end',
             'end' => 'required|bail|integer|gte:start',
             'resolution' => 'required|bail|boolean',
-            'interpolation' => 'required|bail|boolean',
+            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
             'subtitle' => ['filled', 'bail', new SubtitleLangExists]
         ];
     }

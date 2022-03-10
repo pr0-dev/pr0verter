@@ -17,16 +17,19 @@ use App\Http\Controllers\RepositoryController;
 
 Route::prefix('conversions')->controller(ConversionController::class)->group(function() {
     Route::get('/', 'listConversions')->name('listConversions');
-    Route::post('upload', 'storeUpload')->name('storeUpload');
-    Route::get('youtube', 'storeYoutube')->name('storeYoutube');
-    Route::get('download', 'storeDownload')->name('storeDownload');
+    if(!config('pr0verter.disabled.module.upload'))
+        Route::post('upload', 'storeUpload')->name('storeUpload');
+    if(!config('pr0verter.disabled.module.youtube'))
+        Route::get('youtube', 'storeYoutube')->name('storeYoutube');
+    if(!config('pr0verter.disabled.module.download'))
+        Route::get('download', 'storeDownload')->name('storeDownload');
     Route::get('{conversion}', 'showConversion')->name('showConversion');
     Route::patch('{conversion}', 'editConversion')->name('editConversion');
     Route::delete('{conversion}', 'deleteConversion')->name('deleteConversion');
 });
 
 Route::prefix('configurations')->controller(ConfigurationController::class)->group(function() {
-    Route::get('limits', 'limits')->name('limits');
+    Route::get('settings', 'settings')->name('settings');
     Route::get('disabled-components', 'disabledComponents')->name('disabledComponents');
 });
 

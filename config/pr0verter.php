@@ -17,4 +17,15 @@ return [
     'minUploadSize' => 10,
     /** Maximum Upload Size (Default 2GB) */
     'maxUploadSize' => env('MAX_UPLOAD_SIZE', 2097152),
+
+    'disabled' => [
+        'module' => [
+            'upload' => env('UPLOAD_DISABLED', false),
+            'download' => env('DOWNLOAD_DISABLED', false),
+            'youtube' => env('YOUTUBE_DISABLED', false)
+        ],
+        'inputs' => [
+            'interpolation' => env('INTERPOLATION_DISABLED', false)
+        ]
+    ]
 ];

@@ -28,11 +28,11 @@ class StoreFileRequest extends FormRequest
         return [
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
             'video' => ['required', 'bail', 'file|min:' . config('pr0verter.minUploadSize'), 'max:' . config('pr0verter.maxUploadSize'), new IsVideo],
-            'sound' => 'required|bail|integer|max:255',
+            'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer|lte:end',
             'end' => 'required|bail|integer|gte:start',
             'resolution' => 'required|bail|boolean',
-            'interpolation' => 'required|bail|boolean'
+            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean'
         ];
     }
 }

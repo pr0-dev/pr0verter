@@ -9,7 +9,7 @@ class ConfigurationController extends Controller
     /**
      * @return JsonResponse
      */
-    public function limits(): JsonResponse
+    public function settings(): JsonResponse
     {
         return response()->json(config('pr0verter'));
     }

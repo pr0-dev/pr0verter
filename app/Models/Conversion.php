@@ -114,6 +114,9 @@ class Conversion extends Model
                 break;
         }
 
+        if(config('pr0verter.disabled.inputs.interpolation'))
+            $requestData['interpolation'] = false;
+
         return self::create([array_merge([
             'guid' => $guid,
             'typeInfo_id' => $typeId,
