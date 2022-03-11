@@ -30,7 +30,7 @@ class StoreDownloadRequest extends FormRequest
         return [
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
             'url' => ['required', 'bail', new IsValidVideoUrl],
-            'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
+            'sound' => 'required|bail|integer|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer',
             'end' => 'required|bail|integer',
             'resolution' => 'required|bail|boolean',
