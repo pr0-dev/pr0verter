@@ -20,9 +20,9 @@ Route::prefix('conversions')->controller(ConversionController::class)->group(fun
     if(!config('pr0verter.disabled.module.upload'))
         Route::post('upload', 'storeUpload')->name('storeUpload');
     if(!config('pr0verter.disabled.module.youtube'))
-        Route::get('youtube', 'storeYoutube')->name('storeYoutube');
+        Route::post('youtube', 'storeYoutube')->name('storeYoutube');
     if(!config('pr0verter.disabled.module.download'))
-        Route::get('download', 'storeDownload')->name('storeDownload');
+        Route::post('download', 'storeDownload')->name('storeDownload');
     Route::get('{conversion}', 'showConversion')->name('showConversion');
     Route::patch('{conversion}', 'editConversion')->name('editConversion');
     Route::delete('{conversion}', 'deleteConversion')->name('deleteConversion');
