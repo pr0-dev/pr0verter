@@ -62,7 +62,7 @@ class DownloadJob implements ShouldQueue
         );
 
         foreach ($collection->getVideos() as $video) {
-            Storage::disk($this->conversion->source_disk)->move($video->getFile()->getPathname(), $this->conversion->guid);
+            Storage::disk($this->conversion->source_disk)->move($video->getFile()->getFilename(), $this->conversion->guid);
         }
 
         try {

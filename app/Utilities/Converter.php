@@ -147,9 +147,9 @@ class Converter
         $this->findIdealResolutionAndBitrate();
         $this->conversion->update([
                 'probe_score' => $this->format->get('probe_score'),
-                'original_duration' => $this->format->get('duration'),
-                'original_format' => $this->format->get('format_name'),
-                'original_codec' => $this->streams->videos()->first()->get('codec_name'),
+                'source_duration' => $this->format->get('duration'),
+                'source_format' => $this->format->get('format_name'),
+                'source_codec' => $this->streams->videos()->first()->get('codec_name'),
                 'result_bitrate' => $this->bitrate,
                 'result_height' => $this->height,
                 'result_width' => $this->width,
