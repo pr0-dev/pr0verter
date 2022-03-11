@@ -75,13 +75,13 @@ function Converter() {
             return;
         }
 
-        if(mode === 0) {
+        if (mode === 0) {
             axios.post(route("storeYoutube"), {
-                size: size,
+                size: size ?? 0,
                 resolution: ratio,
-                sound: sound,
-                start: start,
-                end: end,
+                sound: sound ? bitrate : 0,
+                start: start ?? 0,
+                end: end ?? 0,
                 url: source,
                 interpolation: interpolation
             }).then(data => {
@@ -89,11 +89,11 @@ function Converter() {
             }).catch(err => {
                 console.log(err);
             })
-        }else if(mode === 1) {
+        } else if (mode === 1) {
             axios.post(route("storeDownload"), {
-                size: size??0,
+                size: size ?? 0,
                 resolution: ratio,
-                sound: sound ?? 0,
+                sound: sound ? bitrate : 0,
                 start: start ?? 0,
                 end: end ?? 0,
                 url: source,
