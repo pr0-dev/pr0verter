@@ -20,7 +20,7 @@ class YoutubeDownloadJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /** @var int */
-    public int $tries = 3;
+    public int $tries = 1;
 
     /** @var int */
     public int $timeout = 3600;
