@@ -21,7 +21,7 @@ class DownloadJob implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /** @var int */
-    public int $tries = 3;
+    public int $tries = 1;
 
     /** @var int */
     public int $timeout = 3600;
@@ -31,7 +31,7 @@ class DownloadJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private Download $download, private Conversion $conversion) {}
+    public function __construct(private $download, private $conversion) {}
 
     /**
      * Execute the job.
@@ -40,9 +40,9 @@ class DownloadJob implements ShouldQueue
      */
     public function handle()
     {
-        $downloadModel = $this->download;
+	$downloadModel = $this->download;
         $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($downloadModel) {
-            $downloadModel->update(
+	     $downloadModel->update(
                 [
                     'progress' => $percentage,
                     'rate' => $speed,

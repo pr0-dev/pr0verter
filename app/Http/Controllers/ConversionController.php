@@ -82,7 +82,6 @@ class ConversionController extends Controller
         $download = Download::initialize($request->get('url'));
 
         $conversion = Conversion::initialize($download->id, Download::class, 'downloadSource', 'downloadResult', $request->except('url'));
-
         $this->dispatch((new DownloadJob($download, $conversion))->onQueue('download'));
 
         return response()->json($conversion);
