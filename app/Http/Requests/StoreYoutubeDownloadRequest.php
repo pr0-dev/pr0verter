@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\SubtitleLangExists;
 use App\Rules\ValidYoutubeVideo;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -28,10 +29,11 @@ class StoreYoutubeDownloadRequest extends FormRequest
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
             'url' => ['required', 'bail', new ValidYoutubeVideo],
             'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
-            'start' => 'required|bail|integer|lte:end',
-            'end' => 'required|bail|integer|gte:start',
+            'start' => 'required|bail|integer',
+            'end' => 'required|bail|integer',
             'resolution' => 'required|bail|boolean',
-            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean'
+            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
+            'subtitle' => ['filled', 'bail', new SubtitleLangExists]
         ];
     }
 }

@@ -116,6 +116,9 @@ class Converter
     private function calculateDuration(): mixed
     {
         $maximumDuration = config('pr0verter.maxResultLength');
+        if($this->conversion->end == 0)
+            $this->conversion->end = $this->conversion->start;
+
         $requestedDuration = $this->conversion->end - $this->conversion->start;
         if (!$requestedDuration)
             return $maximumDuration;

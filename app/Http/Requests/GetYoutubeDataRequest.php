@@ -28,7 +28,7 @@ class GetYoutubeDataRequest extends FormRequest
     #[ArrayShape(['url' => "array"])] public function rules(): array
     {
         return [
-            'url' => ['required', 'bail', 'string', new ValidYoutubeVideo]
+            'url' => ['required', 'bail', new ValidYoutubeVideo]
         ];
     }
 }

@@ -28,7 +28,7 @@ class RepositoryController extends Controller
             return response()->json([
                 'title' => $videoData->snippet->title,
                 'availableSubtitles' => $languages,
-                'duration' => new DateInterval($videoData->contentDetails->duration)
+                'duration' => $videoData->contentDetails->duration
             ]);
         } catch (Exception) {
             return response()->json(null, 500);
