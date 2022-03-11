@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 function Input({placeholder, onChange, className, min, max, type, inputRef}) {
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState(null);
 
     useEffect(() => {
         if(typeof onChange === "function") {

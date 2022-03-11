@@ -91,11 +91,11 @@ function Converter() {
             })
         }else if(mode === 1) {
             axios.post(route("storeDownload"), {
-                size: size,
+                size: size??0,
                 resolution: ratio,
-                sound: sound,
-                start: start,
-                end: end,
+                sound: sound ?? 0,
+                start: start ?? 0,
+                end: end ?? 0,
                 url: source,
                 interpolation: interpolation
             }).then(data => {
