@@ -176,6 +176,7 @@ class Converter
             $closest = null;
             $idx = null;
             foreach (self::AVAILABLE_VIDEO_RATIOS as $index => $data) {
+                \Log::critical('Index: ['.$index.'] Closest: ['.$closest.'] Height: ['.$height.'] DataHeight: ['.$data['height'].']');
                 if ($closest === null || abs($height - $closest) > abs($data['height'] - $height)) {
                     $closest = $data['height'];
                     $idx = $index;
@@ -185,7 +186,8 @@ class Converter
             /** Now we check if the minBitrate fits into the Video, so that we don't go over the maximum size Limit */
             for (; $idx > 0; $idx--) {
                 $minBitrate = self::AVAILABLE_VIDEO_RATIOS[$idx]['bitrateMin'];
-                if (($minBitrate + $this->audio) * $this->duration > $this->conversion->size * 1024) {
+                \Log::critical('Index: ['.$idx.'] CalRate: ['.($minBitrate + $this->audio) * $this->duration.'] Size: ['.$this->conversion->size * 1024 .']');
+                if ((($minBitrate + $this->audio) * $this->duration) > ($this->conversion->size * 1024)) {
                     continue;
                 } else {
                     break;
