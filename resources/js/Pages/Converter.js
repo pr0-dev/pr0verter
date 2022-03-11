@@ -91,7 +91,7 @@ function Converter() {
             })
         } else if (mode === 1) {
             axios.post(route("storeDownload"), {
-                size: size ?? 0,
+                size: (size ?? 0) * 8192,
                 ratio: ratio,
                 sound: sound ? bitrate : 0,
                 start: start ?? 0,

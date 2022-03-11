@@ -28,7 +28,7 @@ class StoreDownloadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
+            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') * 8192 . '|max:' . config('pr0verter.maxResultSize') * 8192,
             'url' => ['required', 'bail', new IsValidVideoUrl],
             'sound' => 'required|bail|integer|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer',
