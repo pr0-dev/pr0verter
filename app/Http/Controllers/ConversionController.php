@@ -68,7 +68,7 @@ class ConversionController extends Controller
             $conversion->save();
             return response()->json($conversion, 501);
         }
-        $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
+        dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
 
         return response()->json($conversion);
     }
@@ -82,7 +82,7 @@ class ConversionController extends Controller
         $download = Download::initialize($request->get('url'));
 
         $conversion = Conversion::initialize($download->id, Download::class, 'downloadSource', 'downloadResult', $request->except('url'));
-        $this->dispatch((new DownloadJob($download, $conversion))->onQueue('download'));
+        dispatch((new DownloadJob($download, $conversion))->onQueue('download'));
 
         return response()->json($conversion);
     }
@@ -97,7 +97,7 @@ class ConversionController extends Controller
 
         $conversion = Conversion::initialize($youtube->id, Youtube::class, 'youtubeSource', 'youtubeResult', $request->except(['url', 'subtitle']));
 
-        $this->dispatch((new YoutubeDownloadJob($youtube, $conversion))->onQueue('youtube'));
+        dispatch((new YoutubeDownloadJob($youtube, $conversion))->onQueue('youtube'));
 
         return response()->json($conversion);
     }

@@ -31,7 +31,7 @@ class DownloadJob implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(private $download, private $conversion) {}
+    public function __construct(private Download $download, private Conversion $conversion) {}
 
     /**
      * Execute the job.
@@ -73,6 +73,6 @@ class DownloadJob implements ShouldQueue
             $this->conversion->save();
             return;
         }
-        $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
+        dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
     }
 }

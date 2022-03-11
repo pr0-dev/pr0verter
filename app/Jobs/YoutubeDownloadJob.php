@@ -74,6 +74,6 @@ class YoutubeDownloadJob implements ShouldQueue
             $this->conversion->save();
             return;
         }
-        $this->dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
+        dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
     }
 }
