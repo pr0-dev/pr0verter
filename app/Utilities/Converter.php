@@ -106,7 +106,7 @@ class Converter
          * Error Case: Audio is somehow larger than the actual max size
          * Solution: Disable audio
          */
-        if ($this->audio * $this->duration > $this->conversion->size)
+        if ($this->audio * $this->duration > $this->conversion->size * 1024)
             $this->audio = 0;
     }
 
@@ -157,7 +157,7 @@ class Converter
                 'result_duration' => $this->duration,
                 'result_audio' => $this->audio,
                 'result_profile' => $this->profile,
-                'result_size' => $this->conversion->size
+                'result_size' => $this->conversion->size * 1024
             ]
         );
     }
@@ -185,7 +185,7 @@ class Converter
             /** Now we check if the minBitrate fits into the Video, so that we don't go over the maximum size Limit */
             for (; $idx > 0; $idx--) {
                 $minBitrate = self::AVAILABLE_VIDEO_RATIOS[$idx]['bitrateMin'];
-                if (($minBitrate + $this->audio) * $this->duration > $this->conversion->size) {
+                if (($minBitrate + $this->audio) * $this->duration > $this->conversion->size * 1024) {
                     continue;
                 } else {
                     break;
@@ -199,7 +199,7 @@ class Converter
             $this->width = $width;
             $this->profile = 'baseline';
         }
-        $this->bitrate = ($this->conversion->size - ($this->audio * $this->duration)) / $this->duration;
+        $this->bitrate = ($this->conversion->size * 1024 - ($this->audio * $this->duration)) / $this->duration;
     }
 
     /**
