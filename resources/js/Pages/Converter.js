@@ -78,7 +78,7 @@ function Converter() {
         if (mode === 0) {
             axios.post(route("storeYoutube"), {
                 size: size ?? 0,
-                resolution: ratio,
+                ratio: ratio,
                 sound: sound ? bitrate : 0,
                 start: start ?? 0,
                 end: end ?? 0,
@@ -92,7 +92,7 @@ function Converter() {
         } else if (mode === 1) {
             axios.post(route("storeDownload"), {
                 size: size ?? 0,
-                resolution: ratio,
+                ratio: ratio,
                 sound: sound ? bitrate : 0,
                 start: start ?? 0,
                 end: end ?? 0,

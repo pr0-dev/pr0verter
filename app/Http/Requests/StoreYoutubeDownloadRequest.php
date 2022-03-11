@@ -31,7 +31,7 @@ class StoreYoutubeDownloadRequest extends FormRequest
             'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer',
             'end' => 'required|bail|integer',
-            'resolution' => 'required|bail|boolean',
+            'ratio' => 'required|bail|boolean',
             config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
             'subtitle' => ['filled', 'bail', new SubtitleLangExists]
         ];

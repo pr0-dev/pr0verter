@@ -31,7 +31,7 @@ class StoreFileRequest extends FormRequest
             'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer|lte:end',
             'end' => 'required|bail|integer|gte:start',
-            'resolution' => 'required|bail|boolean',
+            'ratio' => 'required|bail|boolean',
             config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean'
         ];
     }

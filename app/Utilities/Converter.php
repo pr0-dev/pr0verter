@@ -171,7 +171,7 @@ class Converter
         $width = $this->streams->videos()->first()->getDimensions()->getWidth();
         $height = $this->streams->videos()->first()->getDimensions()->getHeight();
 
-        if ((($width * $height / 1048576 > config('pr0verter.maxResultPixels')) && $this->conversion->keepResolution) || !$this->conversion->keepResolution) {
+        if ((($width * $height / 1048576 > config('pr0verter.maxResultPixels')) && $this->conversion->ratio) || !$this->conversion->ratio) {
             /** First we try to find the closest resolution to the original */
             $closest = null;
             $idx = null;

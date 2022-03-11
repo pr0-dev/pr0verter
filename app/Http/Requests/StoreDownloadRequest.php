@@ -24,7 +24,7 @@ class StoreDownloadRequest extends FormRequest
      *
      * @return array
      */
-    #[ArrayShape(['size' => "string", 'url' => "array", 'sound' => "string", 'start' => "string", 'end' => "string", 'resolution' => "string", 'interpolation' => "string", 'subtitle' => "array"])]
+    #[ArrayShape(['size' => "string", 'url' => "array", 'sound' => "string", 'start' => "string", 'end' => "string", 'ratio' => "string", 'interpolation' => "string", 'subtitle' => "array"])]
     public function rules(): array
     {
         return [
@@ -33,7 +33,7 @@ class StoreDownloadRequest extends FormRequest
             'sound' => 'required|bail|integer|max:' . config('pr0verter.maxResultAudioBitrate'),
             'start' => 'required|bail|integer',
             'end' => 'required|bail|integer',
-            'resolution' => 'required|bail|boolean',
+            'ratio' => 'required|bail|boolean',
             config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean'
         ];
     }

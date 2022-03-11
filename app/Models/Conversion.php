@@ -96,11 +96,12 @@ class Conversion extends Model
         'guid' => 'string'
     ];
 
+    public $incrementing = false;
+
     /**
      * @param int $typeId
      * @param string $typeType
      * @param string $sourceDisk
-     * @param string $ip
      * @param string $resultDisk
      * @return Conversion|Model
      */
@@ -108,7 +109,7 @@ class Conversion extends Model
     {
         $guid = uniqid();
         while (true) {
-            if (self::find($guid)->exists())
+            if (self::find($guid))
                 $guid = uniqid();
             else
                 break;
@@ -117,7 +118,7 @@ class Conversion extends Model
         if(config('pr0verter.disabled.inputs.interpolation'))
             $requestData['interpolation'] = false;
 
-        return self::create([array_merge([
+        return self::create(array_merge([
             'guid' => $guid,
             'typeInfo_id' => $typeId,
             'typeInfo_type' => $typeType,
@@ -125,7 +126,7 @@ class Conversion extends Model
             'result_disk' => $resultDisk,
             'filename' => $guid],
             $requestData)
-        ]);
+        );
     }
 
     /**
