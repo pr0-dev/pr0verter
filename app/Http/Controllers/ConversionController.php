@@ -14,8 +14,12 @@ use App\Models\Upload;
 use App\Models\Youtube;
 use App\Utilities\Converter;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Response;
 use Storage;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class ConversionController extends Controller
 {
@@ -26,7 +30,7 @@ class ConversionController extends Controller
      */
     public function listConversions(): JsonResponse
     {
-        return response()->json(Conversion::all());
+        return response()->json(Conversion::with('typeInfo')->get()->makeHidden('guid'));
     }
 
     /**
@@ -35,7 +39,7 @@ class ConversionController extends Controller
      */
     public function showConversion(Conversion $conversion): JsonResponse
     {
-        return response()->json($conversion);
+        return response()->json(Conversion::with('typeInfo')->find($conversion));
     }
 
     public function editConversion(Conversion $conversion): JsonResponse
@@ -100,5 +104,27 @@ class ConversionController extends Controller
         dispatch((new YoutubeDownloadJob($youtube, $conversion))->onQueue('youtube'));
 
         return response()->json($conversion);
+    }
+
+    /**
+     * @param Conversion $conversion
+     * @return Response|BinaryFileResponse|Application|ResponseFactory
+     */
+    public function downloadConversion(Conversion $conversion): Response|BinaryFileResponse|Application|ResponseFactory
+    {
+        if($conversion->converter_progress === 100)
+            return response()->download(Storage::disk($conversion->result_disk)->path($conversion->filename.'.mp4'));
+        return response(null, 404);
+    }
+
+    /**
+     * @param Conversion $conversion
+     * @return Application|ResponseFactory|Response
+     */
+    public function viewConversion(Conversion $conversion): Response|Application|ResponseFactory
+    {
+        if($conversion->converter_progress === 100)
+            return response(Storage::disk($conversion->result_disk)->get($conversion->filename.'.mp4'), 200)->header('Content-Type', 'video/mp4');
+        return response(null, 404);
     }
 }

@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('conversions', function (Blueprint $table) {
             /** Basic Information */
             $table->string('guid')->primary();
-            $table->morphs('typeInfo');
+            $table->morphs('type_info');
             $table->string('source_disk');
             $table->string('result_disk');
             $table->string('filename');

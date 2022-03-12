@@ -26,6 +26,8 @@ Route::prefix('conversions')->controller(ConversionController::class)->group(fun
     Route::get('{conversion}', 'showConversion')->name('showConversion');
     Route::patch('{conversion}', 'editConversion')->name('editConversion');
     Route::delete('{conversion}', 'deleteConversion')->name('deleteConversion');
+    Route::get('{conversion}/download', 'downloadConversion')->name('downloadConversion');
+    Route::get('{conversion}/view', 'viewConversion')->name('viewConversion');
 });
 
 Route::prefix('configurations')->controller(ConfigurationController::class)->group(function() {

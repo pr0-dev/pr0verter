@@ -29,7 +29,7 @@ class StoreFileRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
+            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') * 8192 . '|max:' . config('pr0verter.maxResultSize') * 8192,
             'sound' => ['required', 'bail', 'integer', new AudioRule],
             'start' => ['required', 'bail', 'integer', new ClipStartRule],
             'end' => ['required', 'bail', 'integer', new ClipEndRule],

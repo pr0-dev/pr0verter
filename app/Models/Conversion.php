@@ -13,8 +13,8 @@ use Illuminate\Support\Carbon;
  * App\Models\Conversion
  *
  * @property string $guid
- * @property string $typeInfo_type
- * @property int $typeInfo_id
+ * @property string $type_info_type
+ * @property int $type_info_id
  * @property string $source_disk
  * @property string $result_disk
  * @property string $filename
@@ -120,8 +120,8 @@ class Conversion extends Model
 
         return self::create(array_merge([
             'guid' => $guid,
-            'typeInfo_id' => $typeId,
-            'typeInfo_type' => $typeType,
+            'type_info_id' => $typeId,
+            'type_info_type' => $typeType,
             'source_disk' => $sourceDisk,
             'result_disk' => $resultDisk,
             'filename' => $guid],
