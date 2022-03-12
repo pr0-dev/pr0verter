@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AudioRule;
+use App\Rules\ClipEndRule;
+use App\Rules\ClipStartRule;
 use App\Rules\IsVideo;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -27,12 +30,12 @@ class StoreFileRequest extends FormRequest
     {
         return [
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
-            'video' => ['required', 'bail', 'file|min:' . config('pr0verter.minUploadSize'), 'max:' . config('pr0verter.maxUploadSize'), new IsVideo],
-            'sound' => 'required|bail|integer|min:' . config('pr0verter.minResultAudioBitrate') .'|max:' . config('pr0verter.maxResultAudioBitrate'),
-            'start' => 'required|bail|integer|lte:end',
-            'end' => 'required|bail|integer|gte:start',
+            'sound' => ['required', 'bail', 'integer', new AudioRule],
+            'start' => ['required', 'bail', 'integer', new ClipStartRule],
+            'end' => ['required', 'bail', 'integer', new ClipEndRule],
             'ratio' => 'required|bail|boolean',
-            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean'
+            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
+            'video' => ['required', 'bail', 'file|min:' . config('pr0verter.minUploadSize'), 'max:' . config('pr0verter.maxUploadSize'), new IsVideo]
         ];
     }
 }

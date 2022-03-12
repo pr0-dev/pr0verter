@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\AudioRule;
+use App\Rules\ClipEndRule;
+use App\Rules\ClipStartRule;
 use App\Rules\IsValidVideoUrl;
 use App\Rules\SubtitleLangExists;
 use Illuminate\Foundation\Http\FormRequest;
@@ -28,13 +31,13 @@ class StoreDownloadRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') * 8192 . '|max:' . config('pr0verter.maxResultSize') * 8192,
-            'url' => ['required', 'bail', new IsValidVideoUrl],
-            'sound' => 'required|bail|integer|max:' . config('pr0verter.maxResultAudioBitrate'),
-            'start' => 'required|bail|integer',
-            'end' => 'required|bail|integer',
+            'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') . '|max:' . config('pr0verter.maxResultSize'),
+            'sound' => ['required', 'bail', 'integer', new AudioRule],
+            'start' => ['required', 'bail', 'integer', new ClipStartRule],
+            'end' => ['required', 'bail', 'integer', new ClipEndRule],
             'ratio' => 'required|bail|boolean',
-            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean'
+            config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
+            'url' => ['required', 'bail', new IsValidVideoUrl]
         ];
     }
 }
