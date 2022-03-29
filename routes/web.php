@@ -53,3 +53,9 @@ Route::get('/finished/{conversion}', function (Conversion $conversion) {
         'conversion' => $conversion
     ]);
 })->name("finished");
+
+Route::get('/error/{conversion?}', function (Conversion $conversion) {
+    return Inertia::render('Error', [
+        'conversion' => $conversion
+    ]);
+})->name("finished");

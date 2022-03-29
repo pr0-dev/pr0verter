@@ -30,6 +30,10 @@ export default function Progress(props) {
                     } else {
                         Inertia.visit("progresss", props.conversion.guid);
                     }
+
+                    if(res.data.failed === 1) {
+                        Inertia.visit(route("error", props.conversion.guid))
+                    }
                 }
             }).catch(err => {
                 console.log(err);

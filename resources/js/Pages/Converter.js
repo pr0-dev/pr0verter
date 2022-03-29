@@ -15,7 +15,7 @@ function Converter() {
     const [ratio, setRatio] = useState(true);
     const [sound, setSound] = useState(true);
     const [size, setSize] = useState(0);
-    const [bitrate, setBitRate] = useState(0);
+    const [bitrate, setBitRate] = useState(128);
     const [interpolation, setInterpolation] = useState(true);
     const [start, setStart] = useState(0);
     const [end, setEnd] = useState(0);
@@ -168,15 +168,20 @@ function Converter() {
                 <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
                     <div className={"flex justify-between w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Auflösung behalten</p>
-                        <Switch defaultValue={true} className={"w-32"} onChange={setRatio}/>
+                        <Switch defaultValue={false} className={"w-32"} onChange={setRatio}/>
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Ton behalten</p>
-                        <Switch defaultValue={false} className={"w-32"} onChange={setSound}/>
+                        <Switch defaultValue={true} className={"w-32"} onChange={setSound}/>
                     </div>
+                    {sound &&
+                    <div className={"flex justify-between mt-8 w-full items-center"}>
+                        <p className={"text-xl text-pr0-text"}>Lautstärke</p>
+                        <input type={"range"} min={limits.minResultAudioBitrate} max={limits.maxResultAudioBitrate} value={bitrate} onChange={(e) => setBitRate(e.target.value)} className={"w-1/2 slider"}/>
+                    </div>}
                     <div className={"flex justify-between mt-8 w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Wunschgröße</p>
-                        <Input placeholder={"Größe in MB"} type={"number"} className={"w-1/2"} onChange={setSize}
+                        <Input placeholder={"Größe in MB"} initial={200} type={"number"} className={"w-1/2"} onChange={setSize}
                                inputRef={sizeRef}/>
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
