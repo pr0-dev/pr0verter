@@ -57,7 +57,8 @@ class ConvertVideoJob implements ShouldQueue
         if($this->conversion->typeInfo->subtitle) {
             \Log::critical('Subtitles Detected!');
             \Log::critical('Location: '.$location);
-            $filters[] = "-vf subtitles={$location}";
+            $filters[] = "-vf";
+            $filters[] = "subtitles={$location}";
         }
 
         if ($this->conversion->interpolation) {
