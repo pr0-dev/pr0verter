@@ -29,7 +29,7 @@ function Converter() {
     const endRef = useRef();
 
     useEffect(() => {
-        if (mode === 0 && source.length > 8) {
+        if (mode === 0 && source) {
             axios.post(route("youtubeInfo"), {url: source}).then(data => {
                 let titles = data.data.availableSubtitles;
                 if (titles) {
