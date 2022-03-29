@@ -57,7 +57,7 @@ class YoutubeDownloadJob implements ShouldQueue
                 $options = $options->subLang([$this->youtube->subtitle])
                     ->embedSubs(true)
                     ->writeSub(true)
-                    ->allSubs(true);
+                    ->subFormat('srt');
             }
 
             $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
