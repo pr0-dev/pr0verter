@@ -28,7 +28,7 @@ export default function Progress(props) {
                         setVideo(res.data.converter_progress + "%");
                         setText("Video wird konvertiert... " + res.data.converter_remaining + " Minuten (" + res.converter_rate + " Frames/s)");
                     } else {
-                        Inertia.visit("progresss", props.conversion.guid);
+                        Inertia.visit(route("finished", props.conversion.guid));
                     }
 
                     if(res.data.failed === 1) {
@@ -57,7 +57,7 @@ export default function Progress(props) {
                             Bitte haben Sie einen Moment Geduld und schalten sie das Internet nicht aus.
                         </p>
                         <div className={"w-2/3 bg-pr0-dark rounded-full shadow-lg h-8 mt-8 mx-auto overflow-hidden"}>
-                            <div className={"bg-pr0-main h-full rounded-r-full"} style={{width: video}}></div>
+                            <div className={"bg-pr0-main h-full rounded-r-full transition-all duration-200"} style={{width: video}}></div>
                         </div>
                         <p className={"text-pr0-text mt-8 text-xl"}>{text}</p>
                     </div>
