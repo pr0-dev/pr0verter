@@ -49,20 +49,18 @@ class YoutubeDownloadJob implements ShouldQueue
             ->noPlaylist()
             ->maxDownloads(1);
 
-        if($this->youtube->subtitle) {
+        if($this->youtube->subtitle != null) {
             $options = $options->subLang([$this->youtube->subtitle])
                 ->writeSub(true)
                 ->embedSubs(true);
         }
 
         $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
-            $youtubeModel->update(
-                [
+            $youtubeModel->update([
                     'progress' => $percentage,
                     'rate' => $speed,
                     'eta' => $eta
-                ]
-            );
+            ]);
         })->download($options);
 
         foreach ($collection->getVideos() as $video) {

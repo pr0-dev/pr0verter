@@ -42,13 +42,11 @@ class DownloadJob implements ShouldQueue
     {
 	$downloadModel = $this->download;
         $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($downloadModel) {
-	     $downloadModel->update(
-                [
+	     $downloadModel->update([
                     'progress' => $percentage,
                     'rate' => $speed,
                     'eta' => $eta
-                ]
-            );
+             ]);
         })
         ->download(
             Options::create()
