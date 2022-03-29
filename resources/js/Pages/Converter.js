@@ -29,7 +29,7 @@ function Converter() {
     const endRef = useRef();
 
     useEffect(() => {
-        if (mode === 0) {
+        if (mode === 0 && source.length > 8) {
             axios.post(route("youtubeInfo"), {url: source}).then(data => {
                 let titles = data.data.availableSubtitles;
                 if (titles) {
@@ -176,7 +176,7 @@ function Converter() {
 
                 {
                     // YouTube specific params
-                    mode === 0 &&
+                    (mode === 0 && languages.length > 0) &&
                     <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
                         <div className={"flex justify-between w-full items-center"}>
                             <p className={"text-xl text-pr0-text"}>Untertitel</p>
