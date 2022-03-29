@@ -88,7 +88,7 @@ class ConvertVideoJob implements ShouldQueue
                 })
                 ->inFormat($format)
                 ->toDisk($this->conversion->result_disk);
-                \Log::critical('Command: '.$test->getCommand());
+                \Log::critical('Command: '.implode(' ; ', $test->getCommand()));
                 $test->save($this->conversion->guid . '.mp4');
         } catch (EncodingException $exception) {
             $this->conversion->converter_error = $exception->getErrorOutput();
