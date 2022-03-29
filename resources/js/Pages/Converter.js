@@ -6,12 +6,15 @@ import FileUpload from "@/Components/FileUpload";
 import Switch from "@/Components/Switch";
 import Button from "@/Components/Button";
 import {Inertia} from "@inertiajs/inertia";
+import Dropdown from "@/Components/Dropdown";
 
 function Converter() {
     const {url} = usePage()
     const [mode, setMode] = useState(url.endsWith("/youtube") ? 0 : url.endsWith("/download") ? 1 : 2);
     const [source, setSource] = useState("");
-    const [subtitle, setSubtitle] = useState("");
+    const [subtitle, setSubtitle] = useState(false);
+    const [language, setLanguage] = useState("");
+    const [languages, setLanguages] = useState([]);
     const [ratio, setRatio] = useState(true);
     const [sound, setSound] = useState(true);
     const [size, setSize] = useState(0);
@@ -24,6 +27,24 @@ function Converter() {
     const sizeRef = useRef();
     const startRef = useRef();
     const endRef = useRef();
+
+    useEffect(() => {
+        if (mode === 0) {
+            axios.post(route("youtubeInfo"), {url: source}).then(data => {
+                let titles = data.data.availableSubtitles;
+                if (titles) {
+                    setLanguages(Object.entries(titles).map(([key, value]) => {
+                        return {name: value, id: key}
+                    }));
+                } else {
+                    setLanguages([]);
+                }
+            }).catch(err => {
+                setLanguages([]);
+                console.log(err);
+            })
+        }
+    }, [source])
 
     useEffect(() => {
         axios.get(route("settings")).then(data => {
@@ -78,13 +99,14 @@ function Converter() {
 
         if (mode === 0) {
             axios.post(route("storeYoutube"), {
-                size: size*8192 ?? 0,
+                size: size * 8192 ?? 0,
                 ratio: ratio,
                 sound: sound ? bitrate : 0,
                 start: start ?? 0,
                 end: end ?? 0,
                 url: source,
-                interpolation: interpolation
+                interpolation: interpolation,
+                subtitle: subtitle && language ? language.id : undefined
             }).then(data => {
                 Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
@@ -163,6 +185,18 @@ function Converter() {
                     </div>
                 }
                 {
+                    // YouTube specific params
+                    subtitle &&
+                    <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
+                        <div className={"flex justify-between w-full items-center"}>
+                            <p className={"text-xl text-pr0-text"}>Sprache</p>
+                            <Dropdown className={"w-1/2"} nameField={"name"}
+                                      data={languages}
+                                      onChange={(d) => setLanguage(d)}/>
+                        </div>
+                    </div>
+                }
+                {
                     // General Parameters
                 }
                 <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
@@ -175,13 +209,16 @@ function Converter() {
                         <Switch defaultValue={true} className={"w-32"} onChange={setSound}/>
                     </div>
                     {sound &&
-                    <div className={"flex justify-between mt-8 w-full items-center"}>
-                        <p className={"text-xl text-pr0-text"}>Lautstärke</p>
-                        <input type={"range"} min={limits.minResultAudioBitrate} max={limits.maxResultAudioBitrate} value={bitrate} onChange={(e) => setBitRate(e.target.value)} className={"w-1/2 slider"}/>
-                    </div>}
+                        <div className={"flex justify-between mt-8 w-full items-center"}>
+                            <p className={"text-xl text-pr0-text"}>Audio Qualität</p>
+                            <input type={"range"} min={limits.minResultAudioBitrate} max={limits.maxResultAudioBitrate}
+                                   value={bitrate} onChange={(e) => setBitRate(e.target.value)}
+                                   className={"w-1/2 slider"}/>
+                        </div>}
                     <div className={"flex justify-between mt-8 w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Wunschgröße</p>
-                        <Input placeholder={"Größe in MB"} initial={200} type={"number"} className={"w-1/2"} onChange={setSize}
+                        <Input placeholder={"Größe in MB"} initial={200} type={"number"} className={"w-1/2"}
+                               onChange={setSize}
                                inputRef={sizeRef}/>
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
