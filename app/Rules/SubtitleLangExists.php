@@ -32,7 +32,7 @@ class SubtitleLangExists implements Rule, DataAwareRule
         $videoId = Youtube::parseVidFromURL($this->data['url']);
         $captionData = Youtube::getCaptionInfo($videoId);
         foreach ($captionData as $captionLang) {
-            if($captionLang === $value)
+            if($captionLang->snippet->language === $value)
                 return true;
         }
         return false;
