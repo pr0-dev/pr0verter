@@ -39,6 +39,21 @@ class YoutubeDownloadJob implements ShouldQueue
      */
     public function handle()
     {
+        $options = Options::create()
+            ->continue(true)
+            ->restrictFileNames(true)
+            ->format('best')
+            ->downloadPath(Storage::disk($this->conversion->source_disk)->path('/'))
+            ->url($this->youtube->url)
+            ->noPlaylist()
+            ->maxDownloads(1);
+
+        if($this->youtube->subtitle) {
+            $options = $options->subLang([$this->youtube->subtitle])
+                ->writeSub(true)
+                ->embedSubs(true);
+        }
+
         $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, string $percentage, string $size, string $speed, string $eta, ?string $totalTime) {
             $this->youtube->update(
                 [
@@ -49,17 +64,7 @@ class YoutubeDownloadJob implements ShouldQueue
             );
         })
             ->download(
-                Options::create()
-                    ->continue(true)
-                    ->restrictFileNames(true)
-                    ->format('best')
-                    ->downloadPath(Storage::disk($this->conversion->source_disk)->path('/'))
-                    ->url($this->youtube->url)
-                    ->noPlaylist()
-                    ->maxDownloads(1)
-                    ->subLang([$this->youtube->subtitle])
-                    ->writeSub(true)
-                    ->embedSubs(true)
+
             );
 
         foreach ($collection->getVideos() as $video) {
@@ -74,6 +79,12 @@ class YoutubeDownloadJob implements ShouldQueue
             $this->conversion->save();
             return;
         }
+
+        if($this->conversion->interpolation) {
+            dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convertWithInterpolation'));
+            return;
+        }
+
         dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
     }
 }

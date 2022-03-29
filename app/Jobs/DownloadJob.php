@@ -73,6 +73,13 @@ class DownloadJob implements ShouldQueue
             $this->conversion->save();
             return;
         }
+
+
+        if($this->conversion->interpolation) {
+            dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convertWithInterpolation'));
+            return;
+        }
+
         dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
     }
 }

@@ -8,6 +8,7 @@ echo "Deployment started ..."
 (php artisan down) || true
 
 supervisorctl stop laravel-convert:*
+supervisorctl stop laravel-convertWithInterpolation:*
 supervisorctl stop laravel-download:*
 supervisorctl stop laravel-youtube:*
 
@@ -30,6 +31,7 @@ npm run production
 php artisan migrate --force
 
 supervisorctl start laravel-convert:*
+supervisorctl start laravel-convertWithInterpolation:*
 supervisorctl start laravel-download:*
 supervisorctl start laravel-youtube:*
 

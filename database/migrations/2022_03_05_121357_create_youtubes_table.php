@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('youtubes', function (Blueprint $table) {
             $table->id();
             $table->string('url');
-            $table->string('subtitle');
+            $table->string('subtitle')->nullable()->default(null);
             $table->string('progress')->default(null)->nullable();
             $table->string('rate')->default(null)->nullable();
             $table->string('eta')->default(null)->nullable();

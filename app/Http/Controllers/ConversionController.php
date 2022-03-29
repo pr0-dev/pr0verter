@@ -72,8 +72,12 @@ class ConversionController extends Controller
             $conversion->save();
             return response()->json($conversion, 501);
         }
-        dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
 
+
+        if($request->interpolation)
+            dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convertWithInterpolation'));
+        else
+            dispatch((new ConvertVideoJob($converter->getFFMpegConfig()))->onQueue('convert'));
         return response()->json($conversion);
     }
 
