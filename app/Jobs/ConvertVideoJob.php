@@ -13,6 +13,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use ProtoneMedia\LaravelFFMpeg\Exporters\EncodingException;
 use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
+use Storage;
 
 class ConvertVideoJob implements ShouldQueue
 {
@@ -51,12 +52,15 @@ class ConvertVideoJob implements ShouldQueue
         else
             $filters[] = '-an';
 
+        $location = Storage::disk($this->conversion->source_disk)->path($this->conversion->guid);
+
         if($this->conversion->typeInfo->subtitle) {
             \Log::critical('Subtitles Detected!');
+            \Log::critical('Location: '.$location);
             $filters[] = '-c:s';
             $filters[] = 'mov_text';
             $filters[] = '-vf';
-            $filters[] = 'subtitles="'.\Storage::disk($this->conversion->source_disk)->path($this->conversion->guid).'"';
+            $filters[] = "\"subtitles={$location}:steam_index=0\"";
         }
 
         if ($this->conversion->interpolation) {
