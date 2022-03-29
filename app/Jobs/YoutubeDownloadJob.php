@@ -57,7 +57,6 @@ class YoutubeDownloadJob implements ShouldQueue
             \Log::critical('Subtitle Language:['.$this->youtube->subtitle.']');
             if ($this->youtube->subtitle != null) {
                 $options = $options->subLang([$this->youtube->subtitle])
-                    ->writeSub(true)
                     ->embedSubs(true);
             }
 
