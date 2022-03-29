@@ -52,7 +52,6 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->noPlaylist()
                 ->maxDownloads(1);
 
-            \Log::critical('Subtitle Language:['.$this->youtube->subtitle.']');
             if ($this->youtube->subtitle != null) {
                 $options = $options->subLang([$this->youtube->subtitle])
                     ->embedSubs(true);

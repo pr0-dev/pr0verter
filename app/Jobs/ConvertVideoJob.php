@@ -61,7 +61,7 @@ class ConvertVideoJob implements ShouldQueue
             ->setKiloBitrate($this->conversion->result_bitrate);
 
         try {
-            $test = FFMpeg::fromDisk($this->conversion->source_disk)
+            FFMpeg::fromDisk($this->conversion->source_disk)
                 ->open($this->conversion->filename)
                 ->resize($this->conversion->result_width, $this->conversion->result_height)
                 ->addFilter(function (VideoFilters $filters) use ($location, $conversion) {
@@ -80,9 +80,8 @@ class ConvertVideoJob implements ShouldQueue
                     ]);
                 })
                 ->inFormat($format)
-                ->toDisk($this->conversion->result_disk);
-                \Log::critical('Command: '.implode(' ; ', $test->getCommand()));
-                $test->save($this->conversion->guid . '.mp4');
+                ->toDisk($this->conversion->result_disk)
+                ->save($this->conversion->guid . '.mp4');
         } catch (EncodingException $exception) {
             $this->conversion->converter_error = $exception->getErrorOutput();
             $this->conversion->failed = true;
