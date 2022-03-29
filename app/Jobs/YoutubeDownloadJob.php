@@ -67,7 +67,7 @@ class YoutubeDownloadJob implements ShouldQueue
             })->download($options);
 
             foreach ($collection->getVideos() as $video) {
-                Storage::disk($this->conversion->source_disk)->move($video->getFile()->getPathname(), $this->conversion->guid);
+                Storage::disk($this->conversion->source_disk)->move($video->getFile()->getFilename(), $this->conversion->guid);
             }
 
             $converter = new Converter(Storage::disk($this->conversion->source_disk)->path($this->conversion->filename), $this->conversion);
