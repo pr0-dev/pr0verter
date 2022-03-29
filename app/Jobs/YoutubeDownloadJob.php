@@ -50,6 +50,7 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->downloadPath(Storage::disk($this->conversion->source_disk)->path('/'))
                 ->url($this->youtube->url)
                 ->noPlaylist()
+                ->ffmpegLocation(config('config.ffmpeg.binaries'))
                 ->maxDownloads(1);
 
             if ($this->youtube->subtitle != null) {
