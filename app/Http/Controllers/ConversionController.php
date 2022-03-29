@@ -39,7 +39,7 @@ class ConversionController extends Controller
      */
     public function showConversion(Conversion $conversion): JsonResponse
     {
-        return response()->json(Conversion::with('typeInfo')->find($conversion));
+        return response()->json($conversion->load('typeInfo'));
     }
 
     public function editConversion(Conversion $conversion): JsonResponse
