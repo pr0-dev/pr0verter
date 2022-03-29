@@ -54,17 +54,7 @@ class ConvertVideoJob implements ShouldQueue
 
         $location = Storage::disk($this->conversion->source_disk)->path($this->conversion->guid);
 
-        if($this->conversion->typeInfo->subtitle) {
-            \Log::critical('Subtitles Detected!');
-            \Log::critical('Location: '.$location);
-            $filters[] = "-vf";
-            $filters[] = "subtitles={$location}";
-        }
-
-        if ($this->conversion->interpolation) {
-            $filters[] = '-vf';
-            $filters[] = 'minterpolate=fps=60';
-        }
+        $conversion = $this->conversion;
 
         $format->setAdditionalParameters($filters)
             ->setPasses(2)
@@ -74,9 +64,12 @@ class ConvertVideoJob implements ShouldQueue
             $test = FFMpeg::fromDisk($this->conversion->source_disk)
                 ->open($this->conversion->filename)
                 ->resize($this->conversion->result_width, $this->conversion->result_height)
-                ->addFilter(function (VideoFilters $filters) use ($location) {
+                ->addFilter(function (VideoFilters $filters) use ($location, $conversion) {
                     $filters->clip(TimeCode::fromSeconds($this->conversion->result_start), TimeCode::fromSeconds($this->conversion->result_duration));
-                    $filters->custom("-vf subtitles={$location}");
+                    if($conversion->typeInfo->subtitle)
+                        $filters->custom("subtitles={$location}");
+                    if($conversion->interpolation)
+                        $filters->custom("minterpolate=fps=60");
                 })
                 ->export()
                 ->onProgress(function ($percentage, $remaining, $rate) {
