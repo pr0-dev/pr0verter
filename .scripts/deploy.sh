@@ -24,7 +24,7 @@ php artisan clear-compiled
 php artisan optimize
 
 # Compile npm assets
-npm run dev
+npm run production
 
 # Run database migrations
 php artisan migrate --force
