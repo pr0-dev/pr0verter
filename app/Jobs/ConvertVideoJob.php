@@ -51,6 +51,11 @@ class ConvertVideoJob implements ShouldQueue
         else
             $filters[] = '-an';
 
+        if($this->conversion->typeInfo->subtitle) {
+            $filters[] = '-c:s';
+            $filters[] = 'mov_text';
+        }
+
         if ($this->conversion->interpolation) {
             $filters[] = '-vf';
             $filters[] = 'minterpolate=fps=60';
