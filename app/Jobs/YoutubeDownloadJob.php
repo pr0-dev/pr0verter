@@ -51,14 +51,15 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->url($this->youtube->url)
                 ->noPlaylist()
                 ->ffmpegLocation(config('config.ffmpeg.binaries'))
+                ->verbose(true)
                 ->maxDownloads(1);
 
             \Log::critical('Subtitle Language:['.$this->youtube->subtitle.']');
             if ($this->youtube->subtitle != null) {
                 $options = $options->subLang([$this->youtube->subtitle])
-                    ->embedSubs(true)
                     ->writeSub(true)
-                    ->convertSubsFormat('srt');
+                    ->convertSubsFormat('srt')
+                    ->embedSubs(true);
             }
 
             $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
