@@ -24,9 +24,9 @@ export default function Progress(props) {
                     } else if (res.data.converter_progress === 0) {
                         setVideo("0%");
                         setText("Warten bis der Converter beginnt...");
-                    } else if (res.data.converter_progress <= 100) {
+                    } else if (res.data.converter_progress < 100) {
                         setVideo(res.data.converter_progress + "%");
-                        setText("Video wird konvertiert... " + res.data.converter_remaining + "Minuten (" + res.converter_rate + " Frames/s)");
+                        setText("Video wird konvertiert... " + res.data.converter_remaining + " Minuten (" + res.converter_rate + " Frames/s)");
                     } else {
                         Inertia.visit("progresss", props.conversion.guid);
                     }
