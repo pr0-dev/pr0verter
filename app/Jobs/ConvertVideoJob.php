@@ -54,8 +54,8 @@ class ConvertVideoJob implements ShouldQueue
         if($this->conversion->typeInfo->subtitle) {
             $filters[] = '-c:s';
             $filters[] = 'mov_text';
-            $filters[] = '-filter:v';
-            $filters[] = 'subtitles='.\Storage::disk($this->conversion->source_disk)->path($this->conversion->guid);
+            $filters[] = '-vf';
+            $filters[] = 'subtitles="filename=\''.\Storage::disk($this->conversion->source_disk)->path($this->conversion->guid).'\'';
         }
 
         if ($this->conversion->interpolation) {
