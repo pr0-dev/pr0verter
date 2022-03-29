@@ -56,6 +56,7 @@ class YoutubeDownloadJob implements ShouldQueue
             if ($this->youtube->subtitle != null) {
                 $options = $options->subLang([$this->youtube->subtitle])
                     ->embedSubs(true)
+                    ->writeSub(true)
                     ->allSubs(true);
             }
 
