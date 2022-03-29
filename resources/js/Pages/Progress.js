@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, Head, usePage} from '@inertiajs/inertia-react';
 import Navigation from "@/Components/Navigation";
 import route from "../../../vendor/tightenco/ziggy/src/js";
+import {Inertia} from "@inertiajs/inertia";
 
 
 export default function Progress(props) {
@@ -13,7 +14,6 @@ export default function Progress(props) {
     useEffect(() => {
         let interval = setInterval(() => {
             axios.get(route("showConversion", props.conversion.guid)).then((res) => {
-                console.log(res.data);
                 if (!isUpload) {
                     if (res.data.type_info.progress === null) {
                         setVideo("0%");
@@ -27,6 +27,8 @@ export default function Progress(props) {
                     } else if (res.data.converter_progress <= 100) {
                         setVideo(res.data.converter_progress + "%");
                         setText("Video wird konvertiert... " + res.data.converter_remaining + "Minuten (" + res.converter_rate + " Frames/s)");
+                    } else {
+                        Inertia.visit("progresss", props.conversion.guid);
                     }
                 }
             }).catch(err => {

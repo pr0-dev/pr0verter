@@ -47,3 +47,9 @@ Route::get('/progress/{conversion}', function (Conversion $conversion) {
         'conversion' => $conversion
     ]);
 })->name("progress");
+
+Route::get('/finished/{conversion}', function (Conversion $conversion) {
+    return Inertia::render('Finished', [
+        'conversion' => $conversion
+    ]);
+})->name("finished");
