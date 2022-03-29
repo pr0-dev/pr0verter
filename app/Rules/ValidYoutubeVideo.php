@@ -5,6 +5,8 @@ namespace App\Rules;
 use Exception;
 use Illuminate\Contracts\Validation\Rule;
 use Youtube;
+use YoutubeDl\Options;
+use YoutubeDownload;
 
 class ValidYoutubeVideo implements Rule
 {
@@ -34,7 +36,31 @@ class ValidYoutubeVideo implements Rule
             return false;
         }
 
-        return $video != false;
+        if($video) {
+            try {
+                $collection = YoutubeDownload::download(
+                    Options::create()->skipDownload(true)
+                        ->url($value)
+                        ->downloadPath(storage_path())
+                        ->maxDownloads(1)
+                );
+
+                if(!$collection->count())
+                    return false;
+
+                foreach($collection->getVideos() as $video) {
+                    if($video->getExtractor())
+                        return true;
+                    else
+                        return false;
+                }
+                return false;
+            } catch (Exception) {
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
