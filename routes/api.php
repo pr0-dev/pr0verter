@@ -36,6 +36,6 @@ Route::prefix('configurations')->controller(ConfigurationController::class)->gro
 });
 
 Route::prefix('repository')->controller(RepositoryController::class)->group(function() {
-    Route::get('youtube-info', 'youtubeInfo')->name('youtubeInfo');
+    Route::post('youtube-info', 'youtubeInfo')->name('youtubeInfo');
     Route::get('github-info', 'githubInfo')->name('githubInfo');
 });
