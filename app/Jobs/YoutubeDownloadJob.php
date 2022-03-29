@@ -55,7 +55,7 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->embedSubs(true);
         }
 
-        $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, string $percentage, string $size, string $speed, string $eta, ?string $totalTime) use ($youtubeModel) {
+        $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
             $youtubeModel->update(
                 [
                     'progress' => $percentage,
