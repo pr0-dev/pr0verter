@@ -39,6 +39,7 @@ class YoutubeDownloadJob implements ShouldQueue
      */
     public function handle()
     {
+        $youtubeModel = $this->youtube;
         $options = Options::create()
             ->continue(true)
             ->restrictFileNames(true)
@@ -54,8 +55,8 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->embedSubs(true);
         }
 
-        $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, string $percentage, string $size, string $speed, string $eta, ?string $totalTime) {
-            $this->youtube->update(
+        $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, string $percentage, string $size, string $speed, string $eta, ?string $totalTime) use ($youtubeModel) {
+            $youtubeModel->update(
                 [
                     'progress' => $percentage,
                     'rate' => $speed,
