@@ -62,10 +62,7 @@ class YoutubeDownloadJob implements ShouldQueue
                     'eta' => $eta
                 ]
             );
-        })
-            ->download(
-
-            );
+        })->download($options);
 
         foreach ($collection->getVideos() as $video) {
             Storage::disk($this->conversion->source_disk)->move($video->getFile()->getPathname(), $this->conversion->guid);
