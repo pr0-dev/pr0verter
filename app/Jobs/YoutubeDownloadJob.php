@@ -50,7 +50,7 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->downloadPath(Storage::disk($this->conversion->source_disk)->path('/'))
                 ->url($this->youtube->url)
                 ->noPlaylist()
-                ->ffmpegLocation(config('config.ffmpeg.binaries'))
+                //->ffmpegLocation(config('config.ffmpeg.binaries'))
                 ->verbose(true)
                 ->maxDownloads(1);
 
@@ -58,7 +58,6 @@ class YoutubeDownloadJob implements ShouldQueue
             if ($this->youtube->subtitle != null) {
                 $options = $options->subLang([$this->youtube->subtitle])
                     ->writeSub(true)
-                    ->convertSubsFormat('srt')
                     ->embedSubs(true);
             }
 
