@@ -71,11 +71,12 @@ class ConvertVideoJob implements ShouldQueue
             ->setKiloBitrate($this->conversion->result_bitrate);
 
         try {
-            FFMpeg::fromDisk($this->conversion->source_disk)
+            $test = FFMpeg::fromDisk($this->conversion->source_disk)
                 ->open($this->conversion->filename)
                 ->resize($this->conversion->result_width, $this->conversion->result_height)
-                ->addFilter(function (VideoFilters $filters) {
+                ->addFilter(function (VideoFilters $filters) use ($location) {
                     $filters->clip(TimeCode::fromSeconds($this->conversion->result_start), TimeCode::fromSeconds($this->conversion->result_duration));
+                    $filters->custom("-vf subtitles={$location}");
                 })
                 ->export()
                 ->onProgress(function ($percentage, $remaining, $rate) {
@@ -86,8 +87,9 @@ class ConvertVideoJob implements ShouldQueue
                     ]);
                 })
                 ->inFormat($format)
-                ->toDisk($this->conversion->result_disk)
-                ->save($this->conversion->guid . '.mp4');
+                ->toDisk($this->conversion->result_disk);
+                \Log::critical('Command: '.$test->getCommand());
+                $test->save($this->conversion->guid . '.mp4');
         } catch (EncodingException $exception) {
             $this->conversion->converter_error = $exception->getErrorOutput();
             $this->conversion->failed = true;
