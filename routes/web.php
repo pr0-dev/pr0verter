@@ -3,7 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
-
+use App\Models\Conversion;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -41,3 +41,9 @@ Route::get('/converter/{type}', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/progress/{conversion}', function (Conversion $conversion) {
+    return Inertia::render('Progress', [
+        'conversion' => $conversion
+    ]);
+})->name("progress");

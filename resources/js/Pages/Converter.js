@@ -5,6 +5,7 @@ import Input from "@/Components/Input";
 import FileUpload from "@/Components/FileUpload";
 import Switch from "@/Components/Switch";
 import Button from "@/Components/Button";
+import {Inertia} from "@inertiajs/inertia";
 
 function Converter() {
     const {url} = usePage()
@@ -77,7 +78,7 @@ function Converter() {
 
         if (mode === 0) {
             axios.post(route("storeYoutube"), {
-                size: size ?? 0,
+                size: size*8192 ?? 0,
                 ratio: ratio,
                 sound: sound ? bitrate : 0,
                 start: start ?? 0,
@@ -85,7 +86,7 @@ function Converter() {
                 url: source,
                 interpolation: interpolation
             }).then(data => {
-                console.log(data);
+                Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
                 console.log(err);
             })
@@ -99,7 +100,7 @@ function Converter() {
                 url: source,
                 interpolation: interpolation
             }).then(data => {
-                console.log(data);
+                Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
                 console.log(err);
             })
@@ -195,7 +196,7 @@ function Converter() {
                         </div>
                     }
                 </div>
-                <div className={"px-4 w-full md:w-1/3 mt-8 mx-auto"}>
+                <div className={"px-4 w-full md:w-1/3 mt-8 mx-auto pb-12"}>
                     <Button className={"w-full md:w-1/2"} onClick={send}>Konvertieren</Button>
                 </div>
             </div>
