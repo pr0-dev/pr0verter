@@ -29,6 +29,7 @@ class ValidYoutubeVideo implements Rule
      */
     public function passes($attribute, $value): bool
     {
+        $video = null;
         try {
             $videoId = Youtube::parseVidFromURL($value);
             $video = Youtube::getVideoInfo($videoId, ['id']);
