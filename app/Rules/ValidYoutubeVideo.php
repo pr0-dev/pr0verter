@@ -29,38 +29,13 @@ class ValidYoutubeVideo implements Rule
      */
     public function passes($attribute, $value): bool
     {
-        $video = null;
         try {
             $videoId = Youtube::parseVidFromURL($value);
             $video = Youtube::getVideoInfo($videoId, ['id']);
         } catch (Exception $exception) {
             return false;
         }
-
-        if($video) {
-            try {
-                $collection = YoutubeDownload::download(
-                    Options::create()->skipDownload(true)
-                        ->url($value)
-                        ->maxDownloads(1)
-                );
-
-                if(!$collection->count())
-                    return false;
-
-                foreach($collection->getVideos() as $video) {
-                    if($video->getExtractor())
-                        return true;
-                    else
-                        return false;
-                }
-                return false;
-            } catch (Exception) {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        return (bool)$video;
     }
 
     /**
