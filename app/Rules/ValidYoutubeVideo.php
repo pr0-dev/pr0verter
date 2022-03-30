@@ -29,6 +29,11 @@ class ValidYoutubeVideo implements Rule
      */
     public function passes($attribute, $value): bool
     {
+        $matches = array();
+        preg_match('/(?:https?:\/\/)?(?:youtu\.be\/|(?:www\.|m\.)?youtube\.com\/(?:watch|v|embed)(?:\.php)?(?:\?.*v=|\/))([a-zA-Z0-9\_-]+)/', $value, $matches);
+        if(!isset($matches[0]))
+            return false;
+
         try {
             $videoId = Youtube::parseVidFromURL($value);
             $video = Youtube::getVideoInfo($videoId, ['id']);
