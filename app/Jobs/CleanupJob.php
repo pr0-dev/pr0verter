@@ -35,7 +35,7 @@ class CleanupJob implements ShouldQueue
     public function handle()
     {
         foreach (Conversion::get() as $conversions) {
-            if($conversions->createdAt < Carbon::now()->subHours(2)) {
+            if($conversions->created_at < Carbon::now()->subHours(2)) {
                 foreach(Storage::disk($conversions->source_disk)->allFiles() as $file) {
                     if (str_contains($file, $conversions->guid)) {
                         Storage::disk($conversions->source_disk)->delete($file);
