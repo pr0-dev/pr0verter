@@ -41,7 +41,6 @@ class ValidYoutubeVideo implements Rule
                 $collection = YoutubeDownload::download(
                     Options::create()->skipDownload(true)
                         ->url($value)
-                        ->downloadPath(storage_path())
                         ->maxDownloads(1)
                 );
 
