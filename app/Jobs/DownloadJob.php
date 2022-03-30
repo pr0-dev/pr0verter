@@ -6,6 +6,7 @@ use App\Models\Conversion;
 use App\Models\Download;
 use App\Utilities\Converter;
 use Exception;
+use File;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -55,14 +56,14 @@ class DownloadJob implements ShouldQueue
                         ->continue(true)
                         ->restrictFileNames(true)
                         ->format('best')
-                        ->downloadPath(Storage::disk($this->conversion->source_disk)->path('/'))
+                        ->downloadPath(Storage::disk($this->conversion->source_disk)->path($this->conversion->guid.'_tmp'))
                         ->url($this->download->url)
                         ->noPlaylist()
                         ->maxDownloads(1)
                 );
 
             foreach ($collection->getVideos() as $video) {
-                Storage::disk($this->conversion->source_disk)->move($video->getFile()->getFilename(), $this->conversion->guid);
+                File::move($video->getFile()->getPathname(), Storage::disk($this->conversion->source_disk)->path($this->conversion->guid));
             }
 
             $converter = new Converter(Storage::disk($this->conversion->source_disk)->path($this->conversion->filename), $this->conversion);
