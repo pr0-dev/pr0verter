@@ -30,4 +30,11 @@ use Illuminate\Database\Eloquent\Model;
 class ConvertStatistic extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'type',
+        'succeeded',
+        'convertTime',
+        'time'
+    ];
 }
