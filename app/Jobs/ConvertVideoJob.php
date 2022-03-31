@@ -3,6 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\Conversion;
+use App\Models\ConvertStatistic;
+use Carbon\Carbon;
 use FFMpeg\Coordinate\TimeCode;
 use FFMpeg\Filters\Video\VideoFilters;
 use FFMpeg\Format\Video\X264;
@@ -87,5 +89,11 @@ class ConvertVideoJob implements ShouldQueue
             $this->conversion->failed = true;
             $this->conversion->save();
         }
+        ConvertStatistic::create([
+            'time' => Carbon::now(),
+            'convertTime' => Carbon::make($conversion->created_at)->diffInSeconds(Carbon::make($conversion->updated_at)),
+            'type' => $conversion->type_info_type,
+            'succeeded' => true
+        ]);
     }
 }

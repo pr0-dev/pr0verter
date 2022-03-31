@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('type');
             $table->boolean('succeeded');
-            $table->time('convertTime');
+            $table->integer('convertTime');
             $table->dateTime('time');
             $table->timestamps();
         });
