@@ -31,11 +31,11 @@ return new class extends Migration {
             $table->string('source_codec')->default(null)->nullable();
             $table->integer('source_duration')->default(0);
             $table->integer('probe_score')->default(0);
-            $table->string('probe_error')->default(null)->nullable();
+            $table->longText('probe_error')->default(null)->nullable();
             /**  Converter Information */
             $table->string('converter_remaining')->default(null)->nullable();
             $table->string('converter_rate')->default(null)->nullable();
-            $table->string('converter_error')->default(null)->nullable();
+            $table->longText('converter_error')->default(null)->nullable();
             $table->integer('converter_progress')->default(0);
             /** Calculated Result  Information */
             $table->integer('result_bitrate')->default(0);
