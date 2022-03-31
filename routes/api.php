@@ -14,6 +14,7 @@
 use App\Http\Controllers\ConfigurationController;
 use App\Http\Controllers\ConversionController;
 use App\Http\Controllers\RepositoryController;
+use App\Http\Controllers\StatisticsController;
 
 Route::prefix('conversions')->controller(ConversionController::class)->group(function() {
     Route::get('/', 'listConversions')->name('listConversions');
@@ -38,4 +39,8 @@ Route::prefix('configurations')->controller(ConfigurationController::class)->gro
 Route::prefix('repository')->controller(RepositoryController::class)->group(function() {
     Route::post('youtube-info', 'youtubeInfo')->name('youtubeInfo');
     Route::get('github-info', 'githubInfo')->name('githubInfo');
+});
+
+Route::prefix('stats')->controller(StatisticsController::class)->group(function() {
+    Route::get('system', 'systemStats')->name('systemStats');
 });

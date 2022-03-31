@@ -16,6 +16,7 @@
         "laravel/framework": "^9.0",
         "laravel/sanctum": "^2.8",
         "laravel/tinker": "^2.7",
+        "netresearch/jsonmapper": "^4.0",
         "norkunas/youtube-dl-php": "dev-master",
         "pbmedia/laravel-ffmpeg": "^8.0",
         "tightenco/ziggy": "^1.0",
