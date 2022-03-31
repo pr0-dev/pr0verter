@@ -53,8 +53,12 @@ class VnStat {
     }
 
     #[Pure]
-    public function getTotalTraffic(): int
+    public function getTotalTraffic($formatOption = 'hr'): float
     {
-        return $this->currentInterface->getTotalTraffic();
+        $traffic = $this->currentInterface->getTotalTraffic();
+        if($formatOption == 'hr')
+            return (float)$traffic / 1073741824;
+
+        return $traffic;
     }
 }

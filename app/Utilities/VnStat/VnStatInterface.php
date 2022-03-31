@@ -73,16 +73,11 @@ class VnStatInterface {
     }
 
     /**
-     * @param string $formatOption
-     * @return float
+     * @return int
      */
     #[Pure]
-    public function getTotalTraffic(string $formatOption = 'hr'): float
+    public function getTotalTraffic(): int
     {
-        $traffic = (float)$this->traffic->getTotalTraffic();
-        if($formatOption == 'hr')
-            return (float)$traffic / 1024 / 1024 / 8;
-
-        return $traffic;
+        return $this->traffic->getTotalTraffic();
     }
 }
