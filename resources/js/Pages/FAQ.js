@@ -35,6 +35,14 @@ function FAQ() {
                                  target={"_blank"}
                                  className={"mt-2 text-pr0-main"}>PR</a></p>
                 </div>
+                <div className={"w-1/3 mx-auto text-white mt-16"}>
+                    <p className={"text-2xl font-semibold mb-2"}>Was ist interpolation?</p>
+                    <p>Im Endeffekt versucht der pr0verter aus einem Video mit x Frames ein Video mit 60 FPS zu machen</p>
+                </div>
+                <div className={"w-1/3 mx-auto text-white mt-16"}>
+                    <p className={"text-2xl font-semibold mb-2"}>Wenn ich "mit Interpolation" ausgewählt habe dauert das ja eeewig</p>
+                    <p>Ja, das ist leider so, da es leider sehr aufwändig ist</p>
+                </div>
             </div>
         </>
     );
