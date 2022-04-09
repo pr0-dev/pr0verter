@@ -37,7 +37,7 @@ export default function Welcome() {
                     </div>
                     <div className={"w-1/2 bg-pr0-dark rounded-2xl p-8"}>
                         <p className={"text-white"}>Durchschnittliche Konvertierungsdauer</p>
-                        <p className={"text-4xl text-white mt-4"}>40 Sekunden</p>
+                        <p className={"text-4xl text-white mt-4"}>{data.avgConvertTime?.toFixed(2)} Sekunden</p>
                     </div>
                 </div>
                 <div className={"w-2/3 mx-auto flex mt-8 gap-8"}>

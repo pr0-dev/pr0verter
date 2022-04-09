@@ -24,6 +24,15 @@ Route::get('/', function () {
     ]);
 });
 
+Route::get('/faq', function () {
+    return Inertia::render('FAQ', [
+        'canLogin' => Route::has('login'),
+        'canRegister' => Route::has('register'),
+        'laravelVersion' => Application::VERSION,
+        'phpVersion' => PHP_VERSION,
+    ]);
+});
+
 Route::get('/converter', function () {
     return Inertia::render('Converter', [
         'canLogin' => Route::has('login'),
