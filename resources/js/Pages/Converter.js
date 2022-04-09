@@ -102,8 +102,8 @@ function Converter() {
                 size: size * 8192 ?? 0,
                 ratio: ratio,
                 sound: sound ? bitrate : 0,
-                start: start ?? 0,
-                end: end ?? 0,
+                start: start ? start : 0,
+                end: end ? end : 0,
                 url: source,
                 interpolation: interpolation,
                 subtitle: subtitle && language ? language.id : undefined
@@ -117,8 +117,8 @@ function Converter() {
                 size: (size ?? 0) * 8192,
                 ratio: ratio,
                 sound: sound ? bitrate : 0,
-                start: start ?? 0,
-                end: end ?? 0,
+                start: start ? start : 0,
+                end: end ? end : 0,
                 url: source,
                 interpolation: interpolation
             }).then(data => {
