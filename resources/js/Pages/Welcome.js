@@ -51,7 +51,7 @@ export default function Welcome() {
                     </div>
                     <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
                         <p className={"text-white"}>Speicher Auslastung</p>
-                        <p className={"text-4xl text-white mt-4"}>{data.storageUsed?.toFixed(2)} %</p>
+                        <p className={"text-4xl text-white mt-4"}>{data.spaceUsed?.toFixed(2)} %</p>
                     </div>
                 </div>
                 <div className={"w-max mx-auto"}>
