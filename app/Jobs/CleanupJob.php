@@ -54,7 +54,7 @@ class CleanupJob implements ShouldQueue
             if(str_contains($file, '.git'))
                 continue;
 
-            if(Carbon::createFromTimestamp(Storage::disk('local')->lastModified($file)) < Carbon::now()->subDays(2)) {
+            if(Carbon::createFromTimestamp(fileatime(Storage::disk('local')->path($file))) < Carbon::now()->subDays(2)) {
                 Storage::delete($file);
             }
         }
