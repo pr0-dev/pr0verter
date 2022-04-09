@@ -10,7 +10,7 @@ export default function Welcome() {
         axios.get(route(("systemStats"))).then(res => {
             setData(res.data);
         })
-    })
+    }, [])
     return (
         <>
             <Head title="pr0verter"/>

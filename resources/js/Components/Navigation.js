@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import NavigationLink from "@/Components/NavigationLink";
+import {Link} from "@inertiajs/inertia-react";
 
 function Navigation(props) {
     const [expanded, setExpanded] = useState(false);
@@ -7,7 +8,9 @@ function Navigation(props) {
         <React.Fragment>
             <div className={"w-full bg-pr0-dark h-20 shadow-lg flex justify-between items-center px-8 md:px-12"}>
                 <div className={""}>
-                    <h1 className={"text-white text-4xl"}>pr0verter</h1>
+                    <Link href={"/"}>
+                        <h1 className={"text-white text-4xl"}>pr0verter</h1>
+                    </Link>
                 </div>
                 <div className={"gap-12 text-white text-2xl hidden md:flex"}>
                     <NavigationLink path={"/converter"}>Konvertieren</NavigationLink>
