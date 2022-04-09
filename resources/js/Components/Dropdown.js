@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 function Dropdown({className, data, nameField, onChange}) {
-    let [value, setValue] = useState();
+    let [value, setValue] = useState("");
     let [expanded, setExpanded] = useState(false);
     return (
         <div className={className + " relative"}>
@@ -12,8 +12,19 @@ function Dropdown({className, data, nameField, onChange}) {
             </div>
             {expanded &&
                 <div className={"w-full"}>
+                    <div
+                        className={"w-full bg-pr0-dark py-3 px-6 mt-1 rounded-2xl shadow-lg text-xl text-white"}
+                        onClick={() => {
+                            setValue(null);
+                            onChange(null);
+                            setExpanded(false);
+                        }}
+                    >
+                        Auswahl entfernen
+                    </div>
                     {data.map(d =>
                         <div
+                            key={d[nameField]}
                             className={"w-full bg-pr0-dark py-3 px-6 mt-1 rounded-2xl shadow-lg text-xl text-white"}
                             onClick={() => {
                                 setValue(d[nameField]);

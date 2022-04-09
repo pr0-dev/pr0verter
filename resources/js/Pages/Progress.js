@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Head, usePage} from '@inertiajs/inertia-react';
+import {Head} from '@inertiajs/inertia-react';
 import Navigation from "@/Components/Navigation";
 import route from "../../../vendor/tightenco/ziggy/src/js";
 import {Inertia} from "@inertiajs/inertia";
@@ -7,7 +7,6 @@ import {Inertia} from "@inertiajs/inertia";
 
 export default function Progress(props) {
     console.log(props);
-    const {url} = usePage()
     let [video, setVideo] = useState("0%");
     let [isUpload, setIsUpload] = useState(props.conversion.type_info_type.endsWith("Upload"));
     let [text, setText] = useState();
@@ -49,7 +48,7 @@ export default function Progress(props) {
         <>
             <Head title="pr0verter"/>
             <div className="bg-pr0-bg w-full min-h-screen flex flex-col">
-                <Navigation></Navigation>
+                <Navigation/>
                 <div
                     className={"text-center text-pr0-text flex-grow w-full flex items-center justify-center flex-wrap"}>
                     <div className={"w-full mx-auto"}>
@@ -57,7 +56,7 @@ export default function Progress(props) {
                             Bitte haben Sie einen Moment Geduld und schalten sie das Internet nicht aus.
                         </p>
                         <div className={"w-2/3 bg-pr0-dark rounded-full shadow-lg h-8 mt-8 mx-auto overflow-hidden"}>
-                            <div className={"bg-pr0-main h-full rounded-r-full transition-all duration-300 text-center overflow-hidden text-white"} style={{width: video}}>{video}</div>
+                            <div className={"bg-pr0-main h-full rounded-r-full transition-all duration-300 text-center overflow-hidden text-white flex items-center"} style={{width: video}}>{video}</div>
                         </div>
                         <p className={"text-pr0-text mt-8 text-xl"}>{text}</p>
                     </div>

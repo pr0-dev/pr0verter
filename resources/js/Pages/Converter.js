@@ -10,7 +10,7 @@ import Dropdown from "@/Components/Dropdown";
 
 function Converter() {
     const {url} = usePage()
-    const [mode, setMode] = useState(url.endsWith("/youtube") ? 0 : url.endsWith("/download") ? 1 : 2);
+    const [mode, setMode] = useState(url.endsWith("/youtube") ? 0 : url.endsWith("/upload") ? 2 : 1);
     const [source, setSource] = useState("");
     const [subtitle, setSubtitle] = useState(false);
     const [language, setLanguage] = useState("");
