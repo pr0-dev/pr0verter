@@ -24,8 +24,8 @@ return new class extends Migration {
             $table->integer('sound');
             $table->boolean('ratio');
             $table->boolean('interpolation');
-            $table->integer('start');
-            $table->integer('end');
+            $table->integer('start')->default(0);
+            $table->integer('end')->default(0);
             /** Source Information */
             $table->string('source_format')->default(null)->nullable();
             $table->string('source_codec')->default(null)->nullable();
