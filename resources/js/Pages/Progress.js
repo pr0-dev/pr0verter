@@ -56,7 +56,7 @@ export default function Progress(props) {
                             Bitte haben Sie einen Moment Geduld und schalten sie das Internet nicht aus.
                         </p>
                         <div className={"w-2/3 bg-pr0-dark rounded-full shadow-lg h-8 mt-8 mx-auto overflow-hidden"}>
-                            <div className={"bg-pr0-main h-full rounded-r-full transition-all duration-300 text-center overflow-hidden text-white flex items-center"} style={{width: video}}>{video}</div>
+                            <div className={"bg-pr0-main h-full rounded-r-full transition-all duration-300 text-center overflow-hidden text-white flex items-center justify-center"} style={{width: video}}>{video}</div>
                         </div>
                         <p className={"text-pr0-text mt-8 text-xl"}>{text}</p>
                     </div>
