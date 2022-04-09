@@ -31,8 +31,8 @@ class StoreFileRequest extends FormRequest
         return [
             'size' => 'required|bail|integer|min:' . config('pr0verter.minResultSize') * 8192 . '|max:' . config('pr0verter.maxResultSize') * 8192,
             'sound' => ['required', 'bail', 'integer', new AudioRule],
-            'start' => ['required', 'bail', 'integer', new ClipStartRule],
-            'end' => ['required', 'bail', 'integer', new ClipEndRule],
+            'start' => ['filled', 'bail', 'integer', new ClipStartRule],
+            'end' => ['filled', 'bail', 'integer', new ClipEndRule],
             'ratio' => 'required|bail|boolean',
             config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
             'video' => ['required', 'bail', 'file|min:' . config('pr0verter.minUploadSize'), 'max:' . config('pr0verter.maxUploadSize'), new IsVideo]
