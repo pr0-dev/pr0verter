@@ -44,14 +44,6 @@ class YoutubeDownloadJob implements ShouldQueue
     {
         try {
             $youtubeModel = $this->youtube;
-            $options = Options::create()
-                ->continue(true)
-                ->restrictFileNames(true)
-                ->format('best')
-                ->downloadPath(Storage::disk($this->conversion->source_disk)->path($this->conversion->guid.'_tmp'))
-                ->url($this->youtube->url)
-                ->noPlaylist()
-                ->maxDownloads(1);
 
             $automaticCaption = true;
             if ($this->youtube->subtitle != null) {
@@ -64,12 +56,31 @@ class YoutubeDownloadJob implements ShouldQueue
 
                 foreach($collection->getVideos() as $video) {
                     foreach ($video->getSubtitles() as $lang => $options) {
-                        if($lang == $this->youtube->subtitle)
+                        if($lang == $this->youtube->subtitle) {
                             $automaticCaption = false;
+                        }
                     }
                 }
-                \Log::debug($this->youtube->subtitle);
-                $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub($automaticCaption)->embedSubs(true);
+                $options = Options::create()
+                    ->continue(true)
+                    ->restrictFileNames(true)
+                    ->format('best')
+                    ->downloadPath(Storage::disk($this->conversion->source_disk)->path($this->conversion->guid.'_tmp'))
+                    ->url($this->youtube->url)
+                    ->subLang([$this->youtube->subtitle])
+                    ->writeAutoSub($automaticCaption)
+                    ->embedSubs(true)
+                    ->noPlaylist()
+                    ->maxDownloads(1);
+            } else {
+                $options = Options::create()
+                    ->continue(true)
+                    ->restrictFileNames(true)
+                    ->format('best')
+                    ->downloadPath(Storage::disk($this->conversion->source_disk)->path($this->conversion->guid.'_tmp'))
+                    ->url($this->youtube->url)
+                    ->noPlaylist()
+                    ->maxDownloads(1);
             }
 
             $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
