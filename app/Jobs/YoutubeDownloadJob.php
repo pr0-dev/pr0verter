@@ -68,11 +68,7 @@ class YoutubeDownloadJob implements ShouldQueue
                             $automaticCaption = false;
                     }
                 }
-                if($automaticCaption) {
-                    $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub(true)->embedSubs(true);
-                } else {
-                    $options = $options->subLang([$this->youtube->subtitle])->embedSubs(true);
-                }
+                $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub($automaticCaption)->embedSubs(true);
             }
 
             $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
