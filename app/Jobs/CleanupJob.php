@@ -56,6 +56,8 @@ class CleanupJob implements ShouldQueue
 
             if(Carbon::createFromTimestamp(fileatime(Storage::disk('local')->path($file))) < Carbon::now()->subDays(2)) {
                 Storage::delete($file);
+            } elseif ((100 - disk_free_space('/') / disk_total_space('/') * 100) > 80 && Carbon::createFromTimestamp(fileatime(Storage::disk('local')->path($file))) < Carbon::now()->subHours(2)) {
+                Storage::delete($file);
             }
         }
 
