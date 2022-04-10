@@ -11,6 +11,8 @@ use Illuminate\Http\JsonResponse;
 use Locale;
 use Storage;
 use Youtube;
+use YoutubeDl\Options;
+use YoutubeDownload;
 
 class RepositoryController extends Controller
 {

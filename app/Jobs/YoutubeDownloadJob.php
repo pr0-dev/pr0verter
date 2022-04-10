@@ -53,9 +53,26 @@ class YoutubeDownloadJob implements ShouldQueue
                 ->noPlaylist()
                 ->maxDownloads(1);
 
+            $automaticCaption = true;
             if ($this->youtube->subtitle != null) {
-                $options = $options->subLang([$this->youtube->subtitle])
-                    ->embedSubs(true);
+                $collection = YoutubeDownload::download(
+                    Options::create()->skipDownload(true)
+                        ->url('https://www.youtube.com/watch?v=HoZGMqCIRK8')
+                        ->downloadPath(storage_path())
+                        ->maxDownloads(1)
+                );
+
+                foreach($collection->getVideos() as $video) {
+                    foreach ($video->getSubtitles() as $lang => $options) {
+                        if($lang == $this->youtube->subtitle)
+                            $automaticCaption = false;
+                    }
+                }
+                if($automaticCaption) {
+                    $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub(true);
+                } else {
+                    $options = $options->subLang([$this->youtube->subtitle])->embedSubs(true);
+                }
             }
 
             $collection = YoutubeDownload::onProgress(static function (?string $progressTarget, $percentage, string $size, $speed, $eta, ?string $totalTime) use ($youtubeModel) {
