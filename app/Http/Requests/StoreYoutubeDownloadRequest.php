@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\AudioRule;
 use App\Rules\ClipEndRule;
 use App\Rules\ClipStartRule;
+use App\Rules\MaxVideoTime;
 use App\Rules\SubtitleLangExists;
 use App\Rules\ValidYoutubeVideo;
 use Illuminate\Foundation\Http\FormRequest;
@@ -35,7 +36,7 @@ class StoreYoutubeDownloadRequest extends FormRequest
             'end' => ['filled', 'bail', 'integer', new ClipEndRule],
             'ratio' => 'required|bail|boolean',
             config('pr0verter.disabled.inputs.interpolation') ? : 'interpolation' => 'required|bail|boolean',
-            'url' => ['required', 'bail', new ValidYoutubeVideo],
+            'url' => ['required', 'bail', new ValidYoutubeVideo, new MaxVideoTime],
             'subtitle' => ['filled', 'bail', new SubtitleLangExists]
         ];
     }
