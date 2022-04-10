@@ -6,7 +6,6 @@ import {Inertia} from "@inertiajs/inertia";
 
 
 export default function Progress(props) {
-    console.log(props);
     let [video, setVideo] = useState("0%");
     let [isUpload, setIsUpload] = useState(props.conversion.type_info_type.endsWith("Upload"));
     let [text, setText] = useState();
