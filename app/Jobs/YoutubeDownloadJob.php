@@ -57,7 +57,7 @@ class YoutubeDownloadJob implements ShouldQueue
             if ($this->youtube->subtitle != null) {
                 $collection = YoutubeDownload::download(
                     Options::create()->skipDownload(true)
-                        ->url('https://www.youtube.com/watch?v=HoZGMqCIRK8')
+                        ->url($this->youtube->url)
                         ->downloadPath(storage_path())
                         ->maxDownloads(1)
                 );
