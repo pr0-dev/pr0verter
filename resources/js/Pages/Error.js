@@ -1,9 +1,20 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Head} from '@inertiajs/inertia-react';
-import Navigation from "@/Components/Navigation";
 import qr from "../../assets/qrcode.jpeg";
 
-export default function Error(props) {
+export default function Error({conversion}) {
+    const [error, setError] = useState({});
+    useEffect(() => {
+        if(conversion.converter_error) {
+            if(conversion.converter_error.includes("Unable to locate subtitle stream in")) {
+                setError({long: "Es ist ein Fehler beim einfügen des Subtitle aufgetreten", short: "Subtitle wurde nicht gefunden", code: "SUBTITLE_IST_KAPUTT"})
+            }else{
+                setError({long: "Es ist ein Fehler bei der Konvertierung aufgetreten", short: "Konvertierung fehlgeschlagen", code: "CONVERTER_BRENNT"})
+            }
+        }else {
+            setError({long: "Es ist ein Fehler beim Download aufgetreten", short: "Download fehlgeschlagen", code: "DOWNLOAD_ABGEKACKT"})
+        }
+    }, [conversion])
     return (
         <>
             <Head title="pr0verter"/>
@@ -22,14 +33,14 @@ export default function Error(props) {
                     </div>
                     <div className={"pl-8 text-2xl flex flex-col justify-between py-4"}>
                         <div className={""}>
-                            <p className={"text-white"}>Es ist ein Fehler beim Download Vorgang aufgetreten.</p>
-                            <p className={"text-white"}>Youtube ist aktuell nicht erreichbar</p>
+                            <p className={"text-white"}>{error.long}</p>
+                            <p className={"text-white"}>{error.short}</p>
                         </div>
                         <div className={""}>
                             <p className={"text-white mt-8"}>Halten Sie bitte folgende Information bereit falls Sie
                                 den
                                 Support kontaktieren:</p>
-                            <p className={"text-white"}>YOUTUBE_IST_OFFLINE</p>
+                            <p className={"text-white"}>{error.code}</p>
                         </div>
                     </div>
                 </div>
