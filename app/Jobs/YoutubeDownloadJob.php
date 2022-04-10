@@ -69,7 +69,7 @@ class YoutubeDownloadJob implements ShouldQueue
                     }
                 }
                 if($automaticCaption) {
-                    $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub(true);
+                    $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub(true)->embedSubs(true);
                 } else {
                     $options = $options->subLang([$this->youtube->subtitle])->embedSubs(true);
                 }
