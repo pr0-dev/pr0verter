@@ -40,7 +40,7 @@ class IsValidVideoUrl implements Rule
                 return false;
 
             foreach($collection->getVideos() as $video) {
-                if($video->getExtractor())
+                if($video->getFormat() != '0 - unknown')
                     return true;
                 else
                     return false;
