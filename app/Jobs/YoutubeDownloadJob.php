@@ -68,6 +68,7 @@ class YoutubeDownloadJob implements ShouldQueue
                             $automaticCaption = false;
                     }
                 }
+                \Log::debug($this->youtube->subtitle);
                 $options = $options->subLang([$this->youtube->subtitle])->writeAutoSub($automaticCaption)->embedSubs(true);
             }
 
