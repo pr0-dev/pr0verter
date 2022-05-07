@@ -113,17 +113,17 @@ function Converter() {
                 Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
                 if(err.response) {
-                    setError(err.response.data);
-                    if(typeof err.response.data.url !== "undefined") {
+                    setError(err.response.data.errors);
+                    if(typeof err.response.data.errors.url !== "undefined") {
                         sourceRef.current.style.border = "2px solid #ff0000";
                     }
-                    if(typeof err.response.data.end !== "undefined") {
+                    if(typeof err.response.data.errors.end !== "undefined") {
                         endRef.current.style.border = "2px solid #ff0000";
                     }
-                    if(typeof err.response.data.start !== "undefined") {
+                    if(typeof err.response.data.errors.start !== "undefined") {
                         startRef.current.style.border = "2px solid #ff0000";
                     }
-                    if(typeof err.response.data.size !== "undefined") {
+                    if(typeof err.response.data.errors.size !== "undefined") {
                         sizeRef.current.style.border = "2px solid #ff0000";
                     }
                 }
@@ -141,17 +141,17 @@ function Converter() {
                 Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
                 if(err.response) {
-                    setError(err.response.data);
-                    if(typeof err.response.data.url !== "undefined") {
+                    setError(err.response.data.errors);
+                    if(typeof err.response.data.errors.url !== "undefined") {
                         sourceRef.current.style.border = "2px solid #ff0000";
                     }
-                    if(typeof err.response.data.end !== "undefined") {
+                    if(typeof err.response.data.errors.end !== "undefined") {
                         endRef.current.style.border = "2px solid #ff0000";
                     }
-                    if(typeof err.response.data.start !== "undefined") {
+                    if(typeof err.response.data.errors.start !== "undefined") {
                         startRef.current.style.border = "2px solid #ff0000";
                     }
-                    if(typeof err.response.data.size !== "undefined") {
+                    if(typeof err.response.data.errors.size !== "undefined") {
                         sizeRef.current.style.border = "2px solid #ff0000";
                     }
                 }
