@@ -181,13 +181,13 @@ function Converter() {
             })
         } else if(mode === 2) {
             let formData = new FormData();
-            formData.append("site", (size ?? 0) * 8192);
-            formData.append("ratio", ratio);
-            formData.append("sound", sound ? bitrate : 0);
-            formData.append("start", start ? start : 0);
-            formData.append("end", end ? end : 0);
+            formData.append("site", ((size ?? 0) * 8192).toString());
+            formData.append("ratio", ratio ? "true" : "false");
+            formData.append("sound", (sound ? bitrate : 0).toString());
+            formData.append("start", (start ? start : 0).toString());
+            formData.append("end", (end ? end : 0).toString());
             formData.append("video", file);
-            formData.append("interpolation", interpolation);
+            formData.append("interpolation", interpolation ? "true" : "false");
 
             axios.post(route("storeUpload"), formData).then(data => {
                 Inertia.visit(route("progress", data.data.guid))
