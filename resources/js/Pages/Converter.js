@@ -24,6 +24,7 @@ function Converter() {
     const [end, setEnd] = useState(0);
     const [limits, setLimits] = useState({});
     const [error, setError] = useState({});
+    const [file, setFile] = useState();
 
     const sizeRef = useRef();
     const sourceRef = useRef();
@@ -98,6 +99,24 @@ function Converter() {
             failed = true;
         }
 
+        if(mode < 2) {
+            if(!source) {
+                failed = true;
+                sourceRef.current.style.border = "2px solid #ff0000";
+                tmpErrors.file = "Es wurde keine Quelle angegeben.";
+            }else{
+                sourceRef.current.style.border = "none";
+            }
+        }else if(mode === 2) {
+            if(!file) {
+                failed = true;
+                sourceRef.current.style.border = "2px solid #ff0000";
+                tmpErrors.file = "Es wurde keine Datei ausgewählt.";
+            }else{
+                sourceRef.current.style.border = "none";
+            }
+        }
+
         if (failed) {
             setError(tmpErrors);
             return;
@@ -160,6 +179,35 @@ function Converter() {
                     }
                 }
             })
+        } else if(mode === 2) {
+            let formData = new FormData();
+            formData.append("site", (size ?? 0) * 8192);
+            formData.append("ratio", ratio);
+            formData.append("sound", sound ? bitrate : 0);
+            formData.append("start", start ? start : 0);
+            formData.append("end", end ? end : 0);
+            formData.append("video", file);
+            formData.append("interpolation", interpolation);
+
+            axios.post(route("storeUpload"), formData).then(data => {
+                Inertia.visit(route("progress", data.data.guid))
+            }).catch(err => {
+                if(err.response) {
+                    setError(err.response.data.errors);
+                    if(typeof err.response.data.errors.video !== "undefined") {
+                        sourceRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.errors.end !== "undefined") {
+                        endRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.errors.start !== "undefined") {
+                        startRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.errors.size !== "undefined") {
+                        sizeRef.current.style.border = "2px solid #ff0000";
+                    }
+                }
+            })
         }
     }
 
@@ -203,7 +251,7 @@ function Converter() {
                     </div> : mode === 1 ? <div>
                         <Input placeholder={"Download URL..."} onChange={setSource} inputRef={sourceRef}/>
                     </div> : <div>
-                        <FileUpload/>
+                        <FileUpload onChange={(f) => setFile(f)} uploadRef={sourceRef}/>
                     </div>
                     }
                 </div>
