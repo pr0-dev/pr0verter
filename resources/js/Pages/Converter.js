@@ -58,7 +58,7 @@ function Converter() {
 
     function send() {
         let failed = false;
-
+        let tmpErrors = {};
         if (limits) {
             console.log(limits.minResultSize)
             if (start && end) {
@@ -66,6 +66,7 @@ function Converter() {
                     failed = true;
                     startRef.current.style.border = "2px solid #ff0000";
                     endRef.current.style.border = "2px solid #ff0000";
+                    tmpErrors.time = "Das Video darf maximal " + limits.maxResultLength + " Sekunden lang sein"
                     // Clip too long
                 } else {
                     startRef.current.style.border = "none";
@@ -76,6 +77,7 @@ function Converter() {
             if (size < limits.minResultSize || size > limits.maxResultSize) {
                 failed = true;
                 sizeRef.current.style.border = "2px solid #ff0000";
+                tmpErrors.size = "Die Wunschgröße muss zwischen " + limits.minResultSize + " MB und " + limits.maxResultSize + " MB sein."
             } else {
                 sizeRef.current.style.border = "none";
             }
@@ -88,6 +90,7 @@ function Converter() {
 
                 if (bitrate > limits.maxAudioBitRate) {
                     failed = true;
+                    tmpErrors.bitrate = "Die Audio Bitrate muss unter " + limits.maxAudioBitRate + " sein.";
                     // Sound too big
                 }
             }
@@ -96,6 +99,7 @@ function Converter() {
         }
 
         if (failed) {
+            setError(tmpErrors);
             return;
         }
 
