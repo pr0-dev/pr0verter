@@ -23,8 +23,10 @@ function Converter() {
     const [start, setStart] = useState(0);
     const [end, setEnd] = useState(0);
     const [limits, setLimits] = useState({});
+    const [error, setError] = useState({});
 
     const sizeRef = useRef();
+    const sourceRef = useRef();
     const startRef = useRef();
     const endRef = useRef();
 
@@ -110,7 +112,21 @@ function Converter() {
             }).then(data => {
                 Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
-                console.log(err);
+                if(err.response) {
+                    setError(err.response.data);
+                    if(typeof err.response.data.url !== "undefined") {
+                        sourceRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.end !== "undefined") {
+                        endRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.start !== "undefined") {
+                        startRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.size !== "undefined") {
+                        sizeRef.current.style.border = "2px solid #ff0000";
+                    }
+                }
             })
         } else if (mode === 1) {
             axios.post(route("storeDownload"), {
@@ -124,7 +140,21 @@ function Converter() {
             }).then(data => {
                 Inertia.visit(route("progress", data.data.guid))
             }).catch(err => {
-                console.log(err);
+                if(err.response) {
+                    setError(err.response.data);
+                    if(typeof err.response.data.url !== "undefined") {
+                        sourceRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.end !== "undefined") {
+                        endRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.start !== "undefined") {
+                        startRef.current.style.border = "2px solid #ff0000";
+                    }
+                    if(typeof err.response.data.size !== "undefined") {
+                        sizeRef.current.style.border = "2px solid #ff0000";
+                    }
+                }
             })
         }
     }
@@ -165,9 +195,9 @@ function Converter() {
                 }
                 <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
                     {mode === 0 ? <div>
-                        <Input placeholder={"YouTube URL..."} onChange={setSource}/>
+                        <Input placeholder={"YouTube URL..."} onChange={setSource} inputRef={sourceRef}/>
                     </div> : mode === 1 ? <div>
-                        <Input placeholder={"Download URL..."} onChange={setSource}/>
+                        <Input placeholder={"Download URL..."} onChange={setSource} inputRef={sourceRef}/>
                     </div> : <div>
                         <FileUpload/>
                     </div>
@@ -239,6 +269,9 @@ function Converter() {
                     }
                 </div>
                 <div className={"px-4 w-full md:w-1/3 mt-8 mx-auto pb-12"}>
+                    <p className={"text-red-600 mb-10 text-2xl"}>
+                        {Object.values(error).map(v => <React.Fragment>{v}<br/></React.Fragment>)}
+                    </p>
                     <Button className={"w-full md:w-1/2"} onClick={send}>Konvertieren</Button>
                 </div>
             </div>
