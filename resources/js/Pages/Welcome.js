@@ -42,15 +42,15 @@ export default function Welcome() {
                 </div>
                 <div className={"w-2/3 mx-auto flex mt-8 gap-8"}>
                     <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
-                        <p className={"text-white"}>RAM Auslastung</p>
+                        <p className={"text-white"}>RAM-Auslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.memoryUsed?.toFixed(2)} %</p>
                     </div>
                     <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
-                        <p className={"text-white"}>CPU Auslastung</p>
+                        <p className={"text-white"}>CPU-Auslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.cpuUsed?.toFixed(2)} %</p>
                     </div>
                     <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
-                        <p className={"text-white"}>Speicher Auslastung</p>
+                        <p className={"text-white"}>Speicherauslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.spaceUsed?.toFixed(2)} %</p>
                     </div>
                 </div>

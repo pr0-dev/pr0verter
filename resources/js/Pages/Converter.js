@@ -296,7 +296,7 @@ function Converter() {
                     </div>
                     {sound &&
                         <div className={"flex justify-between mt-8 w-full items-center"}>
-                            <p className={"text-xl text-pr0-text"}>Audio Qualität</p>
+                            <p className={"text-xl text-pr0-text"}>Audioqualität</p>
                             <input type={"range"} min={limits.minResultAudioBitrate} max={limits.maxResultAudioBitrate}
                                    value={bitrate} onChange={(e) => setBitRate(e.target.value)}
                                    className={"w-1/2 slider"}/>
@@ -308,12 +308,12 @@ function Converter() {
                                inputRef={sizeRef}/>
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
-                        <p className={"text-xl text-pr0-text"}>Schnitt Start</p>
+                        <p className={"text-xl text-pr0-text"}>Schnitt-Start</p>
                         <Input type={"number"} placeholder={"Sekunden"} className={"w-1/2"} onChange={setStart}
                                inputRef={startRef}/>
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
-                        <p className={"text-xl text-pr0-text"}>Schnitt Ende</p>
+                        <p className={"text-xl text-pr0-text"}>Schnitt-Ende</p>
                         <Input placeholder={"Sekunden"} type={"number"} className={"w-1/2"} onChange={setEnd}
                                inputRef={endRef}/>
                     </div>
