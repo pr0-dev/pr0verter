@@ -15,27 +15,27 @@ export default function Welcome() {
         <>
             <Head title="pr0verter"/>
             <div className="bg-pr0-bg w-full min-h-screen">
-                <Navigation></Navigation>
-                <div className={"w-2/3 mx-auto mt-32 text-center text-xl text-white"}>
+                <Navigation/>
+                <div className={"w-full md:w-2/3 mx-auto mt-32 text-center text-xl text-white px-4 md:px-0"}>
                     Der pr0verter ist ein Tool um Videos aus dem Internet zu laden und sie in ein für das pr0gramm
                     passendes Format zu bringen
                 </div>
-                <div className={"w-2/3 mx-auto flex mt-8 gap-8"}>
-                    <div className={"w-1/2 bg-pr0-dark rounded-2xl p-8"}>
+                <div className={"w-full md:w-2/3 mx-auto md:flex mt-8 gap-8 px-4 md:px-0"}>
+                    <div className={"w-full md:w-1/2 bg-pr0-dark rounded-2xl p-8"}>
                         <p className={"text-white"}>Konvertierte Videos</p>
                         <p className={"text-4xl text-white mt-4"}>{data.totalConvertCount}</p>
                     </div>
-                    <div className={"w-1/2 bg-pr0-dark rounded-2xl p-8"}>
+                    <div className={"w-full md:w-1/2 bg-pr0-dark rounded-2xl p-8 mt-4 md:mt-0"}>
                         <p className={"text-white"}>Konvertierte Videos Heute</p>
                         <p className={"text-4xl text-white mt-4"}>{data.convertToday}</p>
                     </div>
                 </div>
-                <div className={"w-2/3 mx-auto mt-8 gap-8 flex"}>
-                    <div className={"w-1/2 bg-pr0-dark rounded-2xl p-8"}>
+                <div className={"w-full md:w-2/3 mx-auto mt-8 gap-8 md:flex px-4 md:px-0"}>
+                    <div className={"w-full md:w-1/2 bg-pr0-dark rounded-2xl p-8"}>
                         <p className={"text-white"}>Daten Transferiert</p>
                         <p className={"text-4xl text-white mt-4"}>{data.dataTransferred?.toFixed(2)} GB</p>
                     </div>
-                    <div className={"w-1/2 bg-pr0-dark rounded-2xl p-8"}>
+                    <div className={"w-full md:w-1/2 bg-pr0-dark rounded-2xl p-8 mt-4 md:mt-0"}>
                         <p className={"text-white"}>Durchschnittliche Konvertierungsdauer</p>
                         <p className={"text-4xl text-white mt-4"}>{data.avgConvertTime ? parseInt(data.avgConvertTime).toFixed(2) : 0} Sekunden</p>
                     </div>
