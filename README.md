@@ -23,7 +23,7 @@
 * `npm install`
 * `npm run prod`
 * `cp .env.example .env`
-* Adjust .env to you needs
+* Adjust .env to your needs
 * `php artisan key:generate`
 * `php artisan migrate`
 * Setup Supervisor or any other tool to work on the queue.
