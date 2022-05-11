@@ -71,8 +71,8 @@ Route::get('/error/{conversion?}', function (Conversion $conversion) {
 
 Route::get('/contact', function () {
     return Inertia::render('Contact');
-})->name("progress");
+})->name("contact");
 
 Route::get('/changelog', function () {
     return Inertia::render('Changelog');
-})->name("progress");
+})->name("changelog");
