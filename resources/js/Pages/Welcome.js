@@ -20,6 +20,11 @@ export default function Welcome() {
                     Der pr0verter ist ein Tool um Videos aus dem Internet zu laden und sie in ein für das pr0gramm
                     passendes Format zu bringen
                 </div>
+                <div className={"w-max mx-auto"}>
+                    <Link href={"/converter"} className={"w-max"}>
+                        <Button className={"w-64 mx-auto mt-8"}>Jetzt Konvertieren</Button>
+                    </Link>
+                </div>
                 <div className={"w-full md:w-2/3 mx-auto md:flex mt-8 gap-8 px-4 md:px-0"}>
                     <div className={"w-full md:w-1/2 bg-pr0-dark rounded-2xl p-8"}>
                         <p className={"text-white"}>Konvertierte Videos</p>
@@ -53,11 +58,6 @@ export default function Welcome() {
                         <p className={"text-white"}>Speicherauslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.spaceUsed?.toFixed(2)} %</p>
                     </div>
-                </div>
-                <div className={"w-max mx-auto"}>
-                    <Link href={"/converter"} className={"w-max"}>
-                        <Button className={"w-64 mx-auto mt-8"}>Jetzt Konvertieren</Button>
-                    </Link>
                 </div>
             </div>
         </>
