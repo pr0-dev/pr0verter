@@ -309,12 +309,12 @@ function Converter() {
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Schnitt-Start</p>
-                        <Input type={"number"} placeholder={"Sekunden"} className={"w-1/2"} onChange={setStart}
+                        <Input type={"number"} placeholder={"Sekunden"} className={"w-1/2"} onChange={(v) => setStart(parseInt(v))}
                                inputRef={startRef}/>
                     </div>
                     <div className={"flex justify-between mt-8 w-full items-center"}>
                         <p className={"text-xl text-pr0-text"}>Schnitt-Ende</p>
-                        <Input placeholder={"Sekunden"} type={"number"} className={"w-1/2"} onChange={setEnd}
+                        <Input placeholder={"Sekunden"} type={"number"} className={"w-1/2"} onChange={(v) => setEnd(parseInt(v))}
                                inputRef={endRef}/>
                     </div>
                     {(limits.disabled && !limits.disabled.inputs.interpolation) &&
