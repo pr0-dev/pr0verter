@@ -6,9 +6,9 @@ function FAQ() {
     return (
         <>
             <Head title="pr0verter"/>
-            <div className="bg-pr0-bg w-full min-h-screen">
+            <div className="bg-pr0-bg w-full min-h-screen pb-16">
                 <Navigation/>
-                <div className={"w-full md:w-1/3 px-4 md:px-0 mx-auto text-white mt-16 md:mt-32"}>
+                <div className={"w-full md:w-1/3 px-4 md:px-0 mx-auto text-white mt-16"}>
                     <p className={"text-2xl font-semibold mb-2"}>Welche Formate unterstützt der pr0verter?</p>
                     <p className={"mt-2"}>Alle gängigen Videoformate und GIFs.</p>
                 </div>
