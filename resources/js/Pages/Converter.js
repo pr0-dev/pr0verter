@@ -328,7 +328,7 @@ function Converter() {
                     <p className={"text-red-600 mb-10 text-2xl"}>
                         {Object.values(error).map(v => <React.Fragment>{v}<br/></React.Fragment>)}
                     </p>
-                    <Button className={"w-full md:w-1/2"} onClick={send} disabled={buttonLocked}>{buttonLocked ? "Konvertieren" : "Bitte Warten..."}</Button>
+                    <Button className={"w-full md:w-1/2"} onClick={send} disabled={buttonLocked}>{!buttonLocked ? "Konvertieren" : "Bitte Warten..."}</Button>
                 </div>
             </div>
         </>
