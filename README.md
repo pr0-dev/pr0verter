@@ -10,11 +10,11 @@
 
 
 Dependencies:
-# PHP8.1
-# NPM
-# yt-dl|yt-dlp
-# ffmpeg
-# any kinda of database
+* PHP8.1
+* NPM
+* yt-dl|yt-dlp
+* ffmpeg
+* any kind of database
 
 Unter der Domain https://dev.prOverter.de ist die neue Version des prOverters verfügbar.
 
