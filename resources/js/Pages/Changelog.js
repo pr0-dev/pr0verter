@@ -20,8 +20,12 @@ function Changelog() {
             <div className="bg-pr0-bg w-full min-h-screen">
                 <Navigation/>
                 {changelog.map(e => <div className={"w-1/3 mx-auto text-white mt-32"}>
-                    <p className={"text-2xl font-semibold mb-2"}>{e.author ? e.author.login : "Unbekannt"} | {e.commit.author.date}</p>
+                    <p className={"text-2xl font-semibold mb-2"}>{e.author ? e.author.login : "Unbekannt"}</p>
                     <p className={"mt-2"}>{e.commit.message}</p>
+                    <div className={"flex justify-between"}>
+                        <a href={e.html_url} className={"text-pr0-main"}>Commit</a>
+                        <p>{new Date(e.commit.author.date).toDateString()}</p>
+                    </div>
                 </div>)}
             </div>
         </>
