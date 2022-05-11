@@ -8,6 +8,14 @@
   </p>
 </div>
 
+
+Dependencies:
+# PHP8.1
+# NPM
+# yt-dl|yt-dlp
+# ffmpeg
+# any kinda of database
+
 Unter der Domain https://dev.prOverter.de ist die neue Version des prOverters verfügbar.
 
 Die neuen Features umfassen:
@@ -20,9 +28,6 @@ Die neuen Features umfassen:
 
 - Interpolation - Ihr könnt ein Video mit beliebiger FPS auf 60 FPS "verlustlos" hochscalen lassen - dieser Vorgang braucht allerdings mehr Zeit
 
-Es gibt noch weitere geplante Features - das Wichtigste ist wohl das WASM Feature, anstatt ein Video auf dem Server zu prOvertieren wird es direkt auf eurem Endgerät konvertiert - und benutzt natürlich die Leistung eures Endgerätes, das soll euch Bandbreite sparen. Solltet ihr den Wunsch haben euch am prOverter zu beteiligen, könnt ihr das direkt auf https://github.com/prO-dev/prOverter tun, einfach PR erstellen und ab dafür.
+Es gibt noch weitere geplante Features - das Wichtigste ist wohl das WASM Feature, anstatt ein Video auf dem Server zu prOvertieren wird es direkt auf eurem Endgerät konvertiert - und benutzt natürlich die Leistung eures Endgerätes, das soll euch Bandbreite sparen. Solltet ihr den Wunsch haben euch am prOverter zu beteiligen, könnt ihr das direkt auf https://github.com/pr0-dev/pr0verter tun, einfach PR erstellen und ab dafür.
 
 Ein DICKES FETTES DANKE an @jonas32 für seinen Teil im Frontend - schaut mal vorbei und lasst ein bisschen Blussium da!
-
-___________________________________________
-Last Edit: V4M0N0S @ GitHub - 11-05-22
