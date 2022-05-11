@@ -30,6 +30,7 @@ function Converter() {
     const sourceRef = useRef();
     const startRef = useRef();
     const endRef = useRef();
+    const buttonRef = useRef();
 
     useEffect(() => {
         if (mode === 0 && source) {
@@ -180,6 +181,8 @@ function Converter() {
                 }
             })
         } else if(mode === 2) {
+            buttonRef.current.disabled = true;
+            buttonRef.current.textValue = "Bitte Warten...";
             let formData = new FormData();
             formData.append("size", (size ?? 0) * 8192);
             formData.append("ratio", ratio ? 1 : 0);
@@ -207,6 +210,9 @@ function Converter() {
                         sizeRef.current.style.border = "2px solid #ff0000";
                     }
                 }
+            }).finally(() => {
+                buttonRef.current.disabled = false;
+                buttonRef.current.textValue = "Konvertieren";
             })
         }
     }
@@ -324,7 +330,7 @@ function Converter() {
                     <p className={"text-red-600 mb-10 text-2xl"}>
                         {Object.values(error).map(v => <React.Fragment>{v}<br/></React.Fragment>)}
                     </p>
-                    <Button className={"w-full md:w-1/2"} onClick={send}>Konvertieren</Button>
+                    <Button className={"w-full md:w-1/2"} onClick={send} ref={buttonRef}>Konvertieren</Button>
                 </div>
             </div>
         </>
