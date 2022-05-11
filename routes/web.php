@@ -68,3 +68,11 @@ Route::get('/error/{conversion?}', function (Conversion $conversion) {
         'conversion' => $conversion
     ]);
 })->name("error");
+
+Route::get('/contact', function () {
+    return Inertia::render('Contact');
+})->name("progress");
+
+Route::get('/changelog', function () {
+    return Inertia::render('Changelog');
+})->name("progress");
