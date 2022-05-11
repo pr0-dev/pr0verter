@@ -8,7 +8,6 @@ function Changelog() {
 
     useEffect(() => {
         axios.get(route("githubInfo")).then(res => {
-            console.log(res);
             setChangelog(res.data);
         }).catch(err => {
             console.log(err);
@@ -19,7 +18,7 @@ function Changelog() {
             <Head title="pr0verter"/>
             <div className="bg-pr0-bg w-full min-h-screen">
                 <Navigation/>
-                {changelog.map(e => <div className={"w-1/3 mx-auto text-white mt-32"}>
+                {changelog.map(e => <div className={"w-full md:w-1/3 px-4 md:px-0 mx-auto text-white mt-16"}>
                     <p className={"text-2xl font-semibold mb-2"}>{e.commit.message}</p>
                     <p className={"mt-2"}>{e.author ? e.author.login : "Unbekannt"}</p>
                     <div className={"flex justify-between"}>

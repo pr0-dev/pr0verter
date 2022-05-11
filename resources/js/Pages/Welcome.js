@@ -40,16 +40,16 @@ export default function Welcome() {
                         <p className={"text-4xl text-white mt-4"}>{data.avgConvertTime ? parseInt(data.avgConvertTime).toFixed(2) : 0} Sekunden</p>
                     </div>
                 </div>
-                <div className={"w-2/3 mx-auto flex mt-8 gap-8"}>
-                    <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
+                <div className={"w-full md:w-2/3 md:mx-auto md:flex mt-8 gap-8 px-4 md:px-0"}>
+                    <div className={"w-full md:w-1/3 bg-pr0-dark rounded-2xl p-8"}>
                         <p className={"text-white"}>RAM-Auslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.memoryUsed?.toFixed(2)} %</p>
                     </div>
-                    <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
+                    <div className={"w-full md:w-1/3 bg-pr0-dark rounded-2xl p-8 mt-4 md:mt-0"}>
                         <p className={"text-white"}>CPU-Auslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.cpuUsed?.toFixed(2)} %</p>
                     </div>
-                    <div className={"w-1/3 bg-pr0-dark rounded-2xl p-8"}>
+                    <div className={"w-full md:w-1/3 bg-pr0-dark rounded-2xl p-8 mt-4 md:mt-0"}>
                         <p className={"text-white"}>Speicherauslastung</p>
                         <p className={"text-4xl text-white mt-4"}>{data.spaceUsed?.toFixed(2)} %</p>
                     </div>
