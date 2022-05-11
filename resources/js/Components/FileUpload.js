@@ -13,7 +13,7 @@ function FileUpload({onChange, uploadRef}) {
                 setName(e.target.files[0].name)
             }}/>
             <p className={"text-pr0-text text-2xl font-semibold text-center mt-4 italic"}>{name}</p>
-            <p className={"text-pr0-text text-center italic my-4"}>Klicke auf dieses Feld um ein Video aus zu
+            <p className={"text-pr0-text text-center italic my-4"}>Klicke auf dieses Feld, um ein Video aus zu
                 wählen <br/>oder ziehe es per drag and drop hier hinein</p>
         </div>
     );

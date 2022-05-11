@@ -251,9 +251,9 @@ function Converter() {
                 }
                 <div className={"px-4 mt-8 w-full md:w-1/3 mx-auto"}>
                     {mode === 0 ? <div>
-                        <Input placeholder={"YouTube URL..."} onChange={setSource} inputRef={sourceRef}/>
+                        <Input placeholder={"YouTube-URL..."} onChange={setSource} inputRef={sourceRef}/>
                     </div> : mode === 1 ? <div>
-                        <Input placeholder={"Download URL..."} onChange={setSource} inputRef={sourceRef}/>
+                        <Input placeholder={"Download-URL..."} onChange={setSource} inputRef={sourceRef}/>
                     </div> : <div>
                         <FileUpload onChange={(f) => setFile(f)} uploadRef={sourceRef}/>
                     </div>
