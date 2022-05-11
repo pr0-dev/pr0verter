@@ -25,12 +25,12 @@ function Converter() {
     const [limits, setLimits] = useState({});
     const [error, setError] = useState({});
     const [file, setFile] = useState();
+    const [buttonLocked, setButtonLocked] = useState(false)
 
     const sizeRef = useRef();
     const sourceRef = useRef();
     const startRef = useRef();
     const endRef = useRef();
-    const buttonRef = useRef();
 
     useEffect(() => {
         if (mode === 0 && source) {
@@ -181,8 +181,7 @@ function Converter() {
                 }
             })
         } else if(mode === 2) {
-            buttonRef.current.disabled = true;
-            buttonRef.current.textValue = "Bitte Warten...";
+            setButtonLocked(true)
             let formData = new FormData();
             formData.append("size", (size ?? 0) * 8192);
             formData.append("ratio", ratio ? 1 : 0);
@@ -211,8 +210,7 @@ function Converter() {
                     }
                 }
             }).finally(() => {
-                buttonRef.current.disabled = false;
-                buttonRef.current.textValue = "Konvertieren";
+                setButtonLocked(false);
             })
         }
     }
@@ -330,7 +328,7 @@ function Converter() {
                     <p className={"text-red-600 mb-10 text-2xl"}>
                         {Object.values(error).map(v => <React.Fragment>{v}<br/></React.Fragment>)}
                     </p>
-                    <Button className={"w-full md:w-1/2"} onClick={send} ref={buttonRef}>Konvertieren</Button>
+                    <Button className={"w-full md:w-1/2"} onClick={send} disabled={buttonLocked}>{buttonLocked ? "Konvertieren" : "Bitte Warten..."}</Button>
                 </div>
             </div>
         </>
