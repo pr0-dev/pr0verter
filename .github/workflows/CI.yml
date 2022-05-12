@@ -25,6 +25,19 @@ jobs:
         env:
           runner: ubuntu-18.04
 
+      - name: Install YouTube DLP
+        run: |
+          curl -L hhttps://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlpp -o /usr/local/bin/yt-dl
+          chmod a+rx /usr/local/bin/yt-dlp
+
+      
+      - name: Install FFMPEG
+        run: |
+          curl -s https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz | tar xvz bin -C /usr/local/bin
+          chmod a+rx /usr/local/bin/ffmpeg
+          chmod a+rx /usr/local/bin/ffplay
+          chmod a+rx /usr/local/bin/ffprobe
+
       - uses: actions/checkout@v2
 
       - name: Validate composer
