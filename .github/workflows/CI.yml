@@ -1,0 +1,85 @@
+name: CI
+
+# Trigger the workflow on push and pill request
+on:
+  pull_request:
+  push:
+      
+# Authenticate to the the server via ssh 
+# and run our deployment script 
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.1']
+    env:
+      PHP_VERSION: ${{ matrix.php }}
+    name: PHP ${{ matrix.php }}
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: bz2,xml,curl
+        env:
+          runner: ubuntu-18.04
+
+      - name: Install YouTube DLP
+        run: |
+          curl -Ls https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlp -o /usr/local/bin/yt-dlp
+          chmod a+rx /usr/local/bin/yt-dlp
+
+      
+      - name: Install FFMPEG
+        run: |
+          curl -Ls https://github.com/yt-dlp/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz | tar Jx -C /usr/local/bin --transform='s:.*/::' --wildcards '*/ffmpeg' '*/ffplay' '*/ffprobe'
+          chmod a+rx /usr/local/bin/ffmpeg
+          chmod a+rx /usr/local/bin/ffplay
+          chmod a+rx /usr/local/bin/ffprobe
+
+      - uses: actions/checkout@v2
+
+      - name: Validate composer
+        run: composer validate
+        
+      - uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Composer install
+        run: composer install --prefer-dist --no-interaction
+
+      - name: NPM install
+        run: npm install 
+
+      - name: Laravel Mix
+        run: npm run production
+      
+      - name: Configure Laravel
+        run: |
+          php -r "file_exists('.env') || copy('.env.example', '.env');"
+          php artisan key:generate
+
+      - name: Test
+        run: php artisan test
+  
+  dev-environment:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Validate composer
+        run: composer validate
+        
+      - uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache/files
+          key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
+
+      - name: Composer install
+        run: composer install --prefer-dist --no-interaction
+
+      - name: Build sail container
+        run: ./vendor/bin/sail build
