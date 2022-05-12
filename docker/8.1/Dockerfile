@@ -44,9 +44,9 @@ RUN apt-get update \
     && apt-get install -y postgresql-client-$POSTGRES_VERSION \
     && apt-get install -y vnstat \
     && apt-get -y autoremove \
-    && curl -L https://github.com/yt-dlp/yt-dlp/releases/download/2022.04.08/yt-dlp -o /usr/local/bin/yt-dlp \
+    && curl -Ls https://github.com/yt-dlp/yt-dlp/releases/download/2022.04.08/yt-dlp -o /usr/local/bin/yt-dlp \
     && chmod a+rx /usr/local/bin/yt-dlp \
-    && curl -s https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-2022-05-12-14-03/ffmpeg-n5.0.1-5-g7df31c6f81-linux64-gpl-5.0.tar.xz | tar Jx -C /usr/local/bin --transform='s:.*/::' --wildcards '*/ffmpeg' '*/ffplay' '*/ffprobe' \
+    && curl -Ls https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-2022-05-12-14-03/ffmpeg-n5.0.1-5-g7df31c6f81-linux64-gpl-5.0.tar.xz | tar Jx -C /usr/local/bin --transform='s:.*/::' --wildcards '*/ffmpeg' '*/ffplay' '*/ffprobe' \
     && chmod a+rx /usr/local/bin/ffmpeg \
     && chmod a+rx /usr/local/bin/ffplay \
     && chmod a+rx /usr/local/bin/ffprobe \
