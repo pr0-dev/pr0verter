@@ -35,8 +35,14 @@ jobs:
           path: ~/.composer/cache/files
           key: dependencies-php-${{ matrix.php }}-composer-${{ hashFiles('composer.json') }}
 
-      - name: Install dependencies using Composer
+      - name: Composer install
         run: composer install --prefer-dist --no-interaction
+
+      - name: NPM install
+        run: npm install 
+
+      - name: Laravel Mix
+        run: npm run production
       
       - name: Configure Laravel
         run: |
