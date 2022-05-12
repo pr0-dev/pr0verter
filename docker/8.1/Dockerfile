@@ -46,7 +46,7 @@ RUN apt-get update \
     && apt-get -y autoremove \
     && curl -L https://github.com/yt-dlp/yt-dlp/releases/download/2022.04.08/yt-dlp -o /usr/local/bin/yt-dl \
     && sudo chmod a+rx /usr/local/bin/yt-dlp \
-    && curl -s https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-2022-05-12-14-03/ffmpeg-n5.0.1-5-g7df31c6f81-linux64-gpl-5.0.tar.xz | tar xvz -C /usr/local/bin
+    && curl -s https://github.com/yt-dlp/FFmpeg-Builds/releases/download/autobuild-2022-05-12-14-03/ffmpeg-n5.0.1-5-g7df31c6f81-linux64-gpl-5.0.tar.xz | tar xvz -C /usr/local/bin \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
