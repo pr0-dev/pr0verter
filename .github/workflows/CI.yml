@@ -27,7 +27,7 @@ jobs:
 
       - name: Install YouTube DLP
         run: |
-          curl -L hhttps://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlpp -o /usr/local/bin/yt-dl
+          curl -L https://github.com/yt-dlp/yt-dlp/releases/latest/download/yt-dlpp -o /usr/local/bin/yt-dl
           chmod a+rx /usr/local/bin/yt-dlp
 
       
