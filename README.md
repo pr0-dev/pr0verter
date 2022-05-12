@@ -22,7 +22,7 @@
 * any kind of database
 
 ## Development
-pr0verter comes with Laravel Sail development environment, that does mean for development and testing you can ignore above requirements and installation instructions for dependencies and just use Laravel Sail instead as long as you have Docker installed on your system.
+pr0verter comes with Laravel Sail development environment, that does mean for development and testing you can ignore above requirements for dependencies and just use Laravel Sail instead as long as you have Docker installed on your system.
 
 Since [Laravel Sail](https://laravel.com/docs/8.x/sail) is being installed using [Composer](https://getcomposer.org/) it is required that you do install all dependencies before using [Laravel Sail](https://laravel.com/docs/8.x/sail) to run the development environment. Since [Laravel Sail](https://laravel.com/docs/8.x/sail) does require [Docker](https://www.docker.com/) to be installed we can use an intermediade container to do so as [described in the documentation on how to install dependencies for existing projects](https://laravel.com/docs/8.x/sail#installing-composer-dependencies-for-existing-projects) - this will install all dependencies using [Composer](https://getcomposer.org/) and [NPM](https://www.npmjs.com/).
 ```
