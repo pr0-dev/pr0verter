@@ -10,7 +10,11 @@
     <a href="https://dev.pr0verter.de/"><strong>LIVE URL: dev.pr0verter.de</strong></a>
     <br />
   </p>
+  <a href="https://github.com/pr0-dev/pr0verter/actions/workflows/CI.yml" target="_BLANK">
+    <img src="https://github.com/pr0-dev/pr0verter/actions/workflows/CI.yml/badge.svg" />
+  </a>
 </div>
+
 
 
 ## Dependencies:
