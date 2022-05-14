@@ -42,7 +42,7 @@ RUN apt-get update \
     && apt-get install -y yarn \
     && apt-get install -y mysql-client \
     && apt-get install -y postgresql-client-$POSTGRES_VERSION \
-    && apt-get install -y vnstat \
+    && apt-get install -y vnstat cron \
     && apt-get -y autoremove \
     && curl -Ls https://github.com/yt-dlp/yt-dlp/releases/download/2022.04.08/yt-dlp -o /usr/local/bin/yt-dlp \
     && chmod a+rx /usr/local/bin/yt-dlp \
@@ -61,7 +61,12 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 COPY start-container /usr/local/bin/start-container
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 COPY php.ini /etc/php/8.1/cli/conf.d/99-sail.ini
+COPY cron.d /etc/cron.d
 RUN chmod +x /usr/local/bin/start-container
+RUN chown root:root /etc/cron.d \
+    && chmod og-rwx /etc/cron.d \
+    && chmod 0644 /etc/cron.d/* \
+    && crontab /etc/cron.d/* 
 
 EXPOSE 8000
 
