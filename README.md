@@ -13,6 +13,9 @@
   <a href="https://github.com/pr0-dev/pr0verter/actions/workflows/CI.yml" target="_BLANK">
     <img src="https://github.com/pr0-dev/pr0verter/actions/workflows/CI.yml/badge.svg" />
   </a>
+  <a href="https://codecov.io/gh/pr0-dev/pr0verter" target="_BLANK">
+    <img src="https://codecov.io/gh/pr0-dev/pr0verter/branch/master/graph/badge.svg" />
+  </a>
 </div>
 
 

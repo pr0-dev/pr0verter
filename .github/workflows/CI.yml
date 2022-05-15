@@ -63,7 +63,14 @@ jobs:
           php artisan key:generate
 
       - name: Test
-        run: php artisan test
+        run: php artisan test --coverage
+
+      - uses: codecov/codecov-action@v1
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          env_vars: PHP_VERSION
+          fail_ci_if_error: true
   
   dev-environment:
     runs-on: ubuntu-latest
