@@ -16,6 +16,9 @@
   <a href="https://codecov.io/gh/pr0-dev/pr0verter" target="_BLANK">
     <img src="https://codecov.io/gh/pr0-dev/pr0verter/branch/master/graph/badge.svg" />
   </a>
+  <a href="https://github.styleci.io/repos/7548986" target="_BLANK">
+    <img src="https://github.styleci.io/repos/7548986/shield?style=fl" />
+  </a>
 </div>
 
 
