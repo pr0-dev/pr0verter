@@ -38,6 +38,6 @@ class AudioRule implements Rule
      */
     public function message()
     {
-        return 'The validation error message.';
+        return 'Die angegebene Audio Bitrate ist nicht korrekt.';
     }
 }
