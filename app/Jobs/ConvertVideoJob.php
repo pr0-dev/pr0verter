@@ -59,7 +59,7 @@ class ConvertVideoJob implements ShouldQueue
         $conversion = $this->conversion;
 
         $format->setAdditionalParameters($filters)
-            ->setPasses(1)
+            ->setPasses(2)
             ->setKiloBitrate($this->conversion->result_bitrate);
 
         try {
