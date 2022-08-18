@@ -13,22 +13,29 @@
   <a href="https://github.com/pr0-dev/pr0verter/actions/workflows/CI.yml" target="_BLANK">
     <img src="https://github.com/pr0-dev/pr0verter/actions/workflows/CI.yml/badge.svg" />
   </a>
+  <a href="https://codecov.io/gh/pr0-dev/pr0verter" target="_BLANK">
+    <img src="https://codecov.io/gh/pr0-dev/pr0verter/branch/master/graph/badge.svg" />
+  </a>
+  <a href="https://github.styleci.io/repos/7548986" target="_BLANK">
+    <img src="https://github.styleci.io/repos/7548986/shield?style=fl" />
+  </a>
 </div>
 
 
 
 ## Dependencies:
-* PHP 8.1
-* NodeJS and NPM
-* Composer
-* yt-dl|yt-dlp
-* ffmpeg
-* any kind of database
+* PHP >=8.1
+* [Composer](https://getcomposer.org/)
+* [NodeJS](https://nodejs.org/en/) and [NPM](https://www.npmjs.com/)
+* [yt-dl](https://github.com/ytdl-org/youtube-dl) or [yt-dlp](https://github.com/yt-dlp/yt-dlp)
+* [FFmpeg](https://github.com/FFmpeg/FFmpeg) or [FFmpeg for yt-dlp](https://github.com/yt-dlp/FFmpeg-Builds)
+* Any SQL database supported by Laravel
 
-## Development
-pr0verter comes with Laravel Sail development environment, that does mean for development and testing you can ignore above requirements for dependencies and just use Laravel Sail instead as long as you have Docker installed on your system.
+## Installation
+As a Laravel application pr0verter comes with Laravel Sail development environment, that does mean for development and testing you can ignore mentioned required software and just use the Docker based Laravel Sail environment instead. This does require Docker to be installed on your system! It is highly advised that you read the [Documentation](https://laravel.com/docs/9.x/sail) for Laravel Sail.
 
-Since [Laravel Sail](https://laravel.com/docs/8.x/sail) is being installed using [Composer](https://getcomposer.org/) it is required that you do install all dependencies before using [Laravel Sail](https://laravel.com/docs/8.x/sail) to run the development environment. Since [Laravel Sail](https://laravel.com/docs/8.x/sail) does require [Docker](https://www.docker.com/) to be installed we can use an intermediade container to do so as [described in the documentation on how to install dependencies for existing projects](https://laravel.com/docs/8.x/sail#installing-composer-dependencies-for-existing-projects) - this will install all dependencies using [Composer](https://getcomposer.org/) and [NPM](https://www.npmjs.com/).
+### Install dependencies
+Since [Laravel Sail](https://laravel.com/docs/9.x/sail) is being installed using [Composer](https://getcomposer.org/) it is required that you do install all dependencies before using [Laravel Sail](https://laravel.com/docs/9.x/sail) to run the development environment. Since [Laravel Sail](https://laravel.com/docs/9.x/sail) does require [Docker](https://www.docker.com/) to be installed we can use an intermediade container to do so as [described in the documentation on how to install dependencies for existing projects](https://laravel.com/docs/8.x/sail#installing-composer-dependencies-for-existing-projects) - this will install all dependencies using [Composer](https://getcomposer.org/) and [NPM](https://www.npmjs.com/).
 ```
 docker run --rm \
     -u "$(id -u):$(id -g)" \
@@ -38,14 +45,27 @@ docker run --rm \
     composer install --ignore-platform-reqs
 ```
 
-## Installation:
-* Clone the Project
-* `composer install --no-dev`
-* `npm install`
-* `npm run prod`
-* `cp .env.example .env`
-* Adjust .env to your needs
-* `php artisan key:generate`
-* `php artisan migrate`
-* Setup Supervisor or any other tool to work on the queue.
-* Setup crontab or windows Taskscheduler to run `php artisan schedule:run` every minute
+As all dependencies have been installed using Composer you can start the Laravel Sail development environment using the `sail up` command. 
+
+Once the environment has successfully bootet up you can continue to install and build dependnecies using NPM. You can do this using the following commands:
+```
+sail npm install \
+&& sail npm run dev
+```
+
+### Configure
+On the first time running the project you will have to create your own `.env` configuration file. **This file will not be commited and is only available locally**. To create it, you can simply create an empty file or copy `.env.example`.
+
+It is required that you do set your application key, this can be generated using the following command:
+```
+sail artisan key:generate
+```
+
+### Database
+Once the dependnecies are installed and the application has been configured you can proceed to migrate the database schema. To do so simply run the following command:
+```
+sail artisan migrate
+```
+
+### Production
+To run this application in production you can orient yourself at the Laravel Sail Dockerfile and other files in the `/docker` directory for a list of required software and configuration. It is advised that you completely read the [Laravel Documentation](https://laravel.com/docs/9.x/). Keep in mind that Laravel Sail is **NOT** meant to be used in production.
